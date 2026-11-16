@@ -5,6 +5,7 @@
 // - 一 dan 不 memakai nada aslinya: dalam kata seperti 一起 (yìqǐ) nadanya berubah (sandhi),
 //   tetapi diucapkan sendirian bunyinya yī / bù.
 // - Sandhi nada 3 (你好 diucapkan ní hǎo) tidak berpengaruh karena karakter diucapkan sendirian.
+// - Karakter berbacaan ganda yang ditandai `no_tone` di kosakata dilewati.
 
 import { segmentPinyin, toneOf, withTone } from './pinyin.js';
 
@@ -12,13 +13,16 @@ export const QUESTIONS_PER_SESSION = 10;
 const CITATION = { 一: 'yī', 不: 'bù' };
 
 /** Semua soal yang mungkin dari daftar kata: satu per karakter (karakter pertama yang ditemukan menang). */
-export function toneItems(words) {
+export function toneItems(words, allWords = words) {
+  // Karakter berbacaan ganda (mis. 觉 jiào/jué, 还 hái/huán) ditandai `no_tone` di kosakata:
+  // diucapkan sendirian, suara iPad bisa memilih bacaan yang lain -> jangan dipakai di latihan nada.
+  const skip = new Set(allWords.flatMap((w) => w.no_tone || []));
   const items = new Map();
   for (const w of words) {
     const syls = segmentPinyin(w.pinyin, [...w.hanzi].length);
     if (!syls) continue;
     [...w.hanzi].forEach((char, i) => {
-      if (items.has(char)) return;
+      if (items.has(char) || skip.has(char)) return;
       const syllable = CITATION[char] || syls[i];
       const tone = toneOf(syllable);
       if (tone === 0) return;
@@ -35,7 +39,7 @@ export function toneItems(words) {
  */
 export function pickToneQuestions(words, leitner, tones, n = QUESTIONS_PER_SESSION, rng = Math.random) {
   const started = words.filter((w) => leitner[w.id]);
-  const all = toneItems(started.length ? started : words);
+  const all = toneItems(started.length ? started : words, words);
   // Skor = proporsi benar. Yang belum pernah muncul diberi 0,5: sesudah yang sering salah,
   // sebelum yang sudah dikuasai.
   const score = (it) => {

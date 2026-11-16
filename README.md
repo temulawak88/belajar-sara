@@ -14,6 +14,8 @@ App ada di `docs/` dan ditayangkan GitHub Pages (branch `main`, folder `/docs`).
 - **Iterasi 3:** latihan nada (`tone.html`): dengar satu karakter → pilih nada 1–4 (maks 10 soal).
   Karakter diucapkan sendirian, jadi sandhi nada (你好 = ní hǎo) tidak membingungkan; nada netral
   dilewati, 一/不 memakai nada asli. Salah pertama = petunjuk + dengar lagi; salah kedua = jawaban ditunjukkan.
+- **Iterasi 4:** kosakata lengkap HSK 1 + HSK 2 (HSK 2.0 revisi 2012, dasar buku *HSK Standard Course*):
+  303 kartu, HSK 1 dulu lalu HSK 2, per tema. Karakter berbacaan ganda ditandai `no_tone`.
 
 ## Menjalankan di laptop
 ```bash
@@ -31,6 +33,13 @@ Tanpa `--sync`, validator gagal jika salinan di `docs/` tidak sama dengan sumber
 Validator juga memastikan pinyin setiap kata bisa dipecah menjadi satu suku kata per hanzi
 (dibutuhkan latihan nada). Tulis pinyin baku tanpa spasi, dengan apostrof sebelum suku kata
 yang dimulai a/o/e di tengah kata (mis. `nǚ'ér`, `Xī'ān`).
+
+Field opsional per kata: `no_tone` = daftar karakter yang **tidak** dipakai di latihan nada karena
+punya lebih dari satu bacaan (mis. `"no_tone": ["觉"]` untuk 睡觉 shuìjiào / 觉得 juéde). Diucapkan
+sendirian, suara iPad bisa memilih bacaan yang lain.
+
+Sumber daftar kata: HSK 2.0 level 1–2 revisi 2012 (dicek dengan paket npm `@leonsilicon/hsk2.0`);
+pinyin dicek silang dengan paket `hsk-words`. Arti Inggris/Indonesia ditulis sendiri — **perlu direview**.
 
 Data goresan Hanzi Writer disimpan lokal (agar offline) di `docs/vendor/`. Setelah menambah kata
 dengan karakter baru:
@@ -80,3 +89,8 @@ dan tambahkan file baru ke daftar `ASSETS` di `sw.js` (tes mengecek semua file `
     (mis. 好 = hǎo, 中 = zhōng). Jika ada karakter yang dibaca dengan nada lain, catat — itu perlu dikeluarkan dari latihan.
 16. Pilih nada salah sekali → petunjuk + suara diputar lagi; salah lagi → jawaban benar ditandai hijau.
 17. Tanpa suara Mandarin terpasang: muncul penjelasan dan tombol Start nonaktif; tombol Back/Home tetap ada.
+
+### Kosakata lengkap (iterasi 4)
+18. Progres flashcard lama tetap ada setelah update (20 kata awal memakai id yang sama).
+19. Latihan menulis untuk karakter baru (mis. 爱, 飞机) tampil dan bisa dinilai; juga dalam mode pesawat.
+20. Review arti di `content/hsk2/vocab.json` (terutama kata partikel seperti 了, 着, 过, 得).

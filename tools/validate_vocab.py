@@ -29,7 +29,6 @@ ID_RE = re.compile(r"^hsk[12]-[a-z0-9-]+$")
 HANZI_RE = re.compile(r"^[一-鿿]+$")
 # Huruf pinyin: a-z, ü, vokal bertanda nada, plus spasi/apostrof antar suku kata.
 PINYIN_RE = re.compile(r"^[a-zA-ZüÜāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜĀÁǍÀĒÉĚÈŌÓǑÒ' ]+$")
-TONE_MARKS = set("āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜĀÁǍÀĒÉĚÈŌÓǑÒ")
 
 # Pemecah suku kata pinyin — setara dengan segmentPinyin() di docs/js/pinyin.js.
 # Latihan nada butuh satu suku kata per hanzi; kata yang tidak bisa dipecah ditolak di sini.
@@ -99,7 +98,7 @@ def validate(data):
         if missing:
             errors.append(f"{where}: field hilang {missing}")
             continue
-        extra = set(w) - set(REQUIRED) - {"tags", "note"}
+        extra = set(w) - set(REQUIRED) - {"tags", "note", "no_tone"}
         if extra:
             errors.append(f"{where}: field tidak dikenal {sorted(extra)}")
         if not ID_RE.match(w["id"]):
@@ -119,11 +118,13 @@ def validate(data):
             errors.append(f"{where}: pinyin harus Unicode NFC (pakai huruf bertanda nada jadi satu)")
         if not PINYIN_RE.match(py):
             errors.append(f"{where}: pinyin berisi karakter tidak valid: {py!r}")
-        elif not TONE_MARKS & set(py):
-            errors.append(f"{where}: pinyin tanpa tanda nada sama sekali: {py!r}")
         elif segment_pinyin(py, len(w["hanzi"])) is None:
             errors.append(f"{where}: pinyin {py!r} tidak bisa dipecah jadi {len(w['hanzi'])} suku kata "
                           "(cek ejaan; pakai apostrof untuk xi'an)")
+        if "no_tone" in w and (
+            not isinstance(w["no_tone"], list) or not w["no_tone"] or any(c not in w["hanzi"] for c in w["no_tone"])
+        ):
+            errors.append(f"{where}: no_tone harus list karakter yang ada di hanzi kata ini")
         if w["hsk"] not in (1, 2):
             errors.append(f"{where}: hsk harus 1 atau 2")
         for k in ("meaning_en", "meaning_id"):
