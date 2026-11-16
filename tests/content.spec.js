@@ -65,10 +65,3 @@ test('characters with more than one reading are never used in tone practice', as
   expect(r.count).toBeGreaterThan(250);
   expect([r.yi, r.bu]).toEqual(['yī', 'bù']);
 });
-
-test('flashcards: a fresh start still introduces the first 5 words in order', async ({ page }) => {
-  await page.goto('hanzi.html');
-  await expect(page.locator('#start-note')).toContainText('5 new (303 words not started yet)');
-  await page.locator('#start-btn').tap();
-  await expect(page.locator('#card-hanzi')).toHaveText('你');
-});

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f6fde">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Belajar">
+  <title>Math · Belajar</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/boot.js"></script>
+  <script type="module" src="js/math.js"></script>
+</head>
+<body class="practice">
+  <header class="topbar">
+    <a class="btn icon-btn" href="index.html" id="home-btn" aria-label="Home">⌂</a>
+    <div id="logo" class="logo small" role="img" aria-label="Belajar">学</div>
+    <h1 id="page-title">Math word problems</h1>
+    <span class="counter" id="counter" aria-live="polite"></span>
+  </header>
+
+  <!-- Daftar bab (dari syllabus.json) -->
+  <main id="screen-chapters" class="screen list-screen">
+    <h2>Choose a chapter</h2>
+    <p class="muted">Pilih bab.</p>
+    <ol class="lesson-list" id="chapter-list" aria-label="Chapters"></ol>
+  </main>
+
+  <div id="oops" class="oops" hidden>
+    <div class="oops-box">
+      <h2>Oops! Let's try again.</h2>
+      <p>Ups, coba lagi.</p>
+      <a class="btn primary" href="index.html">Home</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -46,7 +46,7 @@ export function segmentPinyin(pinyin, count) {
 
   function dfs(pos, left) {
     const start = pos;
-    while (pos < pc.length && (pc[pos] === "'" || pc[pos] === ' ' || pc[pos] === '’')) pos++;
+    while (pos < pc.length && (pc[pos] === "'" || pc[pos] === ' ' || pc[pos] === '’' || pc[pos] === '-')) pos++;
     // Sesudah apostrof/spasi (atau di awal kata)?
     const separated = pos === 0 || pos > start;
     if (pos === pc.length) return left === 0 ? [] : null;

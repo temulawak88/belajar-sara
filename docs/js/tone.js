@@ -6,10 +6,11 @@ import { loadState, saveState } from './storage.js';
 import { todayStr } from './leitner.js';
 import { pickToneQuestions, toneOptions, recordTone } from './tones.js';
 import { initSpeech, speak, speechStatus } from './speech.js';
+import { loadVocab } from './lessons.js';
+import { openLesson } from './lessonpage.js';
 
 initPage();
 
-const VOCAB_URL = 'content/hsk2/vocab.json';
 
 const TONES = {
   1: { name: '1st tone', hint: 'high and flat', id: 'tinggi datar', points: '6,6 34,6' },
@@ -162,9 +163,17 @@ $('#listen-btn').addEventListener('click', say);
 $('#next-btn').addEventListener('click', next);
 
 async function load() {
-  const res = await fetch(VOCAB_URL);
-  if (!res.ok) throw new Error(`Vocab load failed: ${res.status}`);
-  const { words } = await res.json();
+  const [opened, vocab] = await Promise.all([openLesson(), loadVocab()]);
+  if (!opened) return;
+  // Karakter berbacaan ganda (no_tone) dicatat di vocab.json dan boleh juga di kata pelajaran.
+  const skip = new Set([...vocab.words, ...opened.lesson.vocab].flatMap((w) => w.no_tone || []));
+  const words = opened.lesson.vocab.map((v) => ({
+    id: v.id,
+    hanzi: v.hanzi,
+    pinyin: v.pinyin,
+    meaning_en: v.arti, // ditampilkan sebagai keterangan kata di bawah karakter
+    no_tone: [...v.hanzi].filter((c) => skip.has(c)),
+  }));
   questions = pickToneQuestions(words, state.leitner, state.tones);
   renderStart();
 }

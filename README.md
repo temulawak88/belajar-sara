@@ -17,6 +17,17 @@ App ada di `docs/` dan ditayangkan GitHub Pages (branch `main`, folder `/docs`).
 - **Iterasi 4:** kosakata lengkap HSK 1 + HSK 2 (HSK 2.0 revisi 2012, dasar buku *HSK Standard Course*):
   303 kartu, HSK 1 dulu lalu HSK 2, per tema. Karakter berbacaan ganda ditandai `no_tone`.
 
+- **Mandarin per pelajaran:** `hanzi.html` kini daftar Pelajaran 1–11; tiap pelajaran (`lesson.html?n=…`) punya
+  kartu kata, isi bagian kosong, susun kalimat (ketuk atau drag), dan dengar → pilih arti, plus latihan menulis
+  dan nada untuk kata pelajaran itu. Flashcard HSK 1 terpisah dihapus.
+
+- **Matematika, soal cerita (bagian 1):** `math.html` daftar bab dari `syllabus.json`; `mathq.html?c=…` menampilkan
+  cerita dengan kata glosarium yang bisa diketuk, pie chart dari `pie_data`, keypad angka sendiri, dan petunjuk dari
+  `common_mistakes`.
+- **Matematika, soal cerita (bagian 2):** setiap soal punya 4 langkah — Find (apa yang ditanya), Know (apa yang
+  diketahui), Picture (pilih model dari 3 gambar), Answer — dan jenis kesalahan dicatat per langkah
+  (`comprehension` / `model` / `calculation`).
+
 ## Menjalankan di laptop
 ```bash
 npm run serve        # lalu buka http://localhost:4173/docs/
@@ -24,6 +35,24 @@ npm run serve        # lalu buka http://localhost:4173/docs/
 Server sengaja dijalankan dari root repo agar app berada di sub-path `/docs/`, seperti di GitHub Pages.
 
 ## Konten
+### Matematika
+Sumber resmi: `docs/content/math/syllabus.json` (bab, pola soal, contoh, glosarium, kesalahan umum).
+Soal buatan sendiri, bukan salinan buku. Setelah mengubah:
+```bash
+python3 tools/validate_math.py
+python3 -m unittest tools/test_validate_math.py
+```
+
+### Mandarin
+Sumber resmi pelajaran: `docs/content/hsk2/lessons.json` (Pelajaran 1–11 *HSK Standard Course 2*).
+Kalimat latihan hanya boleh memakai kosakata HSK 1 + pelajaran sampai pelajaran itu. Setelah mengubah:
+```bash
+python3 tools/validate_lessons.py
+python3 -m unittest tools/test_validate_lessons.py
+```
+Kalimat buatan Claude ditandai `"origin": "claude"` — mohon direview (tata bahasa & arti).
+
+Daftar kata HSK 1–2 (dasar kosakata HSK 1, data goresan, `no_tone`):
 Sumber kosakata: `content/hsk2/vocab.json`. Karena Pages hanya menayangkan `docs/`, app membaca
 salinannya di `docs/content/hsk2/vocab.json`. Setelah mengubah kosakata:
 ```bash
@@ -101,3 +130,25 @@ dan tambahkan file baru ke daftar `ASSETS` di `sw.js` (tes mengecek semua file `
   (sekarang 为 dan 什 ditulis dua kali). Mengubah format konten.
 - Latihan menulis membaca seluruh `chars.json` (~750 KB) padahal satu sesi memakai 3 karakter.
   Bisa dipecah per karakter dan dimuat lewat `charDataLoader` (penting jika ditambah HSK 3).
+
+### Pelajaran Mandarin
+21. Mandarin → daftar 11 pelajaran; ketuk satu → menu dengan 4 latihan + Writing + Tones.
+22. Word cards: kata pelajaran itu saja; progres kata yang sudah pernah dipelajari tetap ada.
+23. Fill the blank: salah sekali → muncul arti sebagai petunjuk; benar → kalimat dibacakan, pinyin + arti muncul.
+24. Listen: kalimat dibacakan saat Start/Next; salah sekali → diputar lagi; dengarkan apakah suara iPad jelas untuk kalimat panjang.
+25. Daftar pelajaran bisa digulir dengan lancar di portrait dan landscape.
+26. Build the sentence: ketuk potongan berurutan; ketuk lagi potongan di kalimat untuk mengembalikannya.
+27. **Drag dengan jari dan dengan Apple Pencil**: potongan mengikuti jari, garis biru menunjukkan posisi sisip,
+    bisa disisipkan di tengah, dan ditarik keluar untuk mengembalikan. Halaman tidak ikut bergulir saat men-drag.
+28. Susunan salah → Check: arti muncul dan potongan yang sudah benar bertepi hijau; salah lagi → kalimat ditunjukkan.
+29. Writing dan Tones dari menu pelajaran memakai karakter pelajaran itu (mis. Pelajaran 6: 自行车, 公斤).
+
+### Matematika
+30. Math → daftar bab; Solid Figures nonaktif. Ketuk Speed → soal pertama.
+31. Ketuk kata biru di cerita → arti Indonesia muncul di bawahnya.
+31a. Langkah Find: pilih apa yang ditanya. Langkah Know: ketuk semua fakta dari cerita (ketuk lagi untuk batal), lalu Check.
+31b. Langkah Picture: pilih gambar model yang cocok. Salah sekali → petunjuk; salah dua kali → ditunjukkan + tombol Continue.
+32. Jawab dengan keypad di layar (keyboard iPad tidak boleh muncul). Coba `2.5`, `5/2`, dan `2 1/2` untuk jawaban 2.5.
+33. Jawab salah → petunjuk "Cek lagi"; salah lagi → yang diketahui; salah ketiga → jawaban ditunjukkan.
+34. Bab Pie Charts: diagram lingkaran tampil jelas, sektor "sisanya" bertanda "?".
+35. Landscape: cerita di kiri, keypad di kanan; portrait: keypad di bawah cerita.

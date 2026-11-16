@@ -73,8 +73,8 @@ h2 { font-size: 28px; margin: 0 0 8px; }
   transition: transform 150ms ease;
 }
 .logo.small { width: 48px; height: 48px; font-size: 30px; line-height: 48px; border-radius: 14px; }
-/* Umpan balik saat ditekan lama (Mode Papi) — pelan-pelan mengecil. */
-.logo.holding { transform: scale(0.85); transition: transform 3000ms linear; }
+/* Umpan balik saat ditekan (Mode Papi terbuka setelah ditahan 3 detik). */
+.logo.holding { transform: scale(0.9); }
 
 /* ---------- Tombol ---------- */
 
@@ -94,7 +94,7 @@ h2 { font-size: 28px; margin: 0 0 8px; }
   text-decoration: none;
   touch-action: manipulation;
   cursor: pointer;
-  transition: transform 80ms ease, background-color 80ms ease;
+  transition: transform 80ms ease, opacity 80ms ease;
 }
 .btn:active { transform: scale(0.96); }
 .btn.primary { background: var(--primary); color: #fff; }
@@ -106,7 +106,7 @@ h2 { font-size: 28px; margin: 0 0 8px; }
 .btn.notyet { background: #fdf1e1; color: #8a5300; }
 
 @media (hover: hover) {
-  .btn:hover { filter: brightness(0.97); }
+  .btn:hover { opacity: 0.9; }
   .menu-card:not(.disabled):hover { transform: translateY(-2px); }
 }
 
@@ -477,4 +477,290 @@ h2 { font-size: 28px; margin: 0 0 8px; }
 
 @media (max-width: 600px) {
   .tone-guide, .tone-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ---------- Pelajaran Mandarin (hanzi.html, lesson.html) ---------- */
+
+/* Layar berisi daftar: mulai dari atas dan boleh digulir. */
+.list-screen { justify-content: flex-start; padding-top: 8px; }
+
+.lesson-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+.lesson-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-height: 120px;
+  height: 100%;
+  padding: 18px 20px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  color: inherit;
+  text-align: left;
+  text-decoration: none;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  transition: transform 100ms ease;
+}
+.lesson-card:active { transform: scale(0.98); }
+.lesson-num { font-size: 16px; font-weight: 700; color: var(--primary); }
+.lesson-zh { font: 26px/1.3 var(--font-hanzi); }
+.lesson-id { font-size: 16px; color: var(--muted); }
+.lesson-progress { font-size: 15px; color: var(--muted); margin-top: auto; padding-top: 6px; }
+.badge {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: var(--good);
+  color: #fff;
+  border-radius: 999px;
+  padding: 2px 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.lesson-head { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.lesson-head .lesson-zh { font-size: 34px; }
+.ex-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  width: min(100%, 760px);
+}
+.ex-card { padding: 22px 12px; }
+.ex-card .menu-icon { font-size: 44px; }
+.ex-card .menu-title { font-size: 22px; }
+.ex-card .menu-sub { font-size: 15px; }
+.grammar { width: min(100%, 760px); text-align: left; }
+.grammar summary { display: flex; list-style: none; font-size: 18px; }
+.grammar summary::-webkit-details-marker { display: none; }
+.grammar ul { margin: 12px 0 0; padding-left: 24px; font-size: 18px; color: var(--muted); }
+.grammar li { margin: 4px 0; }
+
+/* ---------- Latihan kalimat (fill.html, listen.html) ---------- */
+
+.sentence-card { min-height: 0; width: min(100%, 760px); padding: 28px 24px; gap: 14px; }
+.sentence { font: 40px/1.5 var(--font-hanzi); }
+.sentence.small { font-size: 32px; }
+.blank {
+  display: inline-block;
+  min-width: 2.2em;
+  margin: 0 4px;
+  padding: 0 6px;
+  border-bottom: 4px solid var(--primary);
+  color: var(--primary);
+}
+.blank.filled { border-bottom-color: var(--good); color: var(--good); }
+.pinyin.small { font-size: 22px; font-weight: 500; }
+
+.choice-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; width: min(100%, 760px); }
+.choice-row .choice { min-width: 150px; font: 600 30px/1.2 var(--font-hanzi); }
+.choice-col { display: flex; flex-direction: column; gap: 12px; width: min(100%, 620px); }
+.choice {
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  border: 3px solid transparent;
+}
+.text-choice { min-height: 64px; font-size: 20px; font-weight: 500; text-align: left; justify-content: flex-start; }
+.choice.right { border-color: var(--good); background: #e6f6ee; }
+.choice:disabled { opacity: 1; }
+.choice.tried, .choice.tried:disabled { opacity: 0.45; }
+
+@media (max-width: 600px) {
+  .ex-grid { grid-template-columns: 1fr; }
+  .sentence { font-size: 30px; }
+}
+
+/* ---------- Susun kalimat (order.html) ---------- */
+
+.chunk-line, .chunk-bank {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+.chunk-line {
+  min-height: 84px;
+  padding: 10px;
+  border-radius: 18px;
+  border: 3px dashed #cfd6e6;
+}
+.chunk-line.empty::before { content: '···'; color: #b7c0d4; font-size: 28px; }
+.chunk-line.drop-target { border-color: var(--primary); }
+.chunk-line.right { border: 3px solid var(--good); background: #e6f6ee; }
+.chunk-line.shown { border: 3px solid #cfd6e6; }
+.chunk-bank { width: min(100%, 760px); min-height: 72px; }
+.chunk {
+  min-height: 60px;
+  padding: 10px 20px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  border: 3px solid transparent;
+  font: 600 30px/1.2 var(--font-hanzi);
+  touch-action: none; /* supaya bisa di-drag; tap tetap ditangani lewat pointerup */
+}
+.chunk-line .chunk { background: var(--soft); box-shadow: none; }
+.chunk.in-place { border-color: var(--good); }
+.chunk.dragging {
+  position: relative;
+  z-index: 5;
+  opacity: 0.9;
+  transition: none;
+  box-shadow: 0 10px 24px rgba(29, 36, 51, 0.25);
+}
+.chunk:disabled { opacity: 1; }
+.drop-marker {
+  width: 6px;
+  height: 52px;
+  border-radius: 3px;
+  background: var(--primary);
+  pointer-events: none;
+}
+
+/* ---------- Soal cerita matematika (math.html, mathq.html) ---------- */
+
+.lesson-card.disabled { opacity: 0.5; }
+
+.math-screen { justify-content: flex-start; padding-top: 8px; }
+.math-layout { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; }
+.math-left { display: flex; flex-direction: column; gap: 14px; width: min(100%, 760px); }
+.math-right { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+
+.story-card { width: 100%; min-height: 0; align-items: flex-start; text-align: left; padding: 44px 24px 20px; }
+/* Tinggi baris 48px supaya kata glosarium di dalam teks tetap target sentuh yang cukup besar. */
+.story { margin: 0; font-size: 24px; line-height: 48px; }
+.term {
+  display: inline-block;
+  min-height: 48px;
+  min-width: 48px;
+  margin: 0 -2px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--soft);
+  color: var(--primary);
+  font: inherit;
+  line-height: 44px;
+  vertical-align: baseline;
+  touch-action: manipulation;
+  cursor: pointer;
+  transition: transform 80ms ease, opacity 80ms ease;
+}
+.term:active { transform: scale(0.96); }
+.term.active { background: var(--primary); color: #fff; }
+.glossary-note { margin: 4px 0 0; min-height: 1.5em; font-size: 18px; color: var(--muted); }
+.glossary-note.shown { color: var(--text); font-weight: 600; }
+
+.pie-box { align-self: center; width: min(100%, 300px); }
+.pie { display: block; width: 100%; height: auto; }
+.pie-sector { stroke: #fff; stroke-width: 2; }
+.pie-label { font: 600 15px var(--font); fill: var(--text); }
+.pie-value { font-weight: 700; font-size: 17px; }
+
+.hint-box {
+  background: #fdf1e1;
+  color: #5c3a00;
+  border-radius: 16px;
+  padding: 14px 18px;
+  text-align: left;
+  animation: fade-in 180ms ease both;
+}
+.hint-box[data-kind='right'] { background: #e6f6ee; color: #14573a; }
+.hint-title { margin: 0; font-weight: 600; font-size: 19px; }
+.hint-box ul { margin: 8px 0 0; padding-left: 22px; font-size: 18px; }
+.hint-box ul:empty { display: none; }
+.hint-box li { margin: 4px 0; }
+
+.answer-row { display: flex; align-items: baseline; justify-content: center; gap: 10px; font-size: 26px; }
+.answer-display {
+  display: inline-block;
+  min-width: 190px;
+  min-height: 64px;
+  padding: 8px 16px;
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  border-bottom: 4px solid var(--primary);
+  font: 600 38px/48px var(--font);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  white-space: pre;
+}
+.answer-display.empty::before { content: '?'; color: #b7c0d4; }
+.answer-unit, .answer-prefix { font-weight: 600; color: var(--muted); }
+
+.keypad { display: grid; grid-template-columns: repeat(4, 76px); gap: 10px; }
+.key {
+  min-height: 68px;
+  padding: 0;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  font-size: 30px;
+  font-variant-numeric: tabular-nums;
+}
+.key.wide { grid-column: span 2; }
+.key-fn { background: var(--soft); box-shadow: none; }
+
+/* Landscape: cerita di kiri, keypad di kanan. */
+@media (orientation: landscape) and (min-width: 900px) {
+  .math-layout { flex-direction: row; align-items: flex-start; justify-content: center; gap: 32px; }
+  .math-left { width: min(56%, 640px); }
+}
+@media (max-width: 600px) {
+  .story { font-size: 20px; }
+  .keypad { grid-template-columns: repeat(4, 64px); }
+  .key { min-height: 56px; }
+}
+
+/* ---------- Langkah soal cerita: Find / Know / Picture / Answer ---------- */
+
+.math-right { width: min(100%, 520px); }
+.step-panel { display: flex; flex-direction: column; align-items: center; gap: 14px; width: 100%; animation: fade-in 180ms ease both; }
+.step-panel[hidden] { display: none; }
+.step-q { margin: 0; font-size: 22px; font-weight: 600; text-align: center; }
+.step-q .muted { display: block; font-weight: 400; }
+.step-panel .choice-col { width: 100%; }
+
+/* Fakta yang bisa dipilih lebih dari satu (langkah Know). */
+.fact[aria-pressed='true'] { border-color: var(--primary); background: var(--soft); }
+.fact[aria-pressed='true']::before { content: '✓'; margin-right: 6px; font-weight: 700; color: var(--primary); }
+.fact.right[aria-pressed='true'] { border-color: var(--good); background: #e6f6ee; }
+.fact.right[aria-pressed='true']::before { color: var(--good); }
+
+.model-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; width: 100%; }
+.model-choice { flex-direction: column; gap: 2px; padding: 10px 6px; min-height: 150px; }
+.model-svg { width: 100%; max-width: 150px; height: auto; }
+.model-name { font-size: 17px; font-weight: 600; }
+.model-id { font-size: 14px; font-weight: 400; color: var(--muted); }
+.mm-line { stroke: var(--text); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.mm-none { fill: none; }
+.mm-none-stroke { stroke: none; }
+.mm-accent { stroke: var(--primary); }
+.mm-fill-a { fill: #8fb4f5; }
+.mm-fill-b { fill: #f5c98f; }
+.mm-fill-c { fill: #a8dcb5; }
+.mm-dot { fill: var(--text); }
+.mm-text { font: 700 22px var(--font); fill: var(--text); }
+.mm-small { font-size: 14px; font-weight: 600; }
+
+@media (orientation: landscape) and (min-width: 900px) {
+  .math-right { width: min(40%, 460px); }
+}
+@media (max-width: 600px) {
+  .step-q { font-size: 19px; }
+  .model-choice { min-height: 120px; }
 }

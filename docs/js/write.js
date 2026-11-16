@@ -12,10 +12,11 @@ import { todayStr } from './leitner.js';
 import { pickCharacters, recordStep, STEPS } from './writing.js';
 import { createInkPad } from './inkpad.js';
 import { initSpeech, speak } from './speech.js';
+import { cardWords, loadVocab } from './lessons.js';
+import { openLesson } from './lessonpage.js';
 
 initPage();
 
-const VOCAB_URL = 'content/hsk2/vocab.json';
 const CHARS_URL = 'vendor/hanzi-writer-data/chars.json';
 
 let charData = {};
@@ -244,15 +245,19 @@ $('#clear-btn').addEventListener('click', () => restartQuizAt(0));
 $('#speak-btn').addEventListener('click', () => updateVoiceNote(speak(plan[cur.i].word.hanzi)));
 
 async function load() {
-  const [vocab, chars] = await Promise.all(
-    [VOCAB_URL, CHARS_URL].map(async (u) => {
-      const r = await fetch(u);
-      if (!r.ok) throw new Error(`Load failed: ${u} ${r.status}`);
+  const [opened, vocab, chars] = await Promise.all([
+    openLesson(),
+    loadVocab(),
+    fetch(CHARS_URL).then((r) => {
+      if (!r.ok) throw new Error(`Load failed: ${CHARS_URL} ${r.status}`);
       return r.json();
     }),
-  );
+  ]);
+  if (!opened) return;
   charData = chars;
-  plan = pickCharacters(vocab.words, state.leitner, state.writing, todayStr()).filter((p) => charData[p.char]);
+  // Karakter dari kata pelajaran ini (yang sudah mulai dipelajari di kartu kata didahulukan).
+  const words = cardWords(opened.lesson, vocab.words);
+  plan = pickCharacters(words, state.leitner, state.writing, todayStr()).filter((p) => charData[p.char]);
 
   pad = createInkPad($('#pad'), {
     onStroke: (points) => replayStroke(points),

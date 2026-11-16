@@ -2,7 +2,8 @@
 """Salin Hanzi Writer + data goresan yang dibutuhkan ke docs/vendor/ (agar jalan offline).
 
 Sumber: node_modules/ (jalankan `npm install` dulu). Versi dikunci di package.json.
-Hanya karakter yang muncul di content/hsk2/vocab.json yang disalin, digabung jadi
+Hanya karakter yang muncul di content/hsk2/vocab.json dan kosakata
+docs/content/hsk2/lessons.json yang disalin, digabung jadi
 satu file chars.json ({"大": {...}, ...}) supaya cukup satu entri di service worker.
 
   python3 tools/sync_hanzi_data.py
@@ -14,6 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 VOCAB = ROOT / "content" / "hsk2" / "vocab.json"
+LESSONS = ROOT / "docs" / "content" / "hsk2" / "lessons.json"
 NM = ROOT / "node_modules"
 OUT = ROOT / "docs" / "vendor"
 
@@ -26,7 +28,9 @@ def main():
         return 1
 
     words = json.loads(VOCAB.read_text(encoding="utf-8"))["words"]
-    chars = sorted({c for w in words for c in w["hanzi"]})
+    lessons = json.loads(LESSONS.read_text(encoding="utf-8"))["lessons"]
+    # Kosakata HSK 1–2 + kosakata pelajaran (ada kata pelajaran yang bukan bagian daftar HSK).
+    chars = sorted({c for w in words for c in w["hanzi"]} | {c for l in lessons for v in l["vocab"] for c in v["hanzi"]})
 
     data, missing = {}, []
     for c in chars:

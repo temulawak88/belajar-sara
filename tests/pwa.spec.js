@@ -52,7 +52,8 @@ test('service worker install bypasses the HTTP cache (no stale files in a new ve
 test('docs/.nojekyll exists and is empty (GitHub Pages must not run Jekyll)', () => {
   const f = path.join(DOCS, '.nojekyll');
   expect(fs.existsSync(f), 'docs/.nojekyll hilang — lihat CLAUDE.md › Arsitektur').toBe(true);
-  expect(fs.statSync(f).size).toBe(0);
+  // "Kosong" = tanpa isi berarti; satu baris baru (mis. dibuat lewat web GitHub) tidak masalah.
+  expect(fs.readFileSync(f, 'utf8').trim()).toBe('');
 });
 
 test('cache version in sw.js matches APP_VERSION', () => {
@@ -90,16 +91,23 @@ test('service worker registers under /docs/ and the app works offline', async ({
 
   await context.setOffline(true);
   await page.goto('hanzi.html');
-  await expect(page.locator('#boxes .box')).toHaveCount(5); // vocab.json dari cache
+  await expect(page.locator('.lesson-card')).toHaveCount(11); // lessons.json dari cache
+  await page.locator('.lesson-card[data-lesson="1"]').tap();
+  await page.locator('#ex-cards').tap(); // cards.html?n=1: query string tidak mengganggu cache
+  await expect(page.locator('#boxes .box')).toHaveCount(5);
   await page.locator('#start-btn').tap();
-  await expect(page.locator('#card-hanzi')).toHaveText('你');
+  await expect(page.locator('#card-hanzi')).toHaveText('旅游');
+  await page.goto('fill.html?n=1');
+  await expect(page.locator('#options .choice')).toHaveCount(3);
+  await page.goto('listen.html?n=1');
+  await expect(page.locator('#start-note')).toContainText('sentences');
   await page.goto('index.html');
   await expect(page.locator('#go-mandarin')).toBeVisible();
   await context.setOffline(false);
 });
 
 test('Papi mode: long-press logo 3 s opens dialog with export and reset', async ({ page }) => {
-  await page.goto('hanzi.html');
+  await page.goto('cards.html?n=1');
   await page.locator('#start-btn').tap();
   await page.locator('#reveal-btn').tap();
   await page.locator('#knew-btn').tap();
@@ -132,7 +140,7 @@ test('Papi mode: long-press logo 3 s opens dialog with export and reset', async 
   if (!canShareFiles) {
     const [download] = await Promise.all([page.waitForEvent('download'), dlg.getByRole('button', { name: 'Export progress' }).tap()]);
     const json = JSON.parse(fs.readFileSync(await download.path(), 'utf8'));
-    expect(json.progress.leitner['hsk1-ni'].box).toBe(2);
+    expect(json.progress.leitner['hsk2-lvyou'].box).toBe(2);
     expect(download.suggestedFilename()).toMatch(/^belajar-progress-\d{4}-\d{2}-\d{2}\.json$/);
   } else {
     await dlg.getByRole('button', { name: 'Close' }).tap();
@@ -146,7 +154,7 @@ test('Papi mode: long-press logo 3 s opens dialog with export and reset', async 
   await expect(page.locator('dialog[open]')).toContainText('Reset all progress?');
   await page.locator('dialog[open]').getByRole('button', { name: 'Yes, reset' }).tap();
   await page.waitForLoadState('load');
-  await expect(page.locator('#mandarin-status')).toHaveText('Flashcards · start here!');
+  await expect(page.locator('#mandarin-status')).toHaveText('Lessons 1–11 · start here!');
 });
 
 test('unexpected errors are logged and show the friendly Oops screen with a Home button', async ({ page }) => {

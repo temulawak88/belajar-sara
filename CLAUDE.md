@@ -4,7 +4,7 @@
 - Pengguna: anak kelas 6 SD (P6), dipakai di iPad (Safari, layar sentuh, kadang Apple Pencil).
 - Orang tua (developer): menjalankan Claude Code di laptop Windows 11 + Ubuntu (WSL).
 - Dua mata pelajaran:
-  1. **Matematika** — buku *My Pals Are Here! Maths 6A* (3rd Ed., Marshall Cavendish, kurikulum Singapura).
+  1. **Matematika** — buku *My Pals Are Here! Maths 6B* (3rd Ed., Marshall Cavendish, kurikulum Singapura).
      Kelemahan: soal cerita (memahami soal, logika, bahasa Inggris). Metode yang dilatih: **bar model**.
   2. **Mandarin** — buku *Panduan Persiapan HSK 2* (HSK Standard Course 标准教程 2). Target: kosakata HSK 2 (300 kata kumulatif).
 
@@ -16,7 +16,11 @@
 
 ## Arsitektur (fase 1)
 - **Static web app**: HTML + CSS + JavaScript murni (tanpa framework, tanpa build step).
-- **Konten = file JSON** di `content/`. Dibuat/diubah lewat Claude Code, direview orang tua.
+- **Konten = file JSON**. Dibuat/diubah lewat Claude Code, direview orang tua.
+  - Matematika: `docs/content/math/syllabus.json` (langsung di `docs/` agar ikut tayang di GitHub Pages).
+  - Mandarin: pelajaran di `docs/content/hsk2/lessons.json` (sumber resmi, langsung di `docs/`).
+    Daftar kata HSK 1–2 di `content/hsk2/vocab.json` (salinannya di `docs/content/hsk2/`, `validate_vocab.py --sync`)
+    tetap dipakai sebagai dasar kosakata HSK 1, data goresan, dan penanda `no_tone`.
 - **Progres disimpan di iPad** (IndexedDB/localStorage), dengan tombol *Export* (JSON) untuk backup/laporan.
 - **PWA**: ada `manifest.json` + service worker agar bisa "Add to Home Screen" dan jalan offline.
 - **Python** hanya untuk tooling di laptop: validasi konten, cek jawaban matematika, server lokal.
@@ -30,40 +34,86 @@
 ```
 docs/                 # = app yang ditayangkan GitHub Pages
   index.html          # menu utama: Math, Mandarin, Misi Harian
-  math.html
-  hanzi.html
+  math.html           # daftar bab matematika
+  mathq.html          # soal cerita satu bab (?c=6B-07)
+  hanzi.html          # daftar pelajaran Mandarin
+  lesson.html         # menu satu pelajaran (?n=3): 4 latihan
+  cards.html          # kartu kata        (?n=3)
+  fill.html           # isi bagian kosong (?n=3)
+  order.html          # susun kalimat     (?n=3)
+  listen.html         # dengar → pilih arti (?n=3)
+  write.html, tone.html   # latihan menulis dan nada (?n=3)
   css/style.css
   js/                 # satu file per modul, ES modules
   manifest.json
   sw.js
+  content/
+    math/syllabus.json  # SUMBER RESMI matematika: bab, pola soal, contoh, glosarium, kesalahan umum
+    hsk2/lessons.json   # SUMBER RESMI Mandarin: pelajaran 1–11, kosakata, tata bahasa, kalimat latihan
+    hsk2/vocab.json     # salinan kosakata (jangan diedit langsung)
 content/
-  math/<topik>.json   # soal cerita
-  hsk2/vocab.json     # kosakata HSK 1–2
+  hsk2/vocab.json     # sumber kosakata HSK 1–2
 tools/
-  validate_math.py    # hitung ulang semua jawaban dari ekspresi, gagal jika beda
+  validate_math.py    # validasi syllabus.json + hitung ulang semua jawaban, gagal jika beda
   validate_vocab.py
+  validate_lessons.py # cek setiap karakter kalimat latihan ada di HSK 1 + pelajaran ≤ N
 ```
 
 ## Aturan konten matematika (WAJIB)
-- Setiap soal punya: `id`, `topic`, `story` (Inggris), `known`, `asked`, `steps[]`,
-  `answer`, `answer_expr` (ekspresi Python yang menghasilkan jawaban), `bar_model` (deskripsi balok), `glossary` (kata sulit → arti Indonesia).
-- **Jawaban tidak boleh dipercaya begitu saja**: `tools/validate_math.py` menghitung `answer_expr` dan harus sama dengan `answer`.
-  Jalankan validator setiap kali menambah/mengubah soal.
+- **`docs/content/math/syllabus.json` adalah sumber resmi** daftar bab, pola soal (`patterns`), glosarium
+  (`glossary`, per bab) dan kesalahan umum (`common_mistakes`, per bab). Soal baru mengikuti bab & pola di sana;
+  jangan membuat daftar bab/pola/glosarium terpisah di file lain.
+- **Soal harus buatan sendiri**, bukan salinan soal dari buku *My Pals Are Here!* (hak cipta). Dari buku hanya
+  diambil peta bab dan jenis soalnya; cerita, nama, dan angka dibuat sendiri.
+- Setiap soal (contoh di `examples`) punya: `id` (diawali nomor bab, mis. `7-1`), `pattern`, `level`,
+  `model`, `story` (Inggris), `known`, `asked`, `answer`, `unit`, `answer_expr` (ekspresi Python yang
+  menghasilkan jawaban). Opsional: `steps[]`, `trap_answer` + `trap_note` (jawaban jebakan + penjelasannya).
+- Field `bar_model` **diganti** `model` dengan tipe `bar | journey | tank | pie | none`, sesuai `model_types`
+  di syllabus. Model `pie` wajib punya `pie_data`: tiap sektor berisi `fraction` (`"a/b"`) atau `percent`
+  (boleh satu sektor `percent: null` = sisanya), dan jumlah semua sektor harus tepat 1.
+- **Jawaban tidak boleh dipercaya begitu saja**: `tools/validate_math.py` menghitung `answer_expr` dan harus sama dengan `answer`
+  (juga mengecek pola, level, model, pie = 1, dan `common_mistakes`). Jalankan validator setiap kali menambah/mengubah soal,
+  bersama tesnya: `python3 -m unittest tools/test_validate_math.py`.
 - Angka dibuat "ramah" (hasil bulat atau pecahan sederhana) sesuai level P6.
 - Gaya soal mengikuti soal cerita Singapura P6 (multi-langkah), mulai dari yang 2 langkah.
 
 ## Alur soal cerita (UI)
+*(Semua langkah ada di `mathq.html`; cerita tetap terlihat di samping langkah 2–4. Fase 2 — menyusun bar model
+sendiri — belum.)*
 1. Baca cerita (kata sulit bisa di-tap → arti).
-2. Tap: apa yang **diketahui**, apa yang **ditanya**.
-3. **Pilih bar model** yang cocok dari 3 pilihan (SVG). *(Fase 2: susun bar model sendiri.)*
+2. Tap: apa yang **ditanya** (pilih 1 dari 3; pengecoh = `asked` soal lain di bab itu), lalu apa yang
+   **diketahui** (tap semua fakta `known`; dicampur 2 fakta dari soal lain). Fakta konversi satuan murni
+   (mis. `1 L = 1000 cm³`) opsional dan tidak pernah jadi pengecoh.
+3. **Pilih model** yang cocok dari 3 pilihan (SVG), sesuai `model` soal: `bar`, `journey`, `tank`, `pie`
+   (atau lewati jika `none`). *(Fase 2: susun bar model sendiri.)*
 4. Hitung dan isi jawaban.
-5. Kalau salah, catat jenis kesalahan: `comprehension` / `model` / `calculation`.
+5. Kalau salah, catat jenis kesalahan: `comprehension` (langkah 2) / `model` (langkah 3) / `calculation` (langkah 4).
+   Di tiap langkah: salah ke-1 → petunjuk + coba lagi; salah ke-2 → ditunjukkan, lalu lanjut.
+6. **Petunjuk saat salah** memakai `common_mistakes` bab itu (logika di `docs/js/mathhints.js`):
+   salah ke-1 → `trap_note` jika jawabannya = `trap_answer`, selain itu daftar `common_mistakes` ("Cek lagi");
+   salah ke-2 → apa yang diketahui (`known`); salah ke-3 → jawaban ditunjukkan dengan ramah.
 
 ## Mandarin (HSK 2)
-- Flashcard dengan spaced repetition sederhana (Leitner 5 kotak).
-- Tampilkan hanzi → pinyin → arti (Indonesia/Inggris); suara pakai Web Speech API `zh-CN`.
-- Latihan menulis dengan library Hanzi Writer (simpan datanya lokal agar bisa offline).
-- Latihan nada: dengar → pilih nada 1/2/3/4.
+- **Berbasis pelajaran**: anak memilih Pelajaran 1–11 (12–15 menyusul) dari buku *HSK Standard Course 2*.
+  **`docs/content/hsk2/lessons.json` adalah sumber resmi** judul, kosakata, tata bahasa, dan kalimat latihan per pelajaran.
+  Status pelajaran (`current` / `review` / `upcoming`) diisi orang tua. Tidak ada lagi flashcard HSK 1 terpisah:
+  kosakata HSK 1 dianggap sudah dikuasai dan menjadi dasar kalimat.
+- Setiap pelajaran punya 4 latihan:
+  1. **Kartu kata** — kata pelajaran itu: hanzi → pinyin → arti, suara Web Speech `zh-CN`, Leitner 5 kotak.
+     Kata `supplementary` (bertanda * di buku) muncul lebih jarang.
+  2. **Isi bagian kosong** — pilihan ganda (`fill`), melatih tata bahasa.
+  3. **Susun kalimat** — potongan (`chunks`) diacak; bisa di-drag (Pointer Events) atau di-tap berurutan.
+     Urutan lain yang juga benar dicatat di `also_accept`.
+  4. **Dengar → pilih arti** — kalimat dari `fill`/`order` dibacakan (TTS); pengecoh = arti kalimat lain di pelajaran yang sama.
+- **Aturan kalimat latihan (WAJIB)**:
+  - Buatan sendiri, bukan salinan teks buku.
+  - Hanya boleh memakai karakter dari kosakata HSK 1 (`content/hsk2/vocab.json`, `hsk: 1`) + kosakata pelajaran 1
+    sampai pelajaran itu — termasuk pilihan jawaban, potongan kalimat, dan `also_accept`.
+  - `tools/validate_lessons.py` mengecek aturan ini (juga: potongan membentuk jawaban, jawaban ada di pilihan,
+    jumlah suku kata pinyin = jumlah hanzi, arti tidak dobel). Jalankan bersama `python3 -m unittest tools/test_validate_lessons.py`.
+  - Kalimat buatan Claude ditandai `"origin": "claude"` dan direview orang tua (tata bahasa & arti tidak bisa dicek otomatis).
+- Latihan menulis dengan library Hanzi Writer (simpan datanya lokal agar bisa offline) dan latihan nada
+  (dengar → pilih nada 1/2/3/4) memakai kata dari pelajaran yang dipilih.
 
 ## Catatan iPad
 - Target sentuh minimal 44px, font besar, mode landscape dan portrait.
@@ -83,6 +133,9 @@ tools/
 
 ### Input sentuh & Pencil
 - Pakai **Pointer Events** (`pointerdown/move/up/cancel`) untuk semua interaksi; jangan campur dengan mouse/touch events.
+  - Pengecualian: library Hanzi Writer hanya mendengarkan mouse/touch events. Input anak tetap ditangkap dengan
+    Pointer Events (`js/inkpad.js`); goresan yang sudah selesai diteruskan ke Hanzi Writer sebagai mouse event
+    buatan (`js/write.js`) untuk dinilai. Jangan memakai mouse/touch events di tempat lain.
 - Area menulis/menggambar (canvas): `touch-action: none`, `setPointerCapture`, tangani `pointercancel`.
 - **Palm rejection**: saat Pencil terdeteksi (`pointerType === 'pen'`), canvas mengabaikan input jari.
 - Garis halus: gambar di `requestAnimationFrame`, pakai `getCoalescedEvents()` jika tersedia,
@@ -112,6 +165,8 @@ tools/
 ### Suara
 - Web Speech hanya dipicu dari tap. Tunggu event `voiceschanged`, pilih suara `zh-CN`;
   jika tidak ada, tampilkan pesan kecil + tetap jalan tanpa suara.
+  - Pengecualian: latihan yang intinya mendengar (latihan nada, dengar → pilih arti) tidak bisa jalan tanpa suara:
+    tampilkan penjelasan cara memasang suara, nonaktifkan Start, dan tetap sediakan tombol Home/Back.
 
 ## Kualitas — mencegah error
 
