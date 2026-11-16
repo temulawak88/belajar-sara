@@ -1,6 +1,6 @@
 // Alur utama: buka app -> Mandarin -> pelajaran -> kartu kata -> jawab benar/salah -> progres tersimpan -> reload -> masih ada.
 const { test, expect } = require('@playwright/test');
-const { KEY, readProgress, lesson } = require('./helpers');
+const { KEY, readProgress, lesson, failOnPageError } = require('./helpers');
 
 const CARDS = 'cards.html?n=1'; // Pelajaran 1: 旅游, 觉得, 最, 为什么, 也, ...
 
@@ -12,9 +12,7 @@ async function expectBoxes(page, counts) {
 
 test.beforeEach(async ({ page }) => {
   // Tangkap error JS apa pun: app tidak boleh melempar error di alur normal.
-  page.on('pageerror', (e) => {
-    throw e;
-  });
+  failOnPageError(page);
 });
 
 test('home → lesson list → lesson menu; Daily Mission is not clickable yet', async ({ page }) => {

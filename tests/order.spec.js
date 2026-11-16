@@ -1,13 +1,11 @@
 // Susun kalimat: potongan bisa di-tap berurutan atau di-drag (Pointer Events), Undo/Clear, penilaian ramah.
 const { test, expect } = require('@playwright/test');
-const { KEY, mockSpeech, readProgress, spoken, lesson } = require('./helpers');
+const { KEY, mockSpeech, readProgress, spoken, lesson, failOnPageError } = require('./helpers');
 
 const ORDERS = lesson(1).exercises.filter((e) => e.type === 'order');
 
 test.beforeEach(async ({ page }) => {
-  page.on('pageerror', (e) => {
-    throw e;
-  });
+  failOnPageError(page);
   await mockSpeech(page);
 });
 

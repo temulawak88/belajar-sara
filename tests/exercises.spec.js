@@ -1,11 +1,9 @@
 // Latihan kalimat per pelajaran: isi bagian kosong (fill) dan dengar → pilih arti (listen).
 const { test, expect } = require('@playwright/test');
-const { KEY, mockSpeech, readProgress, spoken, lesson, fullSentence } = require('./helpers');
+const { KEY, mockSpeech, readProgress, spoken, lesson, fullSentence, failOnPageError } = require('./helpers');
 
 test.beforeEach(async ({ page }) => {
-  page.on('pageerror', (e) => {
-    throw e;
-  });
+  failOnPageError(page);
 });
 
 const FILLS = lesson(1).exercises.filter((e) => e.type === 'fill');

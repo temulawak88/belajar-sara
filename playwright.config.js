@@ -24,10 +24,10 @@ module.exports = defineConfig({
     serviceWorkers: 'allow',
   },
   webServer: {
-    command: `python3 -m http.server ${PORT}`,
+    // Bukan `python3 -m http.server`: antrean koneksinya (5) terlalu kecil, lihat tools/serve.py.
+    command: `python3 tools/serve.py ${PORT}`,
     url: `http://localhost:${PORT}/docs/index.html`,
     reuseExistingServer: !process.env.CI,
-    stderr: 'ignore', // log akses http.server terlalu ramai
   },
   projects: [
     { name: 'webkit-ipad', use: { ...ipadPortrait, browserName: 'webkit' } },

@@ -26,6 +26,19 @@ async function mockSpeech(page, { withVoice = true } = {}) {
   }, withVoice);
 }
 
+/**
+ * Error JavaScript di halaman menggagalkan tes. Satu pengecualian: bila tes pindah halaman saat
+ * service worker masih didaftarkan, WebKit membatalkan unduhan sw.js dan melaporkannya sebagai
+ * "Cannot load …/sw.js due to access control checks". App sudah menangani penolakan register()
+ * (ui.js › registerSW), jadi itu bukan error app — hanya tes yang sesekali gagal acak.
+ */
+function failOnPageError(page) {
+  page.on('pageerror', (e) => {
+    if (/Cannot load .*sw\.js due to access control checks/.test(e.message)) return;
+    throw e;
+  });
+}
+
 const readProgress = (page) => page.evaluate((k) => JSON.parse(localStorage.getItem(k) || 'null'), KEY);
 const spoken = (page) => page.evaluate(() => window.__spoken);
 const lesson = (n) => LESSONS.lessons[n - 1];
@@ -50,4 +63,4 @@ async function expectAllAssetsCached(page) {
   return missing;
 }
 
-module.exports = { expectAllAssetsCached, KEY, LESSONS, mockSpeech, readProgress, spoken, lesson, fullSentence };
+module.exports = { failOnPageError, expectAllAssetsCached, KEY, LESSONS, mockSpeech, readProgress, spoken, lesson, fullSentence };

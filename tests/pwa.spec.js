@@ -193,42 +193,56 @@ test('error log keeps at most 50 entries', async ({ page }) => {
   expect(await page.evaluate(() => window.__first)).toBe('e10');
 });
 
-test('Start buttons stay disabled until the page data has loaded (tapping early cannot crash)', async ({ page }) => {
-  // Tahan data selama 1,5 detik agar keadaan "belum selesai dimuat" bisa diamati.
-  let release;
-  const gate = new Promise((r) => (release = r));
-  await page.route(/content\/hsk2\/(lessons|vocab)\.json$|hanzi-writer-data\/chars\.json$/, async (route) => {
-    await gate;
-    await route.continue();
-  });
-  for (const url of ['write.html?n=3', 'cards.html?n=3', 'tone.html?n=3', 'listen.html?n=3']) {
-    await page.goto(url, { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('#start-btn'), url).toBeDisabled();
-  }
-  release();
-  await page.goto('write.html?n=3');
-  await expect(page.locator('#start-btn')).toBeEnabled();
-  await page.goto('cards.html?n=3');
-  await expect(page.locator('#start-btn')).toBeEnabled();
-});
+// Tes di bawah menahan/memperlambat data dengan page.route. Service worker harus diblokir di sini:
+// begitu SW aktif, data dijawab dari cache SW tanpa lewat page.route, jadi keadaan "belum dimuat"
+// tidak pernah terjadi (tes gagal acak, tergantung kapan SW selesai terpasang).
+test.describe('slow data (service worker blocked)', () => {
+  test.use({ serviceWorkers: 'block' });
 
-test('leaving a page while its data is still loading is not logged as an error', async ({ page }) => {
-  const errors = [];
-  page.on('pageerror', (e) => errors.push(e.message));
-  // Data pelajaran sengaja lambat, lalu halaman ditinggalkan sebelum data datang.
-  await page.route(/content\/hsk2\/vocab\.json$|hanzi-writer-data\/chars\.json$/, async (route) => {
-    await new Promise((r) => setTimeout(r, 1500));
-    await route.continue().catch(() => {});
+  test('Start buttons stay disabled until the page data has loaded (tapping early cannot crash)', async ({ page }) => {
+    // Tahan data selama 1,5 detik agar keadaan "belum selesai dimuat" bisa diamati.
+    let release;
+    const gate = new Promise((r) => (release = r));
+    await page.route(/content\/hsk2\/(lessons|vocab)\.json$|hanzi-writer-data\/chars\.json$/, async (route) => {
+      await gate;
+      await route.continue();
+    });
+    for (const url of ['write.html?n=3', 'cards.html?n=3', 'tone.html?n=3', 'listen.html?n=3']) {
+      await page.goto(url, { waitUntil: 'domcontentloaded' });
+      await expect(page.locator('#start-btn'), url).toBeDisabled();
+    }
+    release();
+    await page.goto('write.html?n=3');
+    await expect(page.locator('#start-btn')).toBeEnabled();
+    await page.goto('cards.html?n=3');
+    await expect(page.locator('#start-btn')).toBeEnabled();
   });
-  for (const url of ['write.html?n=3', 'tone.html?n=3', 'cards.html?n=3', 'write.html']) {
-    await page.goto(url, { waitUntil: 'domcontentloaded' });
-    await page.goto('index.html');
-  }
-  await page.waitForTimeout(1800);
-  expect(errors).toEqual([]);
-  const log = await page.evaluate(() => JSON.parse(localStorage.getItem('belajar-sarah:errors') || '[]'));
-  expect(log).toEqual([]);
-  await expect(page.locator('#oops')).toBeHidden();
+
+  test('leaving a page while its data is still loading is not logged as an error', async ({ page }) => {
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    // Data pelajaran sengaja lambat, lalu halaman ditinggalkan sebelum data datang.
+    await page.route(/content\/hsk2\/vocab\.json$|hanzi-writer-data\/chars\.json$/, async (route) => {
+      await new Promise((r) => setTimeout(r, 1500));
+      await route.continue().catch(() => {});
+    });
+    for (const url of ['write.html?n=3', 'tone.html?n=3', 'cards.html?n=3']) {
+      await page.goto(url, { waitUntil: 'domcontentloaded' });
+      await page.goto('index.html');
+    }
+    // Tanpa "?n=" halaman mengalihkan DIRINYA SENDIRI ke daftar pelajaran saat vocab masih dimuat.
+    // Dibuka dari dalam halaman lalu ditunggu sampai pengalihan selesai: page.goto bertabrakan dengan
+    // pengalihan itu ("interrupted by another navigation" / "WebKit encountered an internal error").
+    await page.evaluate(() => {
+      location.href = 'write.html';
+    });
+    await page.waitForURL(/hanzi\.html$/);
+    await page.waitForTimeout(1800);
+    expect(errors).toEqual([]);
+    const log = await page.evaluate(() => JSON.parse(localStorage.getItem('belajar-sarah:errors') || '[]'));
+    expect(log).toEqual([]);
+    await expect(page.locator('#oops')).toBeHidden();
+  });
 });
 
 test('a real error during loading is still logged and shows the Oops screen', async ({ page }) => {

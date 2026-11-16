@@ -1,7 +1,7 @@
 // Latihan menulis: Watch -> Trace -> Write, penilaian goresan oleh Hanzi Writer, Undo/Clear,
 // palm rejection, rotasi, progres tersimpan.
 const { test, expect } = require('@playwright/test');
-const { expectAllAssetsCached } = require('./helpers');
+const { expectAllAssetsCached, failOnPageError } = require('./helpers');
 const fs = require('fs');
 const path = require('path');
 
@@ -56,9 +56,7 @@ async function seedStarted(page, ids) {
 const readProgress = (page) => page.evaluate((k) => JSON.parse(localStorage.getItem(k)), KEY);
 
 test.beforeEach(async ({ page }) => {
-  page.on('pageerror', (e) => {
-    throw e;
-  });
+  failOnPageError(page);
 });
 
 test('lesson menu links to writing; with no word cards yet, the first 3 characters of the lesson are picked', async ({ page }) => {
