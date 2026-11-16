@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "book": "My Pals Are Here! Maths 6B (Marshall Cavendish)",
+  "source_note": "Peta bab dari daftar isi buku. Pola soal & contoh adalah buatan sendiri (bukan salinan soal buku). Semua contoh punya answer_expr dan wajib lulus tools/validate_math.py.",
+  "priority_note": "Status bab diisi orang tua: current = sedang dipelajari, review = sudah lewat, upcoming = belum. Bab 6A (1-6) menyusul.",
+  "difficulty_levels": {
+    "1": "1 langkah",
+    "2": "2 langkah",
+    "3": "3+ langkah (setara 'Put On Your Thinking Cap!')"
+  },
+  "model_types": {
+    "bar": "bar model (balok) - pecahan, rasio, persen, perbandingan",
+    "journey": "garis perjalanan: titik awal-akhir, panah arah, label kecepatan/waktu/jarak",
+    "tank": "gambar tangki balok dengan ukuran & tinggi air",
+    "pie": "pie chart SVG digambar dari data sektor",
+    "none": "tidak perlu model (hitungan langsung)"
+  },
+  "chapters": [
+    {
+      "id": "6B-07",
+      "number": 7,
+      "title": "Speed",
+      "status": "upcoming",
+      "subtopics": ["Distance and Speed", "Average Speed", "Solving Word Problems"],
+      "default_model": "journey",
+      "common_mistakes": [
+        "Lupa mengubah menit ke jam (45 min = 0.75 h, bukan 0.45 h)",
+        "Kecepatan rata-rata dihitung sebagai rata-rata dua kecepatan, padahal = total jarak / total waktu",
+        "Satuan tercampur (m/min vs km/h)",
+        "Soal saling mendekat: lupa menjumlahkan kecepatan; soal menyusul: lupa memakai selisih kecepatan"
+      ],
+      "patterns": [
+        {"id": "dst-basic", "name": "Cari jarak / kecepatan / waktu", "level": 1},
+        {"id": "time-convert", "name": "Waktu dalam menit/jam-menit", "level": 2},
+        {"id": "average-speed", "name": "Kecepatan rata-rata perjalanan 2 bagian", "level": 2},
+        {"id": "towards", "name": "Dua kendaraan saling mendekat", "level": 2},
+        {"id": "catch-up", "name": "Menyusul (ada start lebih dulu)", "level": 3},
+        {"id": "same-distance", "name": "Jarak sama, kecepatan berbeda", "level": 2}
+      ],
+      "glossary": {
+        "uniform speed": "kecepatan tetap",
+        "average speed": "kecepatan rata-rata",
+        "set off": "berangkat",
+        "arrived": "tiba",
+        "at the same time": "pada waktu yang sama",
+        "towards each other": "saling mendekat",
+        "in the same direction": "searah",
+        "catch up with": "menyusul",
+        "overtake": "mendahului",
+        "how much longer": "berapa lama lagi / selisih waktu",
+        "apart": "berjarak (satu sama lain)",
+        "journey": "perjalanan"
+      },
+      "examples": [
+        {"id": "7-1", "pattern": "dst-basic", "level": 1, "model": "journey",
+         "story": "A van travelled at a uniform speed of 72 km/h for 2 h 30 min. How far did it travel?",
+         "known": ["speed = 72 km/h", "time = 2 h 30 min = 2.5 h"], "asked": "distance",
+         "answer": 180, "unit": "km", "answer_expr": "72 * 2.5"},
+        {"id": "7-2", "pattern": "time-convert", "level": 2, "model": "journey",
+         "story": "Mei Ling cycled 9 km in 45 minutes. What was her speed in km/h?",
+         "known": ["distance = 9 km", "time = 45 min = 3/4 h"], "asked": "speed in km/h",
+         "answer": 12, "unit": "km/h", "answer_expr": "9 / (45 / 60)"},
+        {"id": "7-3", "pattern": "average-speed", "level": 2, "model": "journey",
+         "story": "A car travelled 180 km at 60 km/h. It then travelled another 60 km at 30 km/h. What was its average speed for the whole journey?",
+         "known": ["part 1: 180 km at 60 km/h", "part 2: 60 km at 30 km/h"], "asked": "average speed for whole journey",
+         "answer": 48, "unit": "km/h", "answer_expr": "(180 + 60) / (180 / 60 + 60 / 30)",
+         "trap_answer": 45, "trap_note": "(60 + 30) / 2 = 45 adalah jawaban jebakan"},
+        {"id": "7-4", "pattern": "towards", "level": 2, "model": "journey",
+         "story": "Town A and Town B are 270 km apart. A lorry leaves Town A for Town B at 50 km/h. At the same time, a car leaves Town B for Town A at 85 km/h. After how many hours do they meet?",
+         "known": ["distance apart = 270 km", "lorry 50 km/h", "car 85 km/h", "start at the same time, towards each other"], "asked": "time until they meet",
+         "answer": 2, "unit": "h", "answer_expr": "270 / (50 + 85)"},
+        {"id": "7-5", "pattern": "catch-up", "level": 3, "model": "journey",
+         "story": "Ali set off from home, walking at 80 m/min. 10 minutes later, his brother cycled after him along the same road at 240 m/min. How many minutes did his brother take to catch up with Ali?",
+         "known": ["Ali 80 m/min", "head start 10 min", "brother 240 m/min, same direction"], "asked": "time for brother to catch up",
+         "answer": 5, "unit": "min", "answer_expr": "(80 * 10) / (240 - 80)"},
+        {"id": "7-6", "pattern": "same-distance", "level": 2, "model": "journey",
+         "story": "Mr Lim took 3 h to drive from Town P to Town Q at 80 km/h. How long would he take for the same journey if he drove at 96 km/h?",
+         "known": ["time 3 h at 80 km/h"], "asked": "time at 96 km/h",
+         "answer": 2.5, "unit": "h", "answer_expr": "(80 * 3) / 96"}
+      ]
+    },
+    {
+      "id": "6B-08",
+      "number": 8,
+      "title": "Volume of Solids and Liquids",
+      "status": "upcoming",
+      "subtopics": ["Volume of Solids", "Volume of Liquids"],
+      "default_model": "tank",
+      "common_mistakes": [
+        "Lupa 1 L = 1000 cm³",
+        "Memakai tinggi tangki, padahal yang ditanya tinggi air",
+        "Lupa mengalikan dengan pecahan (mis. 3/4 penuh)",
+        "Menit dan liter per menit tertukar saat menghitung waktu mengisi"
+      ],
+      "patterns": [
+        {"id": "cuboid-volume", "name": "Volume kubus/balok", "level": 1},
+        {"id": "unknown-dimension", "name": "Cari panjang/lebar/tinggi dari volume", "level": 2},
+        {"id": "cube-edge", "name": "Cari rusuk kubus dari volume", "level": 2},
+        {"id": "tank-fraction", "name": "Tangki terisi sebagian (pecahan) → liter", "level": 2},
+        {"id": "pour-height", "name": "Air dituang → tinggi air", "level": 2},
+        {"id": "flow-rate", "name": "Laju aliran → waktu mengisi", "level": 3}
+      ],
+      "glossary": {
+        "volume": "volume / isi",
+        "capacity": "kapasitas / daya tampung",
+        "rectangular tank": "tangki berbentuk balok",
+        "filled to the brim": "terisi penuh sampai bibir",
+        "water level": "tinggi permukaan air",
+        "3/4 full": "terisi 3/4",
+        "poured": "dituang",
+        "edge": "rusuk",
+        "cubic centimetres (cm³)": "sentimeter kubik",
+        "litres per minute": "liter per menit",
+        "empty": "kosong"
+      },
+      "examples": [
+        {"id": "8-1", "pattern": "cuboid-volume", "level": 1, "model": "tank",
+         "story": "A cuboid measures 12 cm by 8 cm by 5 cm. Find its volume.",
+         "known": ["length 12 cm", "breadth 8 cm", "height 5 cm"], "asked": "volume",
+         "answer": 480, "unit": "cm³", "answer_expr": "12 * 8 * 5"},
+        {"id": "8-2", "pattern": "unknown-dimension", "level": 2, "model": "tank",
+         "story": "A rectangular box has a volume of 1440 cm³. Its base measures 15 cm by 12 cm. Find its height.",
+         "known": ["volume 1440 cm³", "base 15 cm × 12 cm"], "asked": "height",
+         "answer": 8, "unit": "cm", "answer_expr": "1440 / (15 * 12)"},
+        {"id": "8-3", "pattern": "cube-edge", "level": 2, "model": "tank",
+         "story": "A cube has a volume of 343 cm³. What is the length of one edge?",
+         "known": ["volume 343 cm³"], "asked": "edge length",
+         "answer": 7, "unit": "cm", "answer_expr": "round(343 ** (1 / 3), 6)"},
+        {"id": "8-4", "pattern": "tank-fraction", "level": 2, "model": "tank",
+         "story": "A rectangular tank is 50 cm long, 30 cm wide and 40 cm high. It is 3/4 filled with water. How many litres of water are in the tank?",
+         "known": ["tank 50 × 30 × 40 cm", "3/4 full", "1 L = 1000 cm³"], "asked": "litres of water",
+         "answer": 45, "unit": "L", "answer_expr": "50 * 30 * 40 * 3 / 4 / 1000"},
+        {"id": "8-5", "pattern": "pour-height", "level": 2, "model": "tank",
+         "story": "All the water from a full 6-litre container is poured into an empty rectangular tank measuring 40 cm by 25 cm by 30 cm. What is the height of the water in the tank?",
+         "known": ["6 L = 6000 cm³", "base 40 cm × 25 cm"], "asked": "height of water",
+         "answer": 6, "unit": "cm", "answer_expr": "6 * 1000 / (40 * 25)"},
+        {"id": "8-6", "pattern": "flow-rate", "level": 3, "model": "tank",
+         "story": "An empty tank measures 60 cm by 40 cm by 50 cm. A tap fills it at 8 litres per minute. How many minutes does it take to fill the tank completely?",
+         "known": ["tank 60 × 40 × 50 cm", "rate 8 L/min"], "asked": "time to fill (min)",
+         "answer": 15, "unit": "min", "answer_expr": "60 * 40 * 50 / 1000 / 8"}
+      ]
+    },
+    {
+      "id": "6B-09",
+      "number": 9,
+      "title": "Pie Charts",
+      "status": "upcoming",
+      "subtopics": ["Reading and Interpreting Pie Charts"],
+      "default_model": "pie",
+      "common_mistakes": [
+        "Salah membaca sektor 1/4 vs 1/3",
+        "Lupa menghitung sektor 'the rest' (sisanya)",
+        "Mencari total dari bagian: membagi, bukan mengalikan"
+      ],
+      "patterns": [
+        {"id": "fraction-of-total", "name": "Sektor sebagai pecahan → jumlah", "level": 1},
+        {"id": "percent-the-rest", "name": "Persen + sektor 'sisanya'", "level": 2},
+        {"id": "total-from-part", "name": "Cari total dari satu sektor", "level": 2}
+      ],
+      "glossary": {
+        "pie chart": "diagram lingkaran",
+        "sector": "sektor / juring",
+        "represents": "mewakili",
+        "survey": "survei",
+        "favourite": "favorit",
+        "the rest": "sisanya",
+        "fraction of": "pecahan dari",
+        "how many more": "berapa lebih banyak"
+      },
+      "examples": [
+        {"id": "9-1", "pattern": "fraction-of-total", "level": 1, "model": "pie",
+         "pie_data": [{"label": "Apples", "fraction": "1/4"}, {"label": "Bananas", "fraction": "1/2"}, {"label": "Oranges", "fraction": "1/4"}],
+         "story": "The pie chart shows the favourite fruits of 240 pupils. How many pupils chose apples?",
+         "known": ["total 240 pupils", "apples = 1/4 of circle"], "asked": "number who chose apples",
+         "answer": 60, "unit": "pupils", "answer_expr": "240 * 1 / 4"},
+        {"id": "9-2", "pattern": "percent-the-rest", "level": 2, "model": "pie",
+         "pie_data": [{"label": "Rent", "percent": 30}, {"label": "Food", "percent": 25}, {"label": "Transport", "percent": 15}, {"label": "Savings", "percent": null}],
+         "story": "The pie chart shows how Mr Tan used his salary of $3600 last month. He saved the rest. How much did he save?",
+         "known": ["salary $3600", "rent 30%, food 25%, transport 15%", "savings = the rest"], "asked": "amount saved",
+         "answer": 1080, "unit": "$", "answer_expr": "3600 * (100 - 30 - 25 - 15) / 100"},
+        {"id": "9-3", "pattern": "total-from-part", "level": 2, "model": "pie",
+         "pie_data": [{"label": "Swimming", "fraction": "3/8"}, {"label": "Football", "fraction": "3/8"}, {"label": "Badminton", "fraction": "1/4"}],
+         "story": "In a survey, 45 children chose swimming as their favourite sport. Swimming is shown by 3/8 of the pie chart. How many children took part in the survey?",
+         "known": ["swimming = 45 children", "swimming = 3/8 of circle"], "asked": "total children",
+         "answer": 120, "unit": "children", "answer_expr": "45 / (3 / 8)"}
+      ]
+    },
+    {
+      "id": "6B-10",
+      "number": 10,
+      "title": "Solid Figures and Nets",
+      "status": "upcoming",
+      "subtopics": ["Solids", "Nets of Solids"],
+      "default_model": "none",
+      "app_note": "Bukan soal cerita. Butuh interaksi visual (kenali bangun ruang, pilih jaring-jaring yang benar). Tunda ke fase berikutnya.",
+      "glossary": {
+        "face": "sisi",
+        "edge": "rusuk",
+        "vertex / vertices": "titik sudut",
+        "net": "jaring-jaring",
+        "prism": "prisma",
+        "pyramid": "limas",
+        "cylinder": "tabung",
+        "cone": "kerucut",
+        "base": "alas"
+      },
+      "examples": []
+    }
+  ]
+}
