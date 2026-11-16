@@ -1,5 +1,6 @@
 // Latihan nada: pemecahan pinyin, pemilihan soal, alur dengar -> pilih nada, umpan balik ramah.
 const { test, expect } = require('@playwright/test');
+const { failOnPageError } = require('./helpers');
 
 const KEY = 'belajar-sarah:progress';
 const TONE_OF = { 千: 1, 送: 4, 真: 1 }; // pelajaran 3
@@ -41,9 +42,7 @@ const spoken = (page) => page.evaluate(() => window.__spoken);
 const readProgress = (page) => page.evaluate((k) => JSON.parse(localStorage.getItem(k)), KEY);
 
 test.beforeEach(async ({ page }) => {
-  page.on('pageerror', (e) => {
-    throw e;
-  });
+  failOnPageError(page);
 });
 
 test('lesson menu links to tone practice; start screen explains the 4 tones', async ({ page }) => {

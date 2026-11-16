@@ -1,3 +1,4 @@
+import { ignoreIfLeaving } from './errors.js';
 import { initPage, $ } from './ui.js';
 import { loadState } from './storage.js';
 import { todayStr, SESSION_SIZE } from './leitner.js';
@@ -20,4 +21,4 @@ async function load() {
   else status.textContent = `All done today · ${progress.length} words started`;
 }
 
-load();
+load().catch(ignoreIfLeaving);

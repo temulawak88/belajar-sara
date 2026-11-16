@@ -1,6 +1,7 @@
 // Latihan nada: dengar satu karakter -> pilih nada 1/2/3/4.
 // Salah = ramah: petunjuk + dengar lagi + coba sekali lagi; setelah itu jawaban ditunjukkan.
 
+import { ignoreIfLeaving } from './errors.js';
 import { initPage, $, el, toast } from './ui.js';
 import { loadState, saveState } from './storage.js';
 import { todayStr } from './leitner.js';
@@ -181,4 +182,4 @@ async function load() {
 initSpeech((status) => {
   if (!$('#screen-start').hidden) updateVoice(status);
 });
-load();
+load().catch(ignoreIfLeaving);

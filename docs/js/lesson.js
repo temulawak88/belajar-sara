@@ -1,5 +1,6 @@
 // Menu satu pelajaran: 4 latihan (kartu kata, isi bagian kosong, susun kalimat, dengar → pilih arti).
 
+import { ignoreIfLeaving } from './errors.js';
 import { initPage, $, el } from './ui.js';
 import { loadState } from './storage.js';
 import { lessonProgress } from './lessons.js';
@@ -33,4 +34,4 @@ async function load() {
   $('#grammar').hidden = !(lesson.grammar || []).length;
 }
 
-load();
+load().catch(ignoreIfLeaving);

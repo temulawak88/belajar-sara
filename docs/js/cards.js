@@ -1,6 +1,7 @@
 // Kartu kata per pelajaran: hanzi -> (tap) pinyin + arti -> "Not yet" / "I knew it!" (Leitner 5 kotak).
 // Kata tambahan (supplementary) diperkenalkan paling akhir dan diulang dengan jarak 2x (lebih jarang).
 
+import { ignoreIfLeaving } from './errors.js';
 import { initPage, $, el, toast } from './ui.js';
 import { loadState, saveState } from './storage.js';
 import { BOXES, INTERVAL_DAYS, boxCounts, buildSession, dueCount, grade, todayStr } from './leitner.js';
@@ -57,6 +58,7 @@ function renderStart() {
     note.textContent = `Today: ${parts.join(' + ')} (${counts[0]} words not started yet)`;
     btn.hidden = false;
   }
+  btn.disabled = queue.length === 0; // nonaktif di HTML sampai data selesai dimuat
   show('screen-start');
 }
 
@@ -163,4 +165,4 @@ async function load() {
 
 initSpeech(updateVoiceNote);
 
-load();
+load().catch(ignoreIfLeaving);

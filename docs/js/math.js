@@ -1,5 +1,6 @@
 // Daftar bab matematika (dari syllabus.json). Bab "current" paling atas; bab tanpa soal tampil nonaktif.
 
+import { ignoreIfLeaving } from './errors.js';
 import { initPage, $, el } from './ui.js';
 import { loadState } from './storage.js';
 import { chapterProgress, loadSyllabus, sortChapters } from './mathlogic.js';
@@ -27,4 +28,4 @@ async function load() {
   }
 }
 
-load();
+load().catch(ignoreIfLeaving);

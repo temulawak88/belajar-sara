@@ -1,18 +1,17 @@
 // Susun kalimat: potongan bisa di-tap berurutan atau di-drag (Pointer Events), Undo/Clear, penilaian ramah.
 const { test, expect } = require('@playwright/test');
-const { KEY, mockSpeech, readProgress, spoken, lesson } = require('./helpers');
+const { KEY, mockSpeech, readProgress, spoken, lesson, failOnPageError } = require('./helpers');
 
 const ORDERS = lesson(1).exercises.filter((e) => e.type === 'order');
 
 test.beforeEach(async ({ page }) => {
-  page.on('pageerror', (e) => {
-    throw e;
-  });
+  failOnPageError(page);
   await mockSpeech(page);
 });
 
 /** Soal yang sedang tampil, dikenali dari kumpulan potongannya. */
 async function currentOrder(page, list = ORDERS) {
+  await expect(page.locator('#bank .chunk, #answer-line .chunk').first()).toBeVisible(); // tunggu soal selesai dimuat
   const texts = await page.locator('#bank .chunk, #answer-line .chunk').allTextContents();
   const key = [...texts].sort().join('|');
   const ex = list.find((e) => [...e.chunks].sort().join('|') === key);

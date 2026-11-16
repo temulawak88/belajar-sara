@@ -1,6 +1,7 @@
 // Bagian bersama halaman latihan per pelajaran (cards / fill / listen / lesson):
 // baca "?n=", muat pelajaran, pasang tombol Back ke menu pelajaran.
 
+import { leavePage } from './errors.js';
 import { $ } from './ui.js';
 import { findLesson, lessonNumberFromUrl, loadLessons } from './lessons.js';
 
@@ -13,7 +14,7 @@ export async function openLesson(backTo = 'lesson') {
   const data = await loadLessons();
   const lesson = n ? findLesson(data, n) : null;
   if (!lesson) {
-    location.replace('hanzi.html');
+    leavePage('hanzi.html');
     return null;
   }
   const lessonUrl = `lesson.html?n=${n}`;

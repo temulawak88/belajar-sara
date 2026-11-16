@@ -2,6 +2,7 @@
 // Salah = ramah: salah ke-1 -> arti kalimat sebagai petunjuk + coba lagi; salah ke-2 -> jawaban ditunjukkan.
 // Hanya jawaban PERTAMA yang dinilai, dan langsung disimpan.
 
+import { ignoreIfLeaving, leavePage } from './errors.js';
 import { initPage, $, el, toast } from './ui.js';
 import { loadState, saveState } from './storage.js';
 import { todayStr } from './leitner.js';
@@ -100,10 +101,10 @@ async function load() {
   const fills = opened.lesson.exercises.filter((e) => e.type === 'fill');
   questions = pickExercises(fills, state.sentences, 'fill');
   if (!questions.length) {
-    location.replace(`lesson.html?n=${opened.n}`);
+    leavePage(`lesson.html?n=${opened.n}`);
     return;
   }
   renderQuestion();
 }
 
-load();
+load().catch(ignoreIfLeaving);

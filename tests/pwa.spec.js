@@ -1,5 +1,6 @@
 // PWA: path relatif (GitHub Pages sub-path), service worker, offline, Mode Papi, log error.
 const { test, expect } = require('@playwright/test');
+const { expectAllAssetsCached } = require('./helpers');
 const fs = require('fs');
 const path = require('path');
 
@@ -81,13 +82,23 @@ test('manifest is valid and relative', async ({ page, baseURL }) => {
   expect((await page.request.get(touch)).ok()).toBe(true);
 });
 
-test('service worker registers under /docs/ and the app works offline', async ({ page, context, baseURL }) => {
+test('service worker registers under /docs/ and the app works offline', async ({ page, context, baseURL, browserName }) => {
   await page.goto('index.html');
   const scope = await page.evaluate(async () => (await navigator.serviceWorker.ready).scope);
   expect(scope).toBe(baseURL);
   // Halaman pertama belum dikontrol SW; reload agar dikontrol (clients.claim juga cukup).
   await page.reload();
   await expect.poll(() => page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(true);
+
+  // Semua file app ada di cache (dasar app bisa jalan offline) — di semua browser.
+  const cached = await expectAllAssetsCached(page);
+  expect(cached.missing).toEqual([]);
+  expect(cached.keys).toHaveLength(1); // cache lama sudah dihapus
+  if (browserName === 'webkit') {
+    // Playwright WebKit tidak bisa bernavigasi offline lewat service worker (internal error).
+    // Navigasi offline sungguhan dites di Chromium; di iPad dicek manual dengan mode pesawat.
+    return;
+  }
 
   await context.setOffline(true);
   await page.goto('hanzi.html');
@@ -122,11 +133,13 @@ test('Papi mode: long-press logo 3 s opens dialog with export and reset', async 
   await page.mouse.up();
   await expect(page.locator('dialog')).toHaveCount(0);
 
+  // Tahan sampai dialog muncul (≥ 3 detik), baru lepas — tidak bergantung pada waktu tetap.
+  const opened = Date.now();
   await page.mouse.down();
-  await page.waitForTimeout(3300);
-  await page.mouse.up();
   const dlg = page.locator('dialog[open]');
-  await expect(dlg).toContainText('Mode Papi');
+  await expect(dlg).toContainText('Mode Papi', { timeout: 10000 });
+  expect(Date.now() - opened).toBeGreaterThanOrEqual(2900);
+  await page.mouse.up();
   await expect(dlg).toContainText('Error log (0)');
 
   // Export: unduhan JSON berisi progres (di browser tanpa Web Share untuk file).
@@ -148,7 +161,7 @@ test('Papi mode: long-press logo 3 s opens dialog with export and reset', async 
 
   // Reset lewat dialog konfirmasi buatan sendiri (bukan confirm()).
   await page.mouse.down();
-  await page.waitForTimeout(3300);
+  await expect(page.locator('dialog[open]')).toContainText('Mode Papi', { timeout: 10000 });
   await page.mouse.up();
   await page.locator('dialog[open]').getByRole('button', { name: 'Reset data…' }).tap();
   await expect(page.locator('dialog[open]')).toContainText('Reset all progress?');
@@ -178,4 +191,64 @@ test('error log keeps at most 50 entries', async ({ page }) => {
   });
   expect(await page.evaluate(() => window.__len)).toBe(50);
   expect(await page.evaluate(() => window.__first)).toBe('e10');
+});
+
+// Tes di bawah menahan/memperlambat data dengan page.route. Service worker harus diblokir di sini:
+// begitu SW aktif, data dijawab dari cache SW tanpa lewat page.route, jadi keadaan "belum dimuat"
+// tidak pernah terjadi (tes gagal acak, tergantung kapan SW selesai terpasang).
+test.describe('slow data (service worker blocked)', () => {
+  test.use({ serviceWorkers: 'block' });
+
+  test('Start buttons stay disabled until the page data has loaded (tapping early cannot crash)', async ({ page }) => {
+    // Tahan data selama 1,5 detik agar keadaan "belum selesai dimuat" bisa diamati.
+    let release;
+    const gate = new Promise((r) => (release = r));
+    await page.route(/content\/hsk2\/(lessons|vocab)\.json$|hanzi-writer-data\/chars\.json$/, async (route) => {
+      await gate;
+      await route.continue();
+    });
+    for (const url of ['write.html?n=3', 'cards.html?n=3', 'tone.html?n=3', 'listen.html?n=3']) {
+      await page.goto(url, { waitUntil: 'domcontentloaded' });
+      await expect(page.locator('#start-btn'), url).toBeDisabled();
+    }
+    release();
+    await page.goto('write.html?n=3');
+    await expect(page.locator('#start-btn')).toBeEnabled();
+    await page.goto('cards.html?n=3');
+    await expect(page.locator('#start-btn')).toBeEnabled();
+  });
+
+  test('leaving a page while its data is still loading is not logged as an error', async ({ page }) => {
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    // Data pelajaran sengaja lambat, lalu halaman ditinggalkan sebelum data datang.
+    await page.route(/content\/hsk2\/vocab\.json$|hanzi-writer-data\/chars\.json$/, async (route) => {
+      await new Promise((r) => setTimeout(r, 1500));
+      await route.continue().catch(() => {});
+    });
+    for (const url of ['write.html?n=3', 'tone.html?n=3', 'cards.html?n=3']) {
+      await page.goto(url, { waitUntil: 'domcontentloaded' });
+      await page.goto('index.html');
+    }
+    // Tanpa "?n=" halaman mengalihkan DIRINYA SENDIRI ke daftar pelajaran saat vocab masih dimuat.
+    // Dibuka dari dalam halaman lalu ditunggu sampai pengalihan selesai: page.goto bertabrakan dengan
+    // pengalihan itu ("interrupted by another navigation" / "WebKit encountered an internal error").
+    await page.evaluate(() => {
+      location.href = 'write.html';
+    });
+    await page.waitForURL(/hanzi\.html$/);
+    await page.waitForTimeout(1800);
+    expect(errors).toEqual([]);
+    const log = await page.evaluate(() => JSON.parse(localStorage.getItem('belajar-sarah:errors') || '[]'));
+    expect(log).toEqual([]);
+    await expect(page.locator('#oops')).toBeHidden();
+  });
+});
+
+test('a real error during loading is still logged and shows the Oops screen', async ({ page }) => {
+  await page.route(/content\/hsk2\/lessons\.json$/, (route) => route.fulfill({ status: 500, body: 'server error' }));
+  await page.goto('hanzi.html');
+  await expect(page.locator('#oops')).toBeVisible();
+  const log = await page.evaluate(() => JSON.parse(localStorage.getItem('belajar-sarah:errors') || '[]'));
+  expect(log.at(-1).message).toContain('lessons.json');
 });

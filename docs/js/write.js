@@ -5,6 +5,7 @@
 // ulang ke Hanzi Writer sebagai mouse event sintetis. Hanzi Writer tidak menggambar tintanya sendiri
 // (drawingColor transparan), jadi yang terlihat anak hanyalah tinta dari canvas.
 
+import { ignoreIfLeaving } from './errors.js';
 import HanziWriter from '../vendor/hanzi-writer/hanzi-writer.esm.js';
 import { initPage, $, el, toast } from './ui.js';
 import { loadState, saveState } from './storage.js';
@@ -59,6 +60,7 @@ function renderStart() {
     list.append(el('li', { class: 'all-done', text: 'All done for today! (Selesai untuk hari ini!)' }));
     $('#start-btn').hidden = true;
   }
+  $('#start-btn').disabled = plan.length === 0; // nonaktif di HTML sampai data selesai dimuat
   show('screen-start');
 }
 
@@ -271,4 +273,4 @@ async function load() {
 }
 
 initSpeech(updateVoiceNote);
-load();
+load().catch(ignoreIfLeaving);

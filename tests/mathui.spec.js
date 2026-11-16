@@ -3,16 +3,14 @@
 const { test, expect } = require('@playwright/test');
 const fs = require('fs');
 const path = require('path');
-const { KEY, readProgress } = require('./helpers');
+const { KEY, readProgress, failOnPageError } = require('./helpers');
 
 const SYLLABUS = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'content', 'math', 'syllabus.json'), 'utf8'));
 const chapter = (id) => SYLLABUS.chapters.find((c) => c.id === id);
 const example = (id) => SYLLABUS.chapters.flatMap((c) => c.examples).find((e) => e.id === id);
 
 test.beforeEach(async ({ page }) => {
-  page.on('pageerror', (e) => {
-    throw e;
-  });
+  failOnPageError(page);
 });
 
 /** Ketik lewat keypad layar. '_' = tombol spasi (pecahan campuran), '<' = hapus, 'C' = clear. */
@@ -81,6 +79,8 @@ test('an unknown chapter, or one without problems, goes back to the chapter list
 });
 
 test('Speed chapter, all four steps: clean solve, one mistake per step, shown after two mistakes; error types saved', async ({ page }) => {
+  // Tes terpanjang (5 soal, ±22 detik): batas bawaan 30 detik kadang terlewati saat laptop sibuk.
+  test.setTimeout(90_000);
   await page.goto('mathq.html?c=6B-07');
   // Jawaban diisi lewat keypad sendiri: tidak ada <input> yang memunculkan keyboard iOS.
   await expect(page.locator('input, textarea, [contenteditable]')).toHaveCount(0);

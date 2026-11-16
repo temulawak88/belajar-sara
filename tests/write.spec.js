@@ -1,6 +1,7 @@
 // Latihan menulis: Watch -> Trace -> Write, penilaian goresan oleh Hanzi Writer, Undo/Clear,
 // palm rejection, rotasi, progres tersimpan.
 const { test, expect } = require('@playwright/test');
+const { expectAllAssetsCached, failOnPageError } = require('./helpers');
 const fs = require('fs');
 const path = require('path');
 
@@ -55,9 +56,7 @@ async function seedStarted(page, ids) {
 const readProgress = (page) => page.evaluate((k) => JSON.parse(localStorage.getItem(k)), KEY);
 
 test.beforeEach(async ({ page }) => {
-  page.on('pageerror', (e) => {
-    throw e;
-  });
+  failOnPageError(page);
 });
 
 test('lesson menu links to writing; with no word cards yet, the first 3 characters of the lesson are picked', async ({ page }) => {
@@ -229,13 +228,20 @@ test('rotating the iPad keeps the progress inside the character', async ({ page 
   await expect(page.locator('#next-btn')).toBeVisible();
 });
 
-test('writing practice works offline (library and stroke data are cached)', async ({ page, context }) => {
+test('writing practice works offline (library and stroke data are cached)', async ({ page, context, browserName }) => {
   await seedStarted(page, ['hsk2-qian']);
   await page.evaluate(async () => {
     await navigator.serviceWorker.ready;
   });
   await page.reload();
   await expect.poll(() => page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(true);
+  const cached = await expectAllAssetsCached(page);
+  expect(cached.missing).toEqual([]); // termasuk hanzi-writer.esm.js dan chars.json
+  if (browserName === 'webkit') {
+    // Playwright WebKit tidak bisa bernavigasi offline lewat service worker (internal error);
+    // navigasi offline dites di Chromium, di iPad dicek manual dengan mode pesawat.
+    return;
+  }
   await context.setOffline(true);
   await page.goto('write.html?n=3');
   await page.locator('#start-btn').tap();

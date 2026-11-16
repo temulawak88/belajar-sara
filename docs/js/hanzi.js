@@ -1,5 +1,6 @@
 // Daftar pelajaran Mandarin (HSK Standard Course 2). Pelajaran "current" ditampilkan paling atas.
 
+import { ignoreIfLeaving } from './errors.js';
 import { initPage, $, el } from './ui.js';
 import { loadState } from './storage.js';
 import { loadLessons, lessonProgress, sortLessons } from './lessons.js';
@@ -31,4 +32,4 @@ async function load() {
   }
 }
 
-load();
+load().catch(ignoreIfLeaving);
