@@ -24,7 +24,7 @@
     <span class="counter" id="counter" aria-live="polite"></span>
   </header>
 
-  <!-- Soal cerita: baca (kata sulit bisa di-tap), hitung, isi jawaban dengan keypad sendiri -->
+  <!-- Soal cerita: cerita tetap terlihat; 4 langkah di sampingnya (ditanya, diketahui, model, jawaban) -->
   <main id="screen-question" class="screen math-screen" hidden>
     <div class="math-layout">
       <div class="math-left">
@@ -40,14 +40,45 @@
         </div>
       </div>
       <div class="math-right">
-        <div class="answer-row">
-          <span class="answer-prefix" id="answer-prefix"></span>
-          <output class="answer-display" id="answer-display" aria-label="Your answer"></output>
-          <span class="answer-unit" id="answer-unit"></span>
-        </div>
-        <div class="keypad" id="keypad" role="group" aria-label="Number keypad"></div>
-        <div class="actions">
+        <ol class="steps" id="math-steps" aria-label="Steps">
+          <li data-step="asked">1 Find</li>
+          <li data-step="known">2 Know</li>
+          <li data-step="model">3 Picture</li>
+          <li data-step="answer">4 Answer</li>
+        </ol>
+
+        <!-- Langkah 1: apa yang ditanya -->
+        <section class="step-panel" id="step-asked" hidden>
+          <p class="step-q">What do we need to find? <span class="muted">(Apa yang ditanya?)</span></p>
+          <div class="choice-col" id="asked-options" role="group" aria-label="What is asked"></div>
+        </section>
+
+        <!-- Langkah 2: apa yang diketahui -->
+        <section class="step-panel" id="step-known" hidden>
+          <p class="step-q">What do we know? Tap every fact from the story. <span class="muted">(Ketuk semua yang diketahui.)</span></p>
+          <div class="choice-col" id="known-options" role="group" aria-label="What is known"></div>
+          <button class="btn primary big" id="known-check" type="button">Check</button>
+        </section>
+
+        <!-- Langkah 3: pilih model -->
+        <section class="step-panel" id="step-model" hidden>
+          <p class="step-q">Which picture fits this problem? <span class="muted">(Gambar mana yang cocok?)</span></p>
+          <div class="model-grid" id="model-options" role="group" aria-label="Choose the model"></div>
+        </section>
+
+        <!-- Langkah 4: hitung dan isi jawaban (keypad sendiri) -->
+        <section class="step-panel" id="step-answer" hidden>
+          <div class="answer-row">
+            <span class="answer-prefix" id="answer-prefix"></span>
+            <output class="answer-display" id="answer-display" aria-label="Your answer"></output>
+            <span class="answer-unit" id="answer-unit"></span>
+          </div>
+          <div class="keypad" id="keypad" role="group" aria-label="Number keypad"></div>
           <button class="btn primary big" id="check-btn" type="button">Check</button>
+        </section>
+
+        <div class="actions">
+          <button class="btn primary big" id="continue-btn" type="button" hidden>Continue ›</button>
           <button class="btn primary big" id="next-btn" type="button" hidden>Next ›</button>
         </div>
       </div>

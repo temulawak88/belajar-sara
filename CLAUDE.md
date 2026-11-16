@@ -78,14 +78,17 @@ tools/
 - Gaya soal mengikuti soal cerita Singapura P6 (multi-langkah), mulai dari yang 2 langkah.
 
 ## Alur soal cerita (UI)
-*(Status: langkah 1, 4, 6 sudah ada di `mathq.html`; pie chart digambar dari `pie_data`. Langkah 2, 3 dan
-pembedaan jenis kesalahan di langkah 5 belum — untuk sementara kesalahan dicatat sebagai `calculation`.)*
+*(Semua langkah ada di `mathq.html`; cerita tetap terlihat di samping langkah 2–4. Fase 2 — menyusun bar model
+sendiri — belum.)*
 1. Baca cerita (kata sulit bisa di-tap → arti).
-2. Tap: apa yang **diketahui**, apa yang **ditanya**.
+2. Tap: apa yang **ditanya** (pilih 1 dari 3; pengecoh = `asked` soal lain di bab itu), lalu apa yang
+   **diketahui** (tap semua fakta `known`; dicampur 2 fakta dari soal lain). Fakta konversi satuan murni
+   (mis. `1 L = 1000 cm³`) opsional dan tidak pernah jadi pengecoh.
 3. **Pilih model** yang cocok dari 3 pilihan (SVG), sesuai `model` soal: `bar`, `journey`, `tank`, `pie`
    (atau lewati jika `none`). *(Fase 2: susun bar model sendiri.)*
 4. Hitung dan isi jawaban.
-5. Kalau salah, catat jenis kesalahan: `comprehension` / `model` / `calculation`.
+5. Kalau salah, catat jenis kesalahan: `comprehension` (langkah 2) / `model` (langkah 3) / `calculation` (langkah 4).
+   Di tiap langkah: salah ke-1 → petunjuk + coba lagi; salah ke-2 → ditunjukkan, lalu lanjut.
 6. **Petunjuk saat salah** memakai `common_mistakes` bab itu (logika di `docs/js/mathhints.js`):
    salah ke-1 → `trap_note` jika jawabannya = `trap_answer`, selain itu daftar `common_mistakes` ("Cek lagi");
    salah ke-2 → apa yang diketahui (`known`); salah ke-3 → jawaban ditunjukkan dengan ramah.

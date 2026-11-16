@@ -23,7 +23,10 @@ App ada di `docs/` dan ditayangkan GitHub Pages (branch `main`, folder `/docs`).
 
 - **Matematika, soal cerita (bagian 1):** `math.html` daftar bab dari `syllabus.json`; `mathq.html?c=…` menampilkan
   cerita dengan kata glosarium yang bisa diketuk, pie chart dari `pie_data`, keypad angka sendiri, dan petunjuk dari
-  `common_mistakes`. Belum ada: ketuk yang diketahui/ditanya, pilih model.
+  `common_mistakes`.
+- **Matematika, soal cerita (bagian 2):** setiap soal punya 4 langkah — Find (apa yang ditanya), Know (apa yang
+  diketahui), Picture (pilih model dari 3 gambar), Answer — dan jenis kesalahan dicatat per langkah
+  (`comprehension` / `model` / `calculation`).
 
 ## Menjalankan di laptop
 ```bash
@@ -143,6 +146,8 @@ dan tambahkan file baru ke daftar `ASSETS` di `sw.js` (tes mengecek semua file `
 ### Matematika
 30. Math → daftar bab; Solid Figures nonaktif. Ketuk Speed → soal pertama.
 31. Ketuk kata biru di cerita → arti Indonesia muncul di bawahnya.
+31a. Langkah Find: pilih apa yang ditanya. Langkah Know: ketuk semua fakta dari cerita (ketuk lagi untuk batal), lalu Check.
+31b. Langkah Picture: pilih gambar model yang cocok. Salah sekali → petunjuk; salah dua kali → ditunjukkan + tombol Continue.
 32. Jawab dengan keypad di layar (keyboard iPad tidak boleh muncul). Coba `2.5`, `5/2`, dan `2 1/2` untuk jawaban 2.5.
 33. Jawab salah → petunjuk "Cek lagi"; salah lagi → yang diketahui; salah ketiga → jawaban ditunjukkan.
 34. Bab Pie Charts: diagram lingkaran tampil jelas, sektor "sisanya" bertanda "?".

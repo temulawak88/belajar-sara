@@ -82,6 +82,13 @@ export function recordMath(records, id, correct, today, errorType = null) {
   return { ...records, [id]: { seen: prev.seen + 1, right: prev.right + (correct ? 1 : 0), last: today, errors } };
 }
 
+/** Tambah satu kesalahan jenis lain pada soal yang jawaban pertamanya sudah dicatat. Objek BARU. */
+export function addMathError(records, id, errorType) {
+  const prev = records[id];
+  if (!prev) return records;
+  return { ...records, [id]: { ...prev, errors: { ...prev.errors, [errorType]: (prev.errors?.[errorType] || 0) + 1 } } };
+}
+
 export function chapterProgress(chapter, records) {
   return { total: chapter.examples.length, done: chapter.examples.filter((e) => records[e.id]?.seen).length };
 }
@@ -134,4 +141,74 @@ export function sectorPath(sector, cx, cy, r) {
   const large = sector.end - sector.start > 0.5 ? 1 : 0;
   const f = (n) => Number(n.toFixed(2));
   return `M ${cx} ${cy} L ${f(x1)} ${f(y1)} A ${r} ${r} 0 ${large} 1 ${f(x2)} ${f(y2)} Z`;
+}
+
+/* ---------- Langkah soal cerita: ditanya -> diketahui -> model -> jawaban ---------- */
+
+export const MODEL_TYPES = ['bar', 'journey', 'tank', 'pie'];
+
+/** Langkah untuk satu soal. Langkah "model" dilewati jika model soalnya `none`. */
+export function stepsFor(example) {
+  return example.model === 'none' ? ['asked', 'known', 'answer'] : ['asked', 'known', 'model', 'answer'];
+}
+
+function shuffled(items, rng) {
+  const a = [...items];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/** "Apa yang ditanya?": jawaban benar + 2 `asked` dari soal lain di bab yang sama. */
+export function askedOptions(chapter, example, rng = Math.random) {
+  const others = [...new Set(chapter.examples.filter((e) => e.id !== example.id).map((e) => e.asked))].filter(
+    (a) => a !== example.asked,
+  );
+  const picks = shuffled(others, rng).slice(0, 2);
+  return shuffled([example.asked, ...picks], rng).map((text) => ({ text, correct: text === example.asked }));
+}
+
+// Konversi satuan murni ("1 L = 1000 cm³", "6 L = 6000 cm³"): benar untuk soal mana pun, jadi tidak
+// pernah dipakai sebagai pengecoh, dan di soalnya sendiri boleh di-tap tetapi tidak wajib.
+const CONVERSION = /^[\d.]+\s*[A-Za-z³²/]+\s*=\s*[\d.]+\s*[A-Za-z³²/]+$/;
+export const isConversionFact = (fact) => CONVERSION.test(fact.trim());
+
+/**
+ * "Apa yang diketahui?": semua `known` soal ini + 2 fakta dari soal lain di bab yang sama, diacak.
+ * kind: 'known' (wajib di-tap) | 'optional' (konversi satuan) | 'other' (bukan dari cerita ini).
+ */
+export function knownOptions(chapter, example, rng = Math.random) {
+  const own = new Set(example.known);
+  const others = [
+    ...new Set(
+      chapter.examples
+        .filter((e) => e.id !== example.id)
+        .flatMap((e) => e.known)
+        .filter((f) => !own.has(f) && !isConversionFact(f)),
+    ),
+  ];
+  const facts = [
+    ...example.known.map((text) => ({ text, kind: isConversionFact(text) ? 'optional' : 'known' })),
+    ...shuffled(others, rng)
+      .slice(0, 2)
+      .map((text) => ({ text, kind: 'other' })),
+  ];
+  return shuffled(facts, rng);
+}
+
+/** Benar jika semua fakta wajib dipilih dan tidak ada fakta dari soal lain yang dipilih. */
+export function isKnownSelectionCorrect(options, selectedTexts) {
+  const sel = new Set(selectedTexts);
+  return options.every((o) => (o.kind === 'known' ? sel.has(o.text) : o.kind === 'other' ? !sel.has(o.text) : true));
+}
+
+/** "Gambar mana yang cocok?": model soal ini + 2 jenis model lain, diacak. */
+export function modelOptions(example, rng = Math.random) {
+  const others = shuffled(
+    MODEL_TYPES.filter((m) => m !== example.model),
+    rng,
+  ).slice(0, 2);
+  return shuffled([example.model, ...others], rng).map((model) => ({ model, correct: model === example.model }));
 }

@@ -725,3 +725,42 @@ h2 { font-size: 28px; margin: 0 0 8px; }
   .keypad { grid-template-columns: repeat(4, 64px); }
   .key { min-height: 56px; }
 }
+
+/* ---------- Langkah soal cerita: Find / Know / Picture / Answer ---------- */
+
+.math-right { width: min(100%, 520px); }
+.step-panel { display: flex; flex-direction: column; align-items: center; gap: 14px; width: 100%; animation: fade-in 180ms ease both; }
+.step-panel[hidden] { display: none; }
+.step-q { margin: 0; font-size: 22px; font-weight: 600; text-align: center; }
+.step-q .muted { display: block; font-weight: 400; }
+.step-panel .choice-col { width: 100%; }
+
+/* Fakta yang bisa dipilih lebih dari satu (langkah Know). */
+.fact[aria-pressed='true'] { border-color: var(--primary); background: var(--soft); }
+.fact[aria-pressed='true']::before { content: '✓'; margin-right: 6px; font-weight: 700; color: var(--primary); }
+.fact.right[aria-pressed='true'] { border-color: var(--good); background: #e6f6ee; }
+.fact.right[aria-pressed='true']::before { color: var(--good); }
+
+.model-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; width: 100%; }
+.model-choice { flex-direction: column; gap: 2px; padding: 10px 6px; min-height: 150px; }
+.model-svg { width: 100%; max-width: 150px; height: auto; }
+.model-name { font-size: 17px; font-weight: 600; }
+.model-id { font-size: 14px; font-weight: 400; color: var(--muted); }
+.mm-line { stroke: var(--text); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.mm-none { fill: none; }
+.mm-none-stroke { stroke: none; }
+.mm-accent { stroke: var(--primary); }
+.mm-fill-a { fill: #8fb4f5; }
+.mm-fill-b { fill: #f5c98f; }
+.mm-fill-c { fill: #a8dcb5; }
+.mm-dot { fill: var(--text); }
+.mm-text { font: 700 22px var(--font); fill: var(--text); }
+.mm-small { font-size: 14px; font-weight: 600; }
+
+@media (orientation: landscape) and (min-width: 900px) {
+  .math-right { width: min(40%, 460px); }
+}
+@media (max-width: 600px) {
+  .step-q { font-size: 19px; }
+  .model-choice { min-height: 120px; }
+}
