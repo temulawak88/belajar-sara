@@ -39,7 +39,7 @@ test('every precached asset exists, and every docs/ file is precached', () => {
   for (const a of assets) expect(fs.existsSync(path.join(DOCS, a)), `missing ${a}`).toBe(true);
   const all = listFiles(DOCS)
     .map((f) => path.relative(DOCS, f).split(path.sep).join('/'))
-    .filter((f) => f !== 'sw.js');
+    .filter((f) => f !== 'sw.js' && f !== '.nojekyll');
   expect(all.filter((f) => !assets.includes(f))).toEqual([]);
 });
 
@@ -47,6 +47,12 @@ test('service worker install bypasses the HTTP cache (no stale files in a new ve
   const sw = fs.readFileSync(path.join(DOCS, 'sw.js'), 'utf8');
   expect(sw).toMatch(/new Request\(u, \{ cache: 'reload' \}\)/);
   expect(sw).not.toMatch(/addAll\(ASSETS\)/);
+});
+
+test('docs/.nojekyll exists and is empty (GitHub Pages must not run Jekyll)', () => {
+  const f = path.join(DOCS, '.nojekyll');
+  expect(fs.existsSync(f), 'docs/.nojekyll hilang — lihat CLAUDE.md › Arsitektur').toBe(true);
+  expect(fs.statSync(f).size).toBe(0);
 });
 
 test('cache version in sw.js matches APP_VERSION', () => {
