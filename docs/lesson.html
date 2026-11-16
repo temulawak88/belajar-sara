@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f6fde">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Belajar">
+  <title>Lesson · Belajar</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/boot.js"></script>
+  <script type="module" src="js/lesson.js"></script>
+</head>
+<body class="practice">
+  <header class="topbar">
+    <a class="btn icon-btn" href="hanzi.html" id="back-btn" aria-label="Back to lessons">‹</a>
+    <a class="btn icon-btn" href="index.html" id="home-btn" aria-label="Home">⌂</a>
+    <div id="logo" class="logo small" role="img" aria-label="Belajar">学</div>
+    <h1 id="page-title">Lesson</h1>
+    <span class="counter" id="counter" aria-live="polite"></span>
+  </header>
+
+  <!-- Menu satu pelajaran: 4 latihan -->
+  <main id="screen-lesson" class="screen list-screen">
+    <div class="lesson-head">
+      <div class="lesson-zh" id="lesson-zh" lang="zh-CN"></div>
+      <div class="muted" id="lesson-id" lang="id"></div>
+    </div>
+    <div class="ex-grid" id="ex-grid">
+      <a class="menu-card ex-card" id="ex-cards" href="hanzi.html">
+        <span class="menu-icon" aria-hidden="true">🃏</span>
+        <span class="menu-title">Word cards</span>
+        <span class="menu-sub" id="ex-cards-sub">Kartu kata</span>
+      </a>
+      <a class="menu-card ex-card" id="ex-fill" href="hanzi.html">
+        <span class="menu-icon" aria-hidden="true">✏️</span>
+        <span class="menu-title">Fill the blank</span>
+        <span class="menu-sub" id="ex-fill-sub">Isi bagian kosong</span>
+      </a>
+      <div class="menu-card ex-card disabled" id="ex-order" aria-disabled="true">
+        <span class="menu-icon" aria-hidden="true">🧩</span>
+        <span class="menu-title">Build the sentence</span>
+        <span class="menu-sub">Coming soon (Susun kalimat)</span>
+      </div>
+      <a class="menu-card ex-card" id="ex-listen" href="hanzi.html">
+        <span class="menu-icon" aria-hidden="true">🎧</span>
+        <span class="menu-title">Listen</span>
+        <span class="menu-sub" id="ex-listen-sub">Dengar → pilih arti</span>
+      </a>
+    </div>
+    <details class="grammar" id="grammar">
+      <summary class="btn">Grammar in this lesson (Tata bahasa)</summary>
+      <ul id="grammar-list" lang="zh-CN"></ul>
+    </details>
+  </main>
+
+  <div id="oops" class="oops" hidden>
+    <div class="oops-box">
+      <h2>Oops! Let's try again.</h2>
+      <p>Ups, coba lagi.</p>
+      <a class="btn primary" href="index.html">Home</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -73,11 +73,12 @@ export function buildSession(words, progress, today, opts = {}) {
 /**
  * Catat jawaban. Mengembalikan objek progress BARU (tidak mengubah input).
  * @param {boolean} knew  true = "I knew it", false = "Not yet"
+ * @param {number} intervalFactor  pengali jarak ulangan (2 untuk kata tambahan: muncul lebih jarang)
  */
-export function grade(progress, id, knew, today) {
+export function grade(progress, id, knew, today, intervalFactor = 1) {
   const prev = progress[id] || { box: 1, due: today, right: 0, wrong: 0, first: today };
   const box = knew ? Math.min(BOXES, prev.box + 1) : 1;
-  const due = addDays(today, INTERVAL_DAYS[box]);
+  const due = addDays(today, INTERVAL_DAYS[box] * intervalFactor);
   const next = {
     box,
     due,

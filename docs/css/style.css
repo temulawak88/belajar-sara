@@ -478,3 +478,107 @@ h2 { font-size: 28px; margin: 0 0 8px; }
 @media (max-width: 600px) {
   .tone-guide, .tone-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* ---------- Pelajaran Mandarin (hanzi.html, lesson.html) ---------- */
+
+/* Layar berisi daftar: mulai dari atas dan boleh digulir. */
+.list-screen { justify-content: flex-start; padding-top: 8px; }
+
+.lesson-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+.lesson-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-height: 120px;
+  height: 100%;
+  padding: 18px 20px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  color: inherit;
+  text-align: left;
+  text-decoration: none;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  transition: transform 100ms ease;
+}
+.lesson-card:active { transform: scale(0.98); }
+.lesson-num { font-size: 16px; font-weight: 700; color: var(--primary); }
+.lesson-zh { font: 26px/1.3 var(--font-hanzi); }
+.lesson-id { font-size: 16px; color: var(--muted); }
+.lesson-progress { font-size: 15px; color: var(--muted); margin-top: auto; padding-top: 6px; }
+.badge {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: var(--good);
+  color: #fff;
+  border-radius: 999px;
+  padding: 2px 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.lesson-head { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.lesson-head .lesson-zh { font-size: 34px; }
+.ex-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  width: min(100%, 760px);
+}
+.ex-card { padding: 22px 12px; }
+.ex-card .menu-icon { font-size: 44px; }
+.ex-card .menu-title { font-size: 22px; }
+.ex-card .menu-sub { font-size: 15px; }
+.grammar { width: min(100%, 760px); text-align: left; }
+.grammar summary { display: flex; list-style: none; font-size: 18px; }
+.grammar summary::-webkit-details-marker { display: none; }
+.grammar ul { margin: 12px 0 0; padding-left: 24px; font-size: 18px; color: var(--muted); }
+.grammar li { margin: 4px 0; }
+
+/* ---------- Latihan kalimat (fill.html, listen.html) ---------- */
+
+.sentence-card { min-height: 0; width: min(100%, 760px); padding: 28px 24px; gap: 14px; }
+.sentence { font: 40px/1.5 var(--font-hanzi); }
+.sentence.small { font-size: 32px; }
+.blank {
+  display: inline-block;
+  min-width: 2.2em;
+  margin: 0 4px;
+  padding: 0 6px;
+  border-bottom: 4px solid var(--primary);
+  color: var(--primary);
+}
+.blank.filled { border-bottom-color: var(--good); color: var(--good); }
+.pinyin.small { font-size: 22px; font-weight: 500; }
+
+.choice-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; width: min(100%, 760px); }
+.choice-row .choice { min-width: 150px; font: 600 30px/1.2 var(--font-hanzi); }
+.choice-col { display: flex; flex-direction: column; gap: 12px; width: min(100%, 620px); }
+.choice {
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  border: 3px solid transparent;
+}
+.text-choice { min-height: 64px; font-size: 20px; font-weight: 500; text-align: left; justify-content: flex-start; }
+.choice.right { border-color: var(--good); background: #e6f6ee; }
+.choice:disabled { opacity: 1; }
+.choice.tried, .choice.tried:disabled { opacity: 0.45; }
+
+@media (max-width: 600px) {
+  .ex-grid { grid-template-columns: 1fr; }
+  .sentence { font-size: 30px; }
+}

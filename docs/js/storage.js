@@ -2,10 +2,10 @@
 // Semua akses dibungkus try/catch: Safari bisa melempar error (mode privat, kuota penuh).
 
 const KEY = 'belajar-sarah:progress';
-export const SCHEMA_VERSION = 3;
+export const SCHEMA_VERSION = 4;
 
 function emptyState() {
-  return { schemaVersion: SCHEMA_VERSION, nickname: '', leitner: {}, writing: {}, tones: {}, updatedAt: null };
+  return { schemaVersion: SCHEMA_VERSION, nickname: '', leitner: {}, writing: {}, tones: {}, sentences: {}, updatedAt: null };
 }
 
 // Migrasi dari versi lama ke versi sekarang. Tambah langkah baru di sini setiap
@@ -17,6 +17,9 @@ const MIGRATIONS = {
   1: (s) => ({ ...s, writing: {}, schemaVersion: 2 }),
   // v3 (iterasi 3): hasil latihan nada per karakter.
   2: (s) => ({ ...s, tones: {}, schemaVersion: 3 }),
+  // v4 (pelajaran): hasil latihan kalimat per id (fill / order / listen). Progres flashcard lama
+  // (termasuk kata HSK 1 yang tidak lagi ditampilkan) dibiarkan apa adanya.
+  3: (s) => ({ ...s, sentences: {}, schemaVersion: 4 }),
 };
 
 export function migrate(data) {
@@ -36,6 +39,7 @@ export function migrate(data) {
   if (!s.leitner || typeof s.leitner !== 'object') s.leitner = {};
   if (!s.writing || typeof s.writing !== 'object') s.writing = {};
   if (!s.tones || typeof s.tones !== 'object') s.tones = {};
+  if (!s.sentences || typeof s.sentences !== 'object') s.sentences = {};
   return s;
 }
 

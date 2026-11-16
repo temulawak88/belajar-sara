@@ -158,7 +158,7 @@ test('schema v2 progress (iteration 2) is migrated to v3', async ({ page }) => {
   await page.locator('#start-btn').tap();
   await page.locator('#options [data-tone="4"]').tap();
   const p = await readProgress(page);
-  expect(p.schemaVersion).toBe(3);
+  expect(p.schemaVersion).toBe(4);
   expect(p.leitner['hsk1-da'].box).toBe(3);
   expect(p.writing['大'].write).toBe(1);
   expect(p.tones['大']).toMatchObject({ seen: 1, right: 1 });

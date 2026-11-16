@@ -17,6 +17,9 @@ App ada di `docs/` dan ditayangkan GitHub Pages (branch `main`, folder `/docs`).
 - **Iterasi 4:** kosakata lengkap HSK 1 + HSK 2 (HSK 2.0 revisi 2012, dasar buku *HSK Standard Course*):
   303 kartu, HSK 1 dulu lalu HSK 2, per tema. Karakter berbacaan ganda ditandai `no_tone`.
 
+- **Mandarin per pelajaran:** `hanzi.html` kini daftar Pelajaran 1–11; tiap pelajaran (`lesson.html?n=…`) punya
+  kartu kata, isi bagian kosong, dan dengar → pilih arti. Susun kalimat menyusul. Flashcard HSK 1 terpisah dihapus.
+
 ## Menjalankan di laptop
 ```bash
 npm run serve        # lalu buka http://localhost:4173/docs/
@@ -119,3 +122,10 @@ dan tambahkan file baru ke daftar `ASSETS` di `sw.js` (tes mengecek semua file `
   (sekarang 为 dan 什 ditulis dua kali). Mengubah format konten.
 - Latihan menulis membaca seluruh `chars.json` (~750 KB) padahal satu sesi memakai 3 karakter.
   Bisa dipecah per karakter dan dimuat lewat `charDataLoader` (penting jika ditambah HSK 3).
+
+### Pelajaran Mandarin
+21. Mandarin → daftar 11 pelajaran; ketuk satu → menu dengan 4 latihan ("Build the sentence" masih Coming soon).
+22. Word cards: kata pelajaran itu saja; progres kata yang sudah pernah dipelajari tetap ada.
+23. Fill the blank: salah sekali → muncul arti sebagai petunjuk; benar → kalimat dibacakan, pinyin + arti muncul.
+24. Listen: kalimat dibacakan saat Start/Next; salah sekali → diputar lagi; dengarkan apakah suara iPad jelas untuk kalimat panjang.
+25. Daftar pelajaran bisa digulir dengan lancar di portrait dan landscape.

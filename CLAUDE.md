@@ -35,7 +35,12 @@
 docs/                 # = app yang ditayangkan GitHub Pages
   index.html          # menu utama: Math, Mandarin, Misi Harian
   math.html
-  hanzi.html
+  hanzi.html          # daftar pelajaran Mandarin
+  lesson.html         # menu satu pelajaran (?n=3): 4 latihan
+  cards.html          # kartu kata        (?n=3)
+  fill.html           # isi bagian kosong (?n=3)
+  listen.html         # dengar → pilih arti (?n=3)
+  write.html, tone.html   # latihan menulis dan nada
   css/style.css
   js/                 # satu file per modul, ES modules
   manifest.json
