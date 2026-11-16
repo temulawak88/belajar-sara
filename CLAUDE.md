@@ -18,7 +18,9 @@
 - **Static web app**: HTML + CSS + JavaScript murni (tanpa framework, tanpa build step).
 - **Konten = file JSON**. Dibuat/diubah lewat Claude Code, direview orang tua.
   - Matematika: `docs/content/math/syllabus.json` (langsung di `docs/` agar ikut tayang di GitHub Pages).
-  - Mandarin: sumber di `content/hsk2/vocab.json`, salinannya di `docs/content/hsk2/` (`validate_vocab.py --sync`).
+  - Mandarin: pelajaran di `docs/content/hsk2/lessons.json` (sumber resmi, langsung di `docs/`).
+    Daftar kata HSK 1–2 di `content/hsk2/vocab.json` (salinannya di `docs/content/hsk2/`, `validate_vocab.py --sync`)
+    tetap dipakai sebagai dasar kosakata HSK 1, data goresan, dan penanda `no_tone`.
 - **Progres disimpan di iPad** (IndexedDB/localStorage), dengan tombol *Export* (JSON) untuk backup/laporan.
 - **PWA**: ada `manifest.json` + service worker agar bisa "Add to Home Screen" dan jalan offline.
 - **Python** hanya untuk tooling di laptop: validasi konten, cek jawaban matematika, server lokal.
@@ -40,12 +42,14 @@ docs/                 # = app yang ditayangkan GitHub Pages
   sw.js
   content/
     math/syllabus.json  # SUMBER RESMI matematika: bab, pola soal, contoh, glosarium, kesalahan umum
+    hsk2/lessons.json   # SUMBER RESMI Mandarin: pelajaran 1–11, kosakata, tata bahasa, kalimat latihan
     hsk2/vocab.json     # salinan kosakata (jangan diedit langsung)
 content/
   hsk2/vocab.json     # sumber kosakata HSK 1–2
 tools/
   validate_math.py    # validasi syllabus.json + hitung ulang semua jawaban, gagal jika beda
   validate_vocab.py
+  validate_lessons.py # cek setiap karakter kalimat latihan ada di HSK 1 + pelajaran ≤ N
 ```
 
 ## Aturan konten matematika (WAJIB)
@@ -78,10 +82,26 @@ tools/
    salah ke-2 → apa yang diketahui (`known`); salah ke-3 → jawaban ditunjukkan dengan ramah.
 
 ## Mandarin (HSK 2)
-- Flashcard dengan spaced repetition sederhana (Leitner 5 kotak).
-- Tampilkan hanzi → pinyin → arti (Indonesia/Inggris); suara pakai Web Speech API `zh-CN`.
-- Latihan menulis dengan library Hanzi Writer (simpan datanya lokal agar bisa offline).
-- Latihan nada: dengar → pilih nada 1/2/3/4.
+- **Berbasis pelajaran**: anak memilih Pelajaran 1–11 (12–15 menyusul) dari buku *HSK Standard Course 2*.
+  **`docs/content/hsk2/lessons.json` adalah sumber resmi** judul, kosakata, tata bahasa, dan kalimat latihan per pelajaran.
+  Status pelajaran (`current` / `review` / `upcoming`) diisi orang tua. Tidak ada lagi flashcard HSK 1 terpisah:
+  kosakata HSK 1 dianggap sudah dikuasai dan menjadi dasar kalimat.
+- Setiap pelajaran punya 4 latihan:
+  1. **Kartu kata** — kata pelajaran itu: hanzi → pinyin → arti, suara Web Speech `zh-CN`, Leitner 5 kotak.
+     Kata `supplementary` (bertanda * di buku) muncul lebih jarang.
+  2. **Isi bagian kosong** — pilihan ganda (`fill`), melatih tata bahasa.
+  3. **Susun kalimat** — potongan (`chunks`) diacak; bisa di-drag (Pointer Events) atau di-tap berurutan.
+     Urutan lain yang juga benar dicatat di `also_accept`.
+  4. **Dengar → pilih arti** — kalimat dari `fill`/`order` dibacakan (TTS); pengecoh = arti kalimat lain di pelajaran yang sama.
+- **Aturan kalimat latihan (WAJIB)**:
+  - Buatan sendiri, bukan salinan teks buku.
+  - Hanya boleh memakai karakter dari kosakata HSK 1 (`content/hsk2/vocab.json`, `hsk: 1`) + kosakata pelajaran 1
+    sampai pelajaran itu — termasuk pilihan jawaban, potongan kalimat, dan `also_accept`.
+  - `tools/validate_lessons.py` mengecek aturan ini (juga: potongan membentuk jawaban, jawaban ada di pilihan,
+    jumlah suku kata pinyin = jumlah hanzi, arti tidak dobel). Jalankan bersama `python3 -m unittest tools/test_validate_lessons.py`.
+  - Kalimat buatan Claude ditandai `"origin": "claude"` dan direview orang tua (tata bahasa & arti tidak bisa dicek otomatis).
+- Latihan menulis dengan library Hanzi Writer (simpan datanya lokal agar bisa offline) dan latihan nada
+  (dengar → pilih nada 1/2/3/4) memakai kata dari pelajaran yang dipilih.
 
 ## Catatan iPad
 - Target sentuh minimal 44px, font besar, mode landscape dan portrait.

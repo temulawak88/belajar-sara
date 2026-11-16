@@ -1,6 +1,6 @@
 // Service worker: app shell offline (cache-first).
 // WAJIB: naikkan CACHE_NAME setiap rilis, samakan dengan APP_VERSION di js/version.js.
-const CACHE_NAME = 'belajar-v5';
+const CACHE_NAME = 'belajar-v6';
 
 // Semua path RELATIF terhadap lokasi sw.js (= docs/), supaya jalan di sub-path GitHub Pages.
 const ASSETS = [
@@ -27,6 +27,7 @@ const ASSETS = [
   'js/version.js',
   'js/write.js',
   'js/writing.js',
+  'content/hsk2/lessons.json',
   'content/hsk2/vocab.json',
   'content/math/syllabus.json',
   'vendor/hanzi-writer/hanzi-writer.esm.js',

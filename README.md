@@ -33,6 +33,15 @@ python3 -m unittest tools/test_validate_math.py
 ```
 
 ### Mandarin
+Sumber resmi pelajaran: `docs/content/hsk2/lessons.json` (Pelajaran 1–11 *HSK Standard Course 2*).
+Kalimat latihan hanya boleh memakai kosakata HSK 1 + pelajaran sampai pelajaran itu. Setelah mengubah:
+```bash
+python3 tools/validate_lessons.py
+python3 -m unittest tools/test_validate_lessons.py
+```
+Kalimat buatan Claude ditandai `"origin": "claude"` — mohon direview (tata bahasa & arti).
+
+Daftar kata HSK 1–2 (dasar kosakata HSK 1, data goresan, `no_tone`):
 Sumber kosakata: `content/hsk2/vocab.json`. Karena Pages hanya menayangkan `docs/`, app membaca
 salinannya di `docs/content/hsk2/vocab.json`. Setelah mengubah kosakata:
 ```bash
