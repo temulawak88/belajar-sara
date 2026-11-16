@@ -73,8 +73,8 @@ h2 { font-size: 28px; margin: 0 0 8px; }
   transition: transform 150ms ease;
 }
 .logo.small { width: 48px; height: 48px; font-size: 30px; line-height: 48px; border-radius: 14px; }
-/* Umpan balik saat ditekan lama (Mode Papi) — pelan-pelan mengecil. */
-.logo.holding { transform: scale(0.85); transition: transform 3000ms linear; }
+/* Umpan balik saat ditekan (Mode Papi terbuka setelah ditahan 3 detik). */
+.logo.holding { transform: scale(0.9); }
 
 /* ---------- Tombol ---------- */
 
@@ -94,7 +94,7 @@ h2 { font-size: 28px; margin: 0 0 8px; }
   text-decoration: none;
   touch-action: manipulation;
   cursor: pointer;
-  transition: transform 80ms ease, background-color 80ms ease;
+  transition: transform 80ms ease, opacity 80ms ease;
 }
 .btn:active { transform: scale(0.96); }
 .btn.primary { background: var(--primary); color: #fff; }
@@ -106,7 +106,7 @@ h2 { font-size: 28px; margin: 0 0 8px; }
 .btn.notyet { background: #fdf1e1; color: #8a5300; }
 
 @media (hover: hover) {
-  .btn:hover { filter: brightness(0.97); }
+  .btn:hover { opacity: 0.9; }
   .menu-card:not(.disabled):hover { transform: translateY(-2px); }
 }
 

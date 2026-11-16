@@ -121,6 +121,9 @@ tools/
 
 ### Input sentuh & Pencil
 - Pakai **Pointer Events** (`pointerdown/move/up/cancel`) untuk semua interaksi; jangan campur dengan mouse/touch events.
+  - Pengecualian: library Hanzi Writer hanya mendengarkan mouse/touch events. Input anak tetap ditangkap dengan
+    Pointer Events (`js/inkpad.js`); goresan yang sudah selesai diteruskan ke Hanzi Writer sebagai mouse event
+    buatan (`js/write.js`) untuk dinilai. Jangan memakai mouse/touch events di tempat lain.
 - Area menulis/menggambar (canvas): `touch-action: none`, `setPointerCapture`, tangani `pointercancel`.
 - **Palm rejection**: saat Pencil terdeteksi (`pointerType === 'pen'`), canvas mengabaikan input jari.
 - Garis halus: gambar di `requestAnimationFrame`, pakai `getCoalescedEvents()` jika tersedia,
@@ -150,6 +153,8 @@ tools/
 ### Suara
 - Web Speech hanya dipicu dari tap. Tunggu event `voiceschanged`, pilih suara `zh-CN`;
   jika tidak ada, tampilkan pesan kecil + tetap jalan tanpa suara.
+  - Pengecualian: latihan yang intinya mendengar (latihan nada, dengar → pilih arti) tidak bisa jalan tanpa suara:
+    tampilkan penjelasan cara memasang suara, nonaktifkan Start, dan tetap sediakan tombol Home/Back.
 
 ## Kualitas — mencegah error
 
