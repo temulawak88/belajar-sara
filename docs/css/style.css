@@ -56,8 +56,9 @@ h2 { font-size: 28px; margin: 0 0 8px; }
   gap: 16px;
   padding: 16px 0;
 }
-.topbar h1 { flex: 1; }
-.counter { font-size: 20px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.topbar h1 { flex: 1; min-width: 0; }
+/* Penghitung "1 / 12" tidak boleh terlipat di layar sempit (iPhone); judul yang mengalah. */
+.counter { flex: none; white-space: nowrap; font-size: 20px; color: var(--muted); font-variant-numeric: tabular-nums; }
 
 .logo {
   width: 64px;
