@@ -47,6 +47,7 @@ dengan karakter baru:
 npm install
 python3 tools/sync_hanzi_data.py
 python3 tools/validate_vocab.py
+python3 -m unittest tools/test_validate_vocab.py   # tes untuk validator itu sendiri
 ```
 Versi `hanzi-writer` (MIT) dan `hanzi-writer-data` (Arphic Public License) dikunci di `package.json`;
 lisensinya ikut disalin ke `docs/vendor/`.

@@ -58,7 +58,7 @@ test('characters with more than one reading are never used in tone practice', as
       bu: items.find((i) => i.char === '不')?.syllable,
     };
   });
-  expect(r.skip).toEqual(['乐', '便', '为', '什', '喂', '场', '教', '漂', '觉', '谁', '还', '都', '长'].sort());
+  expect(r.skip).toEqual(['乐', '便', '为', '什', '兴', '喂', '场', '教', '漂', '觉', '谁', '还', '都', '长'].sort());
   expect(r.leaked).toEqual([]);
   expect(r.pickedLeaked).toEqual([]);
   expect(r.neutral).toBe(0);

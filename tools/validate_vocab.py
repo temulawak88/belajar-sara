@@ -25,6 +25,10 @@ STROKES = ROOT / "docs" / "vendor" / "hanzi-writer-data" / "chars.json"
 
 SCHEMA_VERSION = 1
 REQUIRED = ("id", "hanzi", "pinyin", "hsk", "meaning_en", "meaning_id")
+# Hanya partikel ini yang boleh tanpa tanda nada sama sekali (nada netral). Kata lain tanpa
+# tanda nada hampir pasti salah ketik (mis. "pengyou").
+NEUTRAL_ONLY = {"了", "的", "吗", "呢", "吧", "着", "过", "得"}
+TONE_MARKS = set("āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜĀÁǍÀĒÉĚÈŌÓǑÒ")
 ID_RE = re.compile(r"^hsk[12]-[a-z0-9-]+$")
 HANZI_RE = re.compile(r"^[一-鿿]+$")
 # Huruf pinyin: a-z, ü, vokal bertanda nada, plus spasi/apostrof antar suku kata.
@@ -118,13 +122,18 @@ def validate(data):
             errors.append(f"{where}: pinyin harus Unicode NFC (pakai huruf bertanda nada jadi satu)")
         if not PINYIN_RE.match(py):
             errors.append(f"{where}: pinyin berisi karakter tidak valid: {py!r}")
+        elif not TONE_MARKS & set(py) and w["hanzi"] not in NEUTRAL_ONLY:
+            errors.append(f"{where}: pinyin tanpa tanda nada sama sekali: {py!r} "
+                          f"(hanya boleh untuk partikel {''.join(sorted(NEUTRAL_ONLY))})")
         elif segment_pinyin(py, len(w["hanzi"])) is None:
             errors.append(f"{where}: pinyin {py!r} tidak bisa dipecah jadi {len(w['hanzi'])} suku kata "
                           "(cek ejaan; pakai apostrof untuk xi'an)")
         if "no_tone" in w and (
-            not isinstance(w["no_tone"], list) or not w["no_tone"] or any(c not in w["hanzi"] for c in w["no_tone"])
+            not isinstance(w["no_tone"], list)
+            or not w["no_tone"]
+            or any(not isinstance(c, str) or len(c) != 1 or c not in w["hanzi"] for c in w["no_tone"])
         ):
-            errors.append(f"{where}: no_tone harus list karakter yang ada di hanzi kata ini")
+            errors.append(f"{where}: no_tone harus list berisi SATU karakter per item, yang ada di hanzi kata ini")
         if w["hsk"] not in (1, 2):
             errors.append(f"{where}: hsk harus 1 atau 2")
         for k in ("meaning_en", "meaning_id"):

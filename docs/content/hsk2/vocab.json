@@ -43,7 +43,7 @@
     {"id": "hsk1-jiao", "hanzi": "叫", "pinyin": "jiào", "hsk": 1, "meaning_en": "to be called; to call", "meaning_id": "bernama; memanggil"},
     {"id": "hsk1-mingzi", "hanzi": "名字", "pinyin": "míngzi", "hsk": 1, "meaning_en": "name", "meaning_id": "nama"},
     {"id": "hsk1-renshi", "hanzi": "认识", "pinyin": "rènshi", "hsk": 1, "meaning_en": "to know (someone)", "meaning_id": "kenal"},
-    {"id": "hsk1-gaoxing", "hanzi": "高兴", "pinyin": "gāoxìng", "hsk": 1, "meaning_en": "happy, glad", "meaning_id": "senang"},
+    {"id": "hsk1-gaoxing", "hanzi": "高兴", "pinyin": "gāoxìng", "hsk": 1, "meaning_en": "happy, glad", "meaning_id": "senang", "no_tone": ["兴"]},
     {"id": "hsk1-ai", "hanzi": "爱", "pinyin": "ài", "hsk": 1, "meaning_en": "to love", "meaning_id": "cinta, sayang"},
     {"id": "hsk1-yi", "hanzi": "一", "pinyin": "yī", "hsk": 1, "meaning_en": "one", "meaning_id": "satu"},
     {"id": "hsk1-er", "hanzi": "二", "pinyin": "èr", "hsk": 1, "meaning_en": "two", "meaning_id": "dua"},
