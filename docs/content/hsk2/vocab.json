@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "title": "HSK vocabulary (test set: 20 HSK 1 words)",
+  "words": [
+    { "id": "hsk1-ni",       "hanzi": "你",   "pinyin": "nǐ",       "hsk": 1, "meaning_en": "you",          "meaning_id": "kamu" },
+    { "id": "hsk1-hao",      "hanzi": "好",   "pinyin": "hǎo",      "hsk": 1, "meaning_en": "good",         "meaning_id": "baik, bagus" },
+    { "id": "hsk1-xiexie",   "hanzi": "谢谢", "pinyin": "xièxie",   "hsk": 1, "meaning_en": "thank you",    "meaning_id": "terima kasih" },
+    { "id": "hsk1-zaijian",  "hanzi": "再见", "pinyin": "zàijiàn",  "hsk": 1, "meaning_en": "goodbye",      "meaning_id": "sampai jumpa" },
+    { "id": "hsk1-baba",     "hanzi": "爸爸", "pinyin": "bàba",     "hsk": 1, "meaning_en": "dad",          "meaning_id": "ayah" },
+    { "id": "hsk1-mama",     "hanzi": "妈妈", "pinyin": "māma",     "hsk": 1, "meaning_en": "mum",          "meaning_id": "ibu" },
+    { "id": "hsk1-pengyou",  "hanzi": "朋友", "pinyin": "péngyou",  "hsk": 1, "meaning_en": "friend",       "meaning_id": "teman" },
+    { "id": "hsk1-laoshi",   "hanzi": "老师", "pinyin": "lǎoshī",   "hsk": 1, "meaning_en": "teacher",      "meaning_id": "guru" },
+    { "id": "hsk1-xuesheng", "hanzi": "学生", "pinyin": "xuésheng", "hsk": 1, "meaning_en": "student",      "meaning_id": "murid, siswa" },
+    { "id": "hsk1-mao",      "hanzi": "猫",   "pinyin": "māo",      "hsk": 1, "meaning_en": "cat",          "meaning_id": "kucing" },
+    { "id": "hsk1-gou",      "hanzi": "狗",   "pinyin": "gǒu",      "hsk": 1, "meaning_en": "dog",          "meaning_id": "anjing" },
+    { "id": "hsk1-shui",     "hanzi": "水",   "pinyin": "shuǐ",     "hsk": 1, "meaning_en": "water",        "meaning_id": "air" },
+    { "id": "hsk1-mifan",    "hanzi": "米饭", "pinyin": "mǐfàn",    "hsk": 1, "meaning_en": "cooked rice",  "meaning_id": "nasi" },
+    { "id": "hsk1-pingguo",  "hanzi": "苹果", "pinyin": "píngguǒ",  "hsk": 1, "meaning_en": "apple",        "meaning_id": "apel" },
+    { "id": "hsk1-chi",      "hanzi": "吃",   "pinyin": "chī",      "hsk": 1, "meaning_en": "to eat",       "meaning_id": "makan" },
+    { "id": "hsk1-he",       "hanzi": "喝",   "pinyin": "hē",       "hsk": 1, "meaning_en": "to drink",     "meaning_id": "minum" },
+    { "id": "hsk1-xihuan",   "hanzi": "喜欢", "pinyin": "xǐhuan",   "hsk": 1, "meaning_en": "to like",      "meaning_id": "suka" },
+    { "id": "hsk1-da",       "hanzi": "大",   "pinyin": "dà",       "hsk": 1, "meaning_en": "big",          "meaning_id": "besar" },
+    { "id": "hsk1-xiao",     "hanzi": "小",   "pinyin": "xiǎo",     "hsk": 1, "meaning_en": "small",        "meaning_id": "kecil" },
+    { "id": "hsk1-zhongguo", "hanzi": "中国", "pinyin": "Zhōngguó", "hsk": 1, "meaning_en": "China",        "meaning_id": "Tiongkok" }
+  ]
+}

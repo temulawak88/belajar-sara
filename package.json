@@ -1,0 +1,13 @@
+{
+  "name": "belajar-sarah",
+  "private": true,
+  "description": "Tooling tes untuk web app belajar (app-nya sendiri tanpa build step, ada di docs/).",
+  "scripts": {
+    "serve": "python3 -m http.server 4173",
+    "test": "playwright test --trace off",
+    "test:webkit": "playwright test --trace off --project=webkit-ipad --project=webkit-ipad-landscape"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0"
+  }
+}

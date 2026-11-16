@@ -1,0 +1,303 @@
+/* Belajar — gaya dasar untuk iPad Safari. Lihat aturan UI/UX di CLAUDE.md. */
+
+:root {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --text: #1d2433;
+  --muted: #5b6475;
+  --primary: #2f6fde;
+  --primary-press: #2257b5;
+  --good: #1f9d63;
+  --soft: #e9eefb;
+  --warm: #f0a13c;
+  --danger: #c63d3d;
+  --radius: 20px;
+  --shadow: 0 6px 20px rgba(29, 36, 51, 0.08);
+  --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font-hanzi: 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'WenQuanYi Zen Hei', sans-serif;
+  --gutter: max(20px, env(safe-area-inset-left), env(safe-area-inset-right));
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+/* Atribut hidden harus selalu menang atas display: flex/inline-flex di bawah. */
+[hidden] { display: none !important; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font: 20px/1.45 var(--font);
+  padding: env(safe-area-inset-top) var(--gutter) env(safe-area-inset-bottom);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Area latihan: cegah seleksi teks / menu long-press tak sengaja. */
+body.practice, .logo, .menu-card, .btn {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+h1 { font-size: 26px; margin: 0; }
+h2 { font-size: 28px; margin: 0 0 8px; }
+.muted { color: var(--muted); font-size: 18px; }
+
+/* ---------- Topbar ---------- */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+}
+.topbar h1 { flex: 1; }
+.counter { font-size: 20px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: var(--primary);
+  color: #fff;
+  font: 40px/64px var(--font-hanzi);
+  text-align: center;
+  flex: none;
+  touch-action: manipulation;
+  transition: transform 150ms ease;
+}
+.logo.small { width: 48px; height: 48px; font-size: 30px; line-height: 48px; border-radius: 14px; }
+/* Umpan balik saat ditekan lama (Mode Papi) — pelan-pelan mengecil. */
+.logo.holding { transform: scale(0.85); transition: transform 3000ms linear; }
+
+/* ---------- Tombol ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 56px;
+  min-width: 56px;
+  padding: 12px 24px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--soft);
+  color: var(--text);
+  font: 600 20px/1.2 var(--font);
+  text-decoration: none;
+  touch-action: manipulation;
+  cursor: pointer;
+  transition: transform 80ms ease, background-color 80ms ease;
+}
+.btn:active { transform: scale(0.96); }
+.btn.primary { background: var(--primary); color: #fff; }
+.btn.primary:active { background: var(--primary-press); }
+.btn.danger { background: #fbe9e9; color: var(--danger); }
+.btn.big { min-height: 72px; font-size: 24px; padding: 16px 40px; border-radius: 20px; }
+.btn.icon-btn { font-size: 30px; padding: 0; width: 56px; }
+.btn.knew { background: var(--good); color: #fff; }
+.btn.notyet { background: #fdf1e1; color: #8a5300; }
+
+@media (hover: hover) {
+  .btn:hover { filter: brightness(0.97); }
+  .menu-card:not(.disabled):hover { transform: translateY(-2px); }
+}
+
+/* ---------- Menu utama ---------- */
+
+.menu {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  align-content: center;
+  padding-bottom: 32px;
+}
+.menu-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 36px 20px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  color: inherit;
+  text-decoration: none;
+  touch-action: manipulation;
+  transition: transform 100ms ease, opacity 150ms ease;
+}
+.menu-card:active:not(.disabled) { transform: scale(0.97); }
+.menu-card.disabled { opacity: 0.5; }
+.menu-icon { font: 64px/1.1 var(--font-hanzi); }
+.menu-title { font-size: 28px; font-weight: 700; }
+.menu-sub { font-size: 18px; color: var(--muted); text-align: center; }
+
+/* ---------- Layar latihan ---------- */
+
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding-bottom: 32px;
+  text-align: center;
+  animation: fade-in 200ms ease both;
+}
+.screen[hidden] { display: none; }
+.big-note { font-size: 22px; margin: 0; }
+
+.boxes {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  width: min(100%, 760px);
+}
+.box {
+  background: var(--surface);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 16px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 6px solid var(--primary);
+}
+.box-1 { border-top-color: #f0a13c; }
+.box-2 { border-top-color: #e6c339; }
+.box-3 { border-top-color: #7cc36b; }
+.box-4 { border-top-color: #3fb08a; }
+.box-5 { border-top-color: #2f6fde; }
+.box-num { font-size: 16px; color: var(--muted); }
+.box-count { font-size: 36px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.box-every { font-size: 14px; color: var(--muted); }
+
+.card {
+  position: relative;
+  width: min(100%, 620px);
+  min-height: min(52dvh, 460px);
+  background: var(--surface);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+  padding: 32px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.card.enter { animation: card-in 200ms ease both; }
+.tag {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: #fdf1e1;
+  color: #8a5300;
+  border-radius: 999px;
+  padding: 4px 14px;
+  font-size: 16px;
+}
+.hanzi { font: 400 clamp(96px, 18vmin, 160px)/1.1 var(--font-hanzi); }
+.answer { display: flex; flex-direction: column; gap: 4px; animation: fade-in 180ms ease both; }
+.answer[hidden] { display: none; }
+.pinyin { font-size: 40px; font-weight: 600; color: var(--primary); }
+.meaning-en { font-size: 28px; }
+.meaning-id { font-size: 22px; color: var(--muted); }
+.speak-btn { margin-top: 8px; }
+.voice-note { font-size: 15px; color: var(--muted); margin: 0; max-width: 460px; }
+
+.actions { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; }
+.actions[hidden] { display: none; }
+.actions .btn { min-width: 220px; }
+
+/* ---------- Dialog, toast, banner, oops ---------- */
+
+.dialog {
+  border: 0;
+  border-radius: 24px;
+  padding: 28px;
+  width: min(92vw, 560px);
+  max-height: 85dvh;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  color: var(--text);
+  font: inherit;
+}
+.dialog::backdrop { background: rgba(20, 24, 33, 0.45); }
+.dialog[open] { animation: card-in 180ms ease both; }
+.dialog-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; justify-content: flex-end; }
+.papi-log { max-height: 40dvh; overflow: auto; font-size: 15px; }
+.papi-log pre { white-space: pre-wrap; font-size: 12px; background: var(--bg); padding: 8px; border-radius: 8px; }
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  transform: translate(-50%, 20px);
+  opacity: 0;
+  background: var(--text);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-size: 18px;
+  pointer-events: none;
+  transition: opacity 200ms ease, transform 200ms ease;
+  max-width: calc(100vw - 40px);
+  text-align: center;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+.update-banner {
+  position: fixed;
+  top: calc(12px + env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  min-height: 52px;
+  padding: 12px 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--warm);
+  color: #3a2400;
+  font: 600 17px var(--font);
+  box-shadow: var(--shadow);
+  touch-action: manipulation;
+  max-width: calc(100vw - 40px);
+}
+
+.oops {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(246, 247, 251, 0.97);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.oops[hidden] { display: none; }
+.oops-box { text-align: center; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+
+/* ---------- Animasi (hanya transform/opacity) ---------- */
+
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes card-in { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* Portrait sempit: tombol jawaban bertumpuk penuh. */
+@media (max-width: 600px) {
+  .actions .btn { min-width: 0; flex: 1; }
+  .boxes { gap: 6px; }
+}
