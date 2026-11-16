@@ -4,7 +4,7 @@
 - Pengguna: anak kelas 6 SD (P6), dipakai di iPad (Safari, layar sentuh, kadang Apple Pencil).
 - Orang tua (developer): menjalankan Claude Code di laptop Windows 11 + Ubuntu (WSL).
 - Dua mata pelajaran:
-  1. **Matematika** — buku *My Pals Are Here! Maths 6A* (3rd Ed., Marshall Cavendish, kurikulum Singapura).
+  1. **Matematika** — buku *My Pals Are Here! Maths 6B* (3rd Ed., Marshall Cavendish, kurikulum Singapura).
      Kelemahan: soal cerita (memahami soal, logika, bahasa Inggris). Metode yang dilatih: **bar model**.
   2. **Mandarin** — buku *Panduan Persiapan HSK 2* (HSK Standard Course 标准教程 2). Target: kosakata HSK 2 (300 kata kumulatif).
 
