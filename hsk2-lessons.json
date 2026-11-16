@@ -1,0 +1,305 @@
+{
+  "schemaVersion": 1,
+  "book": "Panduan Persiapan HSK 2 (HSK Standard Course 标准教程 2) - Buku Ajar",
+  "source_note": "Judul, kosakata, dan tata bahasa per pelajaran diambil dari daftar isi buku. Kalimat latihan adalah buatan sendiri (bukan salinan teks buku), memakai kosakata HSK 1 + pelajaran sampai pelajaran tersebut.",
+  "notes": {
+    "supplementary": "Kata bertanda * di buku = kosakata tambahan (supplementary: true). Tetap diajarkan, tapi bobot latihannya lebih kecil.",
+    "status": "Diisi orang tua: current / review / upcoming. Pelajaran 12-15 menyusul (halaman daftar isi berikutnya)."
+  },
+  "exercise_types": {
+    "cards": "Flashcard kata per pelajaran: hanzi -> pinyin -> arti, dengan suara",
+    "fill": "Isi bagian kosong dengan kata/pola yang benar (pilihan ganda) - melatih tata bahasa",
+    "order": "Susun potongan kata menjadi kalimat yang benar - melatih struktur kalimat",
+    "listen": "Dengar kalimat (TTS) -> pilih arti yang benar. Pakai kalimat dari fill/order"
+  },
+  "lessons": [
+    {
+      "number": 1, "page": 1, "status": "upcoming",
+      "title_zh": "九月去北京旅游最好", "title_id": "Bertamasya ke Beijing Paling Baik pada Bulan September",
+      "vocab": [
+        {"hanzi": "旅游", "pinyin": "lǚyóu", "arti": "berwisata"},
+        {"hanzi": "觉得", "pinyin": "juéde", "arti": "merasa, menurut (saya)"},
+        {"hanzi": "最", "pinyin": "zuì", "arti": "paling"},
+        {"hanzi": "为什么", "pinyin": "wèishénme", "arti": "mengapa"},
+        {"hanzi": "也", "pinyin": "yě", "arti": "juga"},
+        {"hanzi": "运动", "pinyin": "yùndòng", "arti": "olahraga"},
+        {"hanzi": "踢足球", "pinyin": "tī zúqiú", "arti": "main sepak bola"},
+        {"hanzi": "一起", "pinyin": "yìqǐ", "arti": "bersama"},
+        {"hanzi": "要", "pinyin": "yào", "arti": "mau, akan"},
+        {"hanzi": "新", "pinyin": "xīn", "arti": "baru"},
+        {"hanzi": "它", "pinyin": "tā", "arti": "ia (benda/hewan)"},
+        {"hanzi": "眼睛", "pinyin": "yǎnjing", "arti": "mata"},
+        {"hanzi": "花花", "pinyin": "Huāhua", "arti": "Huahua (nama hewan peliharaan)", "proper_noun": true}
+      ],
+      "grammar": ["助动词“要” - kata kerja bantu 要", "程度副词“最” - 最 (paling)", "概数：几、多 - bilangan tak tentu 几 dan 多"],
+      "exercises": [
+        {"type": "order", "chunks": ["明天", "我", "要", "和朋友", "一起", "去踢足球"],
+         "answer": "明天我要和朋友一起去踢足球。", "pinyin": "Míngtiān wǒ yào hé péngyou yìqǐ qù tī zúqiú.",
+         "arti": "Besok saya mau main sepak bola bersama teman."},
+        {"type": "fill", "sentence": "这三本书里，我___喜欢这本。", "options": ["最", "几", "多"], "answer": "最",
+         "pinyin": "Zhè sān běn shū li, wǒ zuì xǐhuan zhè běn.", "arti": "Dari tiga buku ini, saya paling suka yang ini."}
+      ]
+    },
+    {
+      "number": 2, "page": 9, "status": "upcoming",
+      "title_zh": "我每天六点起床", "title_id": "Saya Setiap Hari Bangun Jam Enam",
+      "vocab": [
+        {"hanzi": "生病", "pinyin": "shēngbìng", "arti": "sakit"},
+        {"hanzi": "每", "pinyin": "měi", "arti": "setiap"},
+        {"hanzi": "早上", "pinyin": "zǎoshang", "arti": "pagi"},
+        {"hanzi": "跑步", "pinyin": "pǎobù", "arti": "lari"},
+        {"hanzi": "起床", "pinyin": "qǐchuáng", "arti": "bangun tidur"},
+        {"hanzi": "药", "pinyin": "yào", "arti": "obat"},
+        {"hanzi": "身体", "pinyin": "shēntǐ", "arti": "badan, kesehatan"},
+        {"hanzi": "出院", "pinyin": "chūyuàn", "arti": "keluar dari rumah sakit"},
+        {"hanzi": "出", "pinyin": "chū", "arti": "keluar"},
+        {"hanzi": "高", "pinyin": "gāo", "arti": "tinggi"},
+        {"hanzi": "米", "pinyin": "mǐ", "arti": "meter", "supplementary": true},
+        {"hanzi": "知道", "pinyin": "zhīdào", "arti": "tahu"},
+        {"hanzi": "休息", "pinyin": "xiūxi", "arti": "istirahat"},
+        {"hanzi": "忙", "pinyin": "máng", "arti": "sibuk"},
+        {"hanzi": "时间", "pinyin": "shíjiān", "arti": "waktu"}
+      ],
+      "grammar": ["用“是不是”的问句 - kalimat tanya dengan 是不是", "代词“每” - 每 (setiap)", "疑问代词“多” - 多 untuk bertanya (多高、多大)"],
+      "exercises": [
+        {"type": "fill", "sentence": "你___每天六点起床？", "options": ["是不是", "多", "几"], "answer": "是不是",
+         "pinyin": "Nǐ shì bu shì měi tiān liù diǎn qǐchuáng?", "arti": "Apakah kamu setiap hari bangun jam enam?"},
+        {"type": "order", "chunks": ["他", "每天早上", "都", "去跑步"],
+         "answer": "他每天早上都去跑步。", "pinyin": "Tā měi tiān zǎoshang dōu qù pǎobù.",
+         "arti": "Dia setiap pagi selalu pergi lari."}
+      ]
+    },
+    {
+      "number": 3, "page": 17, "status": "upcoming",
+      "title_zh": "左边那个红色的是我的", "title_id": "Yang Berwarna Merah di Sebelah Kiri adalah Milik Saya",
+      "vocab": [
+        {"hanzi": "手表", "pinyin": "shǒubiǎo", "arti": "jam tangan"},
+        {"hanzi": "千", "pinyin": "qiān", "arti": "ribu"},
+        {"hanzi": "报纸", "pinyin": "bàozhǐ", "arti": "koran"},
+        {"hanzi": "送", "pinyin": "sòng", "arti": "memberi (hadiah), mengantar"},
+        {"hanzi": "一下", "pinyin": "yíxià", "arti": "sebentar, sekali (mencoba)"},
+        {"hanzi": "牛奶", "pinyin": "niúnǎi", "arti": "susu"},
+        {"hanzi": "房间", "pinyin": "fángjiān", "arti": "kamar"},
+        {"hanzi": "丈夫", "pinyin": "zhàngfu", "arti": "suami"},
+        {"hanzi": "旁边", "pinyin": "pángbiān", "arti": "samping"},
+        {"hanzi": "真", "pinyin": "zhēn", "arti": "sungguh, benar-benar"},
+        {"hanzi": "粉色", "pinyin": "fěnsè", "arti": "merah muda", "supplementary": true},
+        {"hanzi": "颜色", "pinyin": "yánsè", "arti": "warna"},
+        {"hanzi": "左边", "pinyin": "zuǒbian", "arti": "sebelah kiri"},
+        {"hanzi": "红色", "pinyin": "hóngsè", "arti": "merah"}
+      ],
+      "grammar": ["“的”字短语 - frasa 的 (红色的 = yang merah)", "一下 - melakukan sebentar (看一下)", "语气副词“真” - 真 (sungguh)"],
+      "exercises": [
+        {"type": "fill", "sentence": "这块手表___漂亮！", "options": ["真", "一下", "的"], "answer": "真",
+         "pinyin": "Zhè kuài shǒubiǎo zhēn piàoliang!", "arti": "Jam tangan ini sungguh cantik!"},
+        {"type": "order", "chunks": ["桌子上", "那个", "红色的", "是", "你的吗"],
+         "answer": "桌子上那个红色的是你的吗？", "pinyin": "Zhuōzi shang nàge hóngsè de shì nǐ de ma?",
+         "arti": "Yang merah di atas meja itu punyamu?"}
+      ]
+    },
+    {
+      "number": 4, "page": 25, "status": "upcoming",
+      "title_zh": "这个工作是他帮我介绍的", "title_id": "Dia Merekomendasikan Pekerjaan Ini kepada Saya",
+      "vocab": [
+        {"hanzi": "生日", "pinyin": "shēngrì", "arti": "ulang tahun"},
+        {"hanzi": "快乐", "pinyin": "kuàilè", "arti": "gembira"},
+        {"hanzi": "给", "pinyin": "gěi", "arti": "memberi, kepada"},
+        {"hanzi": "接", "pinyin": "jiē", "arti": "menjemput, menerima", "supplementary": true},
+        {"hanzi": "晚上", "pinyin": "wǎnshang", "arti": "malam"},
+        {"hanzi": "问", "pinyin": "wèn", "arti": "bertanya"},
+        {"hanzi": "非常", "pinyin": "fēicháng", "arti": "sangat"},
+        {"hanzi": "开始", "pinyin": "kāishǐ", "arti": "mulai"},
+        {"hanzi": "已经", "pinyin": "yǐjīng", "arti": "sudah"},
+        {"hanzi": "长", "pinyin": "cháng", "arti": "panjang"},
+        {"hanzi": "两", "pinyin": "liǎng", "arti": "dua"},
+        {"hanzi": "帮", "pinyin": "bāng", "arti": "membantu"},
+        {"hanzi": "介绍", "pinyin": "jièshào", "arti": "memperkenalkan"}
+      ],
+      "grammar": ["“是……的”句 - menekankan pelaku/waktu/cara", "……的时候 - ketika ...", "时间副词“已经” - 已经 (sudah)"],
+      "exercises": [
+        {"type": "order", "chunks": ["这本书", "是", "我朋友", "送给我", "的"],
+         "answer": "这本书是我朋友送给我的。", "pinyin": "Zhè běn shū shì wǒ péngyou sòng gěi wǒ de.",
+         "arti": "Buku ini diberikan oleh teman saya kepada saya."},
+        {"type": "fill", "sentence": "他___开始工作了。", "options": ["已经", "非常", "两"], "answer": "已经",
+         "pinyin": "Tā yǐjīng kāishǐ gōngzuò le.", "arti": "Dia sudah mulai bekerja."}
+      ]
+    },
+    {
+      "number": 5, "page": 33, "status": "upcoming",
+      "title_zh": "就买这件吧", "title_id": "Beli yang Ini Saja",
+      "vocab": [
+        {"hanzi": "外面", "pinyin": "wàimiàn", "arti": "luar"},
+        {"hanzi": "准备", "pinyin": "zhǔnbèi", "arti": "bersiap, menyiapkan"},
+        {"hanzi": "就", "pinyin": "jiù", "arti": "(saja, -lah, segera)"},
+        {"hanzi": "鱼", "pinyin": "yú", "arti": "ikan"},
+        {"hanzi": "吧", "pinyin": "ba", "arti": "(partikel ajakan/saran)"},
+        {"hanzi": "件", "pinyin": "jiàn", "arti": "(kata satuan untuk baju/urusan)"},
+        {"hanzi": "还", "pinyin": "hái", "arti": "masih, juga"},
+        {"hanzi": "可以", "pinyin": "kěyǐ", "arti": "boleh, bisa"},
+        {"hanzi": "不错", "pinyin": "búcuò", "arti": "lumayan bagus"},
+        {"hanzi": "考试", "pinyin": "kǎoshì", "arti": "ujian"},
+        {"hanzi": "咖啡", "pinyin": "kāfēi", "arti": "kopi"},
+        {"hanzi": "对", "pinyin": "duì", "arti": "benar"},
+        {"hanzi": "以后", "pinyin": "yǐhòu", "arti": "setelah, nanti"}
+      ],
+      "grammar": ["副词“就” - 就 (saja/-lah)", "语气副词“还”(1) - 还 (masih/juga)", "程度副词“有点儿” - 有点儿 (agak, untuk hal kurang menyenangkan)"],
+      "exercises": [
+        {"type": "fill", "sentence": "今天___冷，我们在家吧。", "options": ["有点儿", "就", "可以"], "answer": "有点儿",
+         "pinyin": "Jīntiān yǒudiǎnr lěng, wǒmen zài jiā ba.", "arti": "Hari ini agak dingin, kita di rumah saja."},
+        {"type": "order", "chunks": ["考试以后", "我们", "一起", "去买新衣服", "吧"],
+         "answer": "考试以后我们一起去买新衣服吧。", "pinyin": "Kǎoshì yǐhòu wǒmen yìqǐ qù mǎi xīn yīfu ba.",
+         "arti": "Setelah ujian, ayo kita beli baju baru bersama."}
+      ]
+    },
+    {
+      "number": 6, "page": 41, "status": "upcoming",
+      "title_zh": "你怎么不吃了", "title_id": "Mengapa Kamu Tidak Makan Lagi?",
+      "vocab": [
+        {"hanzi": "门", "pinyin": "mén", "arti": "pintu"},
+        {"hanzi": "外", "pinyin": "wài", "arti": "luar"},
+        {"hanzi": "自行车", "pinyin": "zìxíngchē", "arti": "sepeda", "supplementary": true},
+        {"hanzi": "羊肉", "pinyin": "yángròu", "arti": "daging kambing"},
+        {"hanzi": "好吃", "pinyin": "hǎochī", "arti": "enak"},
+        {"hanzi": "面条", "pinyin": "miàntiáo", "arti": "mi"},
+        {"hanzi": "打篮球", "pinyin": "dǎ lánqiú", "arti": "main basket"},
+        {"hanzi": "因为", "pinyin": "yīnwèi", "arti": "karena"},
+        {"hanzi": "所以", "pinyin": "suǒyǐ", "arti": "jadi, maka"},
+        {"hanzi": "游泳", "pinyin": "yóuyǒng", "arti": "berenang"},
+        {"hanzi": "经常", "pinyin": "jīngcháng", "arti": "sering", "supplementary": true},
+        {"hanzi": "公斤", "pinyin": "gōngjīn", "arti": "kilogram", "supplementary": true},
+        {"hanzi": "姐姐", "pinyin": "jiějie", "arti": "kakak perempuan"}
+      ],
+      "grammar": ["疑问代词“怎么” - 怎么 (kenapa/bagaimana)", "量词的重叠 - reduplikasi kata satuan (个个、件件)", "因为……，所以…… - karena ..., jadi ..."],
+      "exercises": [
+        {"type": "order", "chunks": ["因为", "下雨了", "所以", "我们", "没去游泳"],
+         "answer": "因为下雨了所以我们没去游泳。", "pinyin": "Yīnwèi xià yǔ le, suǒyǐ wǒmen méi qù yóuyǒng.",
+         "arti": "Karena hujan, jadi kami tidak pergi berenang."},
+        {"type": "fill", "sentence": "你今天___没来？", "options": ["怎么", "什么", "哪儿"], "answer": "怎么",
+         "pinyin": "Nǐ jīntiān zěnme méi lái?", "arti": "Kenapa hari ini kamu tidak datang?"}
+      ]
+    },
+    {
+      "number": 7, "page": 49, "status": "upcoming",
+      "title_zh": "你家离公司远吗", "title_id": "Apakah Rumahmu Jauh dari Perusahaan?",
+      "vocab": [
+        {"hanzi": "教室", "pinyin": "jiàoshì", "arti": "ruang kelas"},
+        {"hanzi": "机场", "pinyin": "jīchǎng", "arti": "bandara"},
+        {"hanzi": "路", "pinyin": "lù", "arti": "jalan"},
+        {"hanzi": "离", "pinyin": "lí", "arti": "berjarak dari"},
+        {"hanzi": "公司", "pinyin": "gōngsī", "arti": "perusahaan, kantor"},
+        {"hanzi": "远", "pinyin": "yuǎn", "arti": "jauh"},
+        {"hanzi": "公共汽车", "pinyin": "gōnggòng qìchē", "arti": "bus"},
+        {"hanzi": "小时", "pinyin": "xiǎoshí", "arti": "jam (lamanya)"},
+        {"hanzi": "慢", "pinyin": "màn", "arti": "lambat"},
+        {"hanzi": "快", "pinyin": "kuài", "arti": "cepat"},
+        {"hanzi": "过", "pinyin": "guò", "arti": "melewati", "supplementary": true},
+        {"hanzi": "走", "pinyin": "zǒu", "arti": "berjalan, pergi"},
+        {"hanzi": "到", "pinyin": "dào", "arti": "sampai, tiba"}
+      ],
+      "grammar": ["语气副词“还”(2)", "时间副词“就” - 就 (sudah/lebih awal dari perkiraan)", "离 - A 离 B 远/近", "语气助词“呢”"],
+      "exercises": [
+        {"type": "order", "chunks": ["我家", "离", "学校", "很远"],
+         "answer": "我家离学校很远。", "pinyin": "Wǒ jiā lí xuéxiào hěn yuǎn.", "arti": "Rumah saya jauh dari sekolah."},
+        {"type": "fill", "sentence": "我七点___到学校了。", "options": ["就", "离", "呢"], "answer": "就",
+         "pinyin": "Wǒ qī diǎn jiù dào xuéxiào le.", "arti": "Jam tujuh saya sudah sampai di sekolah."}
+      ]
+    },
+    {
+      "number": 8, "page": 57, "status": "upcoming",
+      "title_zh": "让我想想再告诉你", "title_id": "Biarkan Saya Berpikir Dahulu, Nanti Saya Beri Tahu Kamu",
+      "vocab": [
+        {"hanzi": "再", "pinyin": "zài", "arti": "lagi, baru kemudian"},
+        {"hanzi": "让", "pinyin": "ràng", "arti": "menyuruh, membiarkan"},
+        {"hanzi": "告诉", "pinyin": "gàosu", "arti": "memberi tahu"},
+        {"hanzi": "等", "pinyin": "děng", "arti": "menunggu"},
+        {"hanzi": "找", "pinyin": "zhǎo", "arti": "mencari"},
+        {"hanzi": "事情", "pinyin": "shìqing", "arti": "urusan, hal"},
+        {"hanzi": "服务员", "pinyin": "fúwùyuán", "arti": "pelayan"},
+        {"hanzi": "白", "pinyin": "bái", "arti": "putih"},
+        {"hanzi": "黑", "pinyin": "hēi", "arti": "hitam"},
+        {"hanzi": "贵", "pinyin": "guì", "arti": "mahal"}
+      ],
+      "grammar": ["……，好吗？ - kalimat tanya meminta persetujuan", "副词“再” - 再 (nanti/lagi, untuk masa depan)", "兼语句 - kalimat ganda (妈妈让我……)", "动词的重叠 - reduplikasi kata kerja (想想、看看)"],
+      "exercises": [
+        {"type": "order", "chunks": ["妈妈", "让", "我", "去", "买牛奶"],
+         "answer": "妈妈让我去买牛奶。", "pinyin": "Māma ràng wǒ qù mǎi niúnǎi.", "arti": "Ibu menyuruh saya membeli susu."},
+        {"type": "fill", "sentence": "我现在很忙，晚上___给你打电话，好吗？", "options": ["再", "又", "呢"], "answer": "再",
+         "pinyin": "Wǒ xiànzài hěn máng, wǎnshang zài gěi nǐ dǎ diànhuà, hǎo ma?", "arti": "Saya sedang sibuk, nanti malam saya telepon kamu, ya?"}
+      ]
+    },
+    {
+      "number": 9, "page": 65, "status": "upcoming",
+      "title_zh": "题太多，我没做完", "title_id": "Pertanyaannya Terlalu Banyak, Saya Tidak Selesai Mengerjakannya",
+      "vocab": [
+        {"hanzi": "错", "pinyin": "cuò", "arti": "salah"},
+        {"hanzi": "从", "pinyin": "cóng", "arti": "dari"},
+        {"hanzi": "跳舞", "pinyin": "tiàowǔ", "arti": "menari"},
+        {"hanzi": "第一", "pinyin": "dì-yī", "arti": "pertama"},
+        {"hanzi": "希望", "pinyin": "xīwàng", "arti": "berharap"},
+        {"hanzi": "问题", "pinyin": "wèntí", "arti": "pertanyaan, masalah"},
+        {"hanzi": "欢迎", "pinyin": "huānyíng", "arti": "selamat datang, menyambut", "supplementary": true},
+        {"hanzi": "上班", "pinyin": "shàngbān", "arti": "masuk kerja"},
+        {"hanzi": "懂", "pinyin": "dǒng", "arti": "mengerti"},
+        {"hanzi": "完", "pinyin": "wán", "arti": "selesai"},
+        {"hanzi": "题", "pinyin": "tí", "arti": "soal"}
+      ],
+      "grammar": ["结果补语 - pelengkap hasil (做完、做错、听懂)", "介词“从” - 从 (dari)", "“第~” - urutan (第一、第二)"],
+      "exercises": [
+        {"type": "fill", "sentence": "这些题我都做___了。", "options": ["完", "从", "第一"], "answer": "完",
+         "pinyin": "Zhèxiē tí wǒ dōu zuò wán le.", "arti": "Soal-soal ini sudah saya kerjakan semua sampai selesai."},
+        {"type": "order", "chunks": ["他", "从", "九点", "开始", "上班"],
+         "answer": "他从九点开始上班。", "pinyin": "Tā cóng jiǔ diǎn kāishǐ shàngbān.", "arti": "Dia mulai bekerja dari jam sembilan."}
+      ]
+    },
+    {
+      "number": 10, "page": 73, "status": "upcoming",
+      "title_zh": "别找了，手机在桌子上呢", "title_id": "Tidak Perlu Mencari Lagi, Telepon Genggammu Ada di Atas Meja",
+      "vocab": [
+        {"hanzi": "课", "pinyin": "kè", "arti": "pelajaran"},
+        {"hanzi": "帮助", "pinyin": "bāngzhù", "arti": "membantu, bantuan"},
+        {"hanzi": "别", "pinyin": "bié", "arti": "jangan"},
+        {"hanzi": "哥哥", "pinyin": "gēge", "arti": "kakak laki-laki"},
+        {"hanzi": "鸡蛋", "pinyin": "jīdàn", "arti": "telur ayam"},
+        {"hanzi": "西瓜", "pinyin": "xīguā", "arti": "semangka"},
+        {"hanzi": "正在", "pinyin": "zhèngzài", "arti": "sedang"},
+        {"hanzi": "手机", "pinyin": "shǒujī", "arti": "telepon genggam"},
+        {"hanzi": "洗", "pinyin": "xǐ", "arti": "mencuci"}
+      ],
+      "grammar": ["祈使句：不要……了；别……了 - kalimat perintah (jangan ... lagi)", "介词“对” - 对 (terhadap/bagi)"],
+      "exercises": [
+        {"type": "fill", "sentence": "___看电视了，快去睡觉！", "options": ["别", "没", "很"], "answer": "别",
+         "pinyin": "Bié kàn diànshì le, kuài qù shuìjiào!", "arti": "Jangan nonton TV lagi, cepat tidur!"},
+        {"type": "order", "chunks": ["运动", "对", "身体", "很好"],
+         "answer": "运动对身体很好。", "pinyin": "Yùndòng duì shēntǐ hěn hǎo.", "arti": "Olahraga baik untuk kesehatan."}
+      ]
+    },
+    {
+      "number": 11, "page": 81, "status": "upcoming",
+      "title_zh": "他比我大三岁", "title_id": "Dia Tiga Tahun Lebih Tua dari Saya",
+      "vocab": [
+        {"hanzi": "唱歌", "pinyin": "chànggē", "arti": "menyanyi"},
+        {"hanzi": "男", "pinyin": "nán", "arti": "laki-laki"},
+        {"hanzi": "女", "pinyin": "nǚ", "arti": "perempuan"},
+        {"hanzi": "孩子", "pinyin": "háizi", "arti": "anak"},
+        {"hanzi": "右边", "pinyin": "yòubian", "arti": "sebelah kanan"},
+        {"hanzi": "比", "pinyin": "bǐ", "arti": "dibandingkan"},
+        {"hanzi": "便宜", "pinyin": "piányi", "arti": "murah"},
+        {"hanzi": "说话", "pinyin": "shuōhuà", "arti": "berbicara"},
+        {"hanzi": "可能", "pinyin": "kěnéng", "arti": "mungkin"},
+        {"hanzi": "去年", "pinyin": "qùnián", "arti": "tahun lalu"},
+        {"hanzi": "姓", "pinyin": "xìng", "arti": "bermarga"}
+      ],
+      "grammar": ["动词结构做定语 - frasa kerja sebagai keterangan (唱歌的那个女孩子)", "“比”字句(1) - kalimat perbandingan A 比 B ...", "助动词“可能” - 可能 (mungkin)"],
+      "exercises": [
+        {"type": "order", "chunks": ["这个西瓜", "比", "那个", "便宜"],
+         "answer": "这个西瓜比那个便宜。", "pinyin": "Zhège xīguā bǐ nàge piányi.", "arti": "Semangka ini lebih murah daripada yang itu."},
+        {"type": "fill", "sentence": "明天___会下雨。", "options": ["可能", "比", "姓"], "answer": "可能",
+         "pinyin": "Míngtiān kěnéng huì xià yǔ.", "arti": "Besok mungkin akan hujan."}
+      ]
+    }
+  ],
+  "culture_notes": [
+    {"after_lesson": 5, "page": 40, "title_zh": "中国人的餐桌礼仪", "title_id": "Tata Cara Makan Orang Tiongkok"},
+    {"after_lesson": 10, "page": 80, "title_zh": "中国的茶文化", "title_id": "Budaya Teh Tiongkok"}
+  ]
+}
