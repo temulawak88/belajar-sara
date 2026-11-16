@@ -66,7 +66,7 @@ function renderStart() {
     );
   }
   $('#start-note').textContent = questions.length
-    ? `Today: ${questions.length} sounds`
+    ? `Today: ${questions.length} sound${questions.length === 1 ? '' : 's'}`
     : 'Learn some flashcards first! (Belajar flashcard dulu.)';
   updateVoice(speechStatus());
   show('screen-start');
