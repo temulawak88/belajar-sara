@@ -23,6 +23,7 @@
 - Hosting: **GitHub Pages** dari branch `main`, folder `/docs`. iPad membuka
   `https://<username>.github.io/<nama-repo>/`. Semua path di app harus **relatif** (tanpa `/` di depan)
   karena app berada di sub-path, termasuk `scope` dan `start_url` di manifest serta path di service worker.
+- Folder `docs/` wajib berisi file kosong `.nojekyll` agar GitHub Pages tidak memproses app dengan Jekyll. Jangan dihapus.
 - Repo publik: jangan masukkan nama lengkap anak, nama sekolah, foto, atau data pribadi lain ke repo.
 
 ## Struktur folder
