@@ -12,6 +12,7 @@ const FILLS = lesson(1).exercises.filter((e) => e.type === 'fill');
 
 /** Soal fill yang sedang tampil, dicari dari teks kalimat di layar. */
 async function currentFill(page) {
+  await expect(page.locator('#sentence')).toContainText('＿＿'); // tunggu soal selesai dimuat
   const text = (await page.locator('#sentence').textContent()).trim();
   const ex = FILLS.find((e) => e.sentence.replace('___', '＿＿') === text);
   expect(ex, `soal tidak dikenal: ${text}`).toBeTruthy();

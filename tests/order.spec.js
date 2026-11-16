@@ -13,6 +13,7 @@ test.beforeEach(async ({ page }) => {
 
 /** Soal yang sedang tampil, dikenali dari kumpulan potongannya. */
 async function currentOrder(page, list = ORDERS) {
+  await expect(page.locator('#bank .chunk, #answer-line .chunk').first()).toBeVisible(); // tunggu soal selesai dimuat
   const texts = await page.locator('#bank .chunk, #answer-line .chunk').allTextContents();
   const key = [...texts].sort().join('|');
   const ex = list.find((e) => [...e.chunks].sort().join('|') === key);

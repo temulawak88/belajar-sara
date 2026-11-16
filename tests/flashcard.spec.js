@@ -256,12 +256,22 @@ test('home counts only lesson words, capped at one short session; old HSK 1 prog
   expect(p === null || p.leitner['hsk1-ni']).toBeTruthy(); // progres lama tidak dihapus
 });
 
-test('the "1 / 5" counter stays on one line on a narrow (iPhone) screen', async ({ page }) => {
-  await page.setViewportSize({ width: 320, height: 640 }); // iPhone SE (layar terkecil)
-  await page.goto(CARDS);
-  await page.locator('#start-btn').tap();
-  const box = await page.locator('#counter').boundingBox();
-  const lineHeight = await page.locator('#counter').evaluate((el) => parseFloat(getComputedStyle(el).lineHeight) || 30);
-  expect(box.height).toBeLessThan(lineHeight * 1.5);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0);
+test('the "1 / 5" counter stays on one line on a narrow (iPhone) screen; header does not overflow', async ({ page }) => {
+  // 300 px = sedikit lebih sempit dari iPhone SE (320), sebagai cadangan karena huruf di WebKit lebih lebar.
+  for (const width of [320, 300]) {
+    await page.setViewportSize({ width, height: 640 });
+    await page.goto(CARDS);
+    await page.locator('#start-btn').tap();
+    const box = await page.locator('#counter').boundingBox();
+    const lineHeight = await page.locator('#counter').evaluate((el) => parseFloat(getComputedStyle(el).lineHeight) || 30);
+    expect(box.height, `${width}px`).toBeLessThan(lineHeight * 1.5);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth), `${width}px`).toBe(0);
+    // Judul tidak terhimpit sampai hampir hilang (sebelumnya hanya ±12 px di 320 px).
+    expect((await page.locator('#page-title').boundingBox()).width, `${width}px`).toBeGreaterThanOrEqual(50);
+    // Tombol header tetap target sentuh ≥ 48 px.
+    for (const id of ['#back-btn', '#home-btn']) {
+      const b = await page.locator(id).boundingBox();
+      expect(Math.min(b.width, b.height), `${width}px ${id}`).toBeGreaterThanOrEqual(48);
+    }
+  }
 });

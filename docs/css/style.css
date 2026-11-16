@@ -764,3 +764,14 @@ h2 { font-size: 28px; margin: 0 0 8px; }
   .step-q { font-size: 19px; }
   .model-choice { min-height: 120px; }
 }
+
+/* ---------- Layar sangat sempit (iPhone SE dll.) ---------- */
+/* Header berisi Back + Home + logo + penghitung: tanpa ini judul hanya kebagian ±12 px dan
+   di WebKit header meluber ke samping. Tombol tetap ≥ 48 px. */
+@media (max-width: 400px) {
+  :root { --gutter: max(12px, env(safe-area-inset-left), env(safe-area-inset-right)); }
+  .topbar { gap: 8px; }
+  .topbar .btn.icon-btn { width: 48px; min-width: 48px; }
+  .topbar .logo.small { width: 44px; height: 48px; line-height: 48px; font-size: 26px; }
+  .topbar h1 { font-size: 18px; line-height: 1.2; overflow-wrap: anywhere; }
+}

@@ -31,4 +31,23 @@ const spoken = (page) => page.evaluate(() => window.__spoken);
 const lesson = (n) => LESSONS.lessons[n - 1];
 const fullSentence = (ex) => (ex.type === 'fill' ? ex.sentence.replace('___', ex.answer) : ex.answer);
 
-module.exports = { KEY, LESSONS, mockSpeech, readProgress, spoken, lesson, fullSentence };
+/**
+ * Semua file di daftar ASSETS sw.js harus ada di cache service worker yang aktif.
+ * Dipakai untuk WebKit: Playwright tidak bisa bernavigasi offline lewat service worker di WebKit
+ * ("WebKit encountered an internal error"), jadi di sana yang dicek adalah isi cache-nya.
+ */
+async function expectAllAssetsCached(page) {
+  const missing = await page.evaluate(async () => {
+    const src = await (await fetch('sw.js')).text();
+    const cacheName = src.match(/CACHE_NAME = '([^']+)'/)[1];
+    const assets = [...src.matchAll(/^\s*'([^']+)',$/gm)].map((m) => m[1]);
+    const cache = await caches.open(cacheName);
+    const out = [];
+    for (const a of assets) if (!(await cache.match(new URL(a, location.href).href, { ignoreSearch: true }))) out.push(a);
+    return { missing: out, count: assets.length, keys: (await caches.keys()).filter((k) => k.startsWith('belajar-')) };
+  });
+  if (missing.count < 30) throw new Error(`daftar ASSETS terlalu pendek: ${missing.count}`);
+  return missing;
+}
+
+module.exports = { expectAllAssetsCached, KEY, LESSONS, mockSpeech, readProgress, spoken, lesson, fullSentence };

@@ -6,6 +6,7 @@
 // - Undo / Clear selalu ada. "Check" menilai; hanya percobaan PERTAMA yang dicatat.
 // - Salah ke-1: arti kalimat + potongan yang posisinya sudah benar ditandai. Salah ke-2: jawaban ditunjukkan.
 
+import { ignoreIfLeaving, leavePage } from './errors.js';
 import { initPage, $, el, toast } from './ui.js';
 import { loadState, saveState } from './storage.js';
 import { todayStr } from './leitner.js';
@@ -270,10 +271,10 @@ async function load() {
   const orders = opened.lesson.exercises.filter((e) => e.type === 'order');
   questions = pickExercises(orders, state.sentences, 'order');
   if (!questions.length) {
-    location.replace(`lesson.html?n=${opened.n}`);
+    leavePage(`lesson.html?n=${opened.n}`);
     return;
   }
   renderQuestion();
 }
 
-load();
+load().catch(ignoreIfLeaving);

@@ -8,6 +8,7 @@
 // Jenis kesalahan dicatat sesuai langkahnya: comprehension (1–2), model (3), calculation (4).
 // Soal dicatat begitu hasilnya diketahui (kesalahan pertama, atau jawaban benar tanpa kesalahan).
 
+import { ignoreIfLeaving, leavePage } from './errors.js';
 import { initPage, $, el, toast } from './ui.js';
 import { loadState, saveState } from './storage.js';
 import { todayStr } from './leitner.js';
@@ -427,7 +428,7 @@ async function load() {
   const data = await loadSyllabus();
   chapter = chapterFromUrl(data, location.search);
   if (!chapter) {
-    location.replace('math.html'); // bab tidak dikenal / belum punya soal: tidak ada layar buntu
+    leavePage('math.html'); // bab tidak dikenal / belum punya soal: tidak ada layar buntu
     return;
   }
   $('#page-title').textContent = `${chapter.title}`;
@@ -437,4 +438,4 @@ async function load() {
   renderQuestion();
 }
 
-load();
+load().catch(ignoreIfLeaving);

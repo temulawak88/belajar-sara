@@ -1,6 +1,6 @@
 // Service worker: app shell offline (cache-first).
 // WAJIB: naikkan CACHE_NAME setiap rilis, samakan dengan APP_VERSION di js/version.js.
-const CACHE_NAME = 'belajar-v10';
+const CACHE_NAME = 'belajar-v11';
 
 // Semua path RELATIF terhadap lokasi sw.js (= docs/), supaya jalan di sub-path GitHub Pages.
 const ASSETS = [

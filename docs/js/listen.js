@@ -2,6 +2,7 @@
 // Pengecoh = arti kalimat lain di pelajaran yang sama.
 // Salah ke-1 -> suara diputar lagi + coba lagi; salah ke-2 -> jawaban ditunjukkan. Jawaban pertama yang dinilai.
 
+import { ignoreIfLeaving } from './errors.js';
 import { initPage, $, el, toast } from './ui.js';
 import { loadState, saveState } from './storage.js';
 import { todayStr } from './leitner.js';
@@ -123,4 +124,4 @@ async function load() {
 initSpeech((status) => {
   if (!$('#screen-start').hidden) updateVoice(status);
 });
-load();
+load().catch(ignoreIfLeaving);
