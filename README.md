@@ -11,6 +11,9 @@ App ada di `docs/` dan ditayangkan GitHub Pages (branch `main`, folder `/docs`).
 - **Iterasi 2:** latihan menulis hanzi (`write.html`) dengan Hanzi Writer: Watch → Trace → Write,
   3 karakter per sesi dari kata yang sudah dipelajari di flashcard. Input lewat canvas sendiri
   (Pointer Events, tekanan Apple Pencil, palm rejection, Undo/Clear); Hanzi Writer menilai goresannya.
+- **Iterasi 3:** latihan nada (`tone.html`): dengar satu karakter → pilih nada 1–4 (maks 10 soal).
+  Karakter diucapkan sendirian, jadi sandhi nada (你好 = ní hǎo) tidak membingungkan; nada netral
+  dilewati, 一/不 memakai nada asli. Salah pertama = petunjuk + dengar lagi; salah kedua = jawaban ditunjukkan.
 
 ## Menjalankan di laptop
 ```bash
@@ -25,6 +28,9 @@ salinannya di `docs/content/hsk2/vocab.json`. Setelah mengubah kosakata:
 python3 tools/validate_vocab.py --sync
 ```
 Tanpa `--sync`, validator gagal jika salinan di `docs/` tidak sama dengan sumbernya.
+Validator juga memastikan pinyin setiap kata bisa dipecah menjadi satu suku kata per hanzi
+(dibutuhkan latihan nada). Tulis pinyin baku tanpa spasi, dengan apostrof sebelum suku kata
+yang dimulai a/o/e di tengah kata (mis. `nǚ'ér`, `Xī'ān`).
 
 Data goresan Hanzi Writer disimpan lokal (agar offline) di `docs/vendor/`. Setelah menambah kata
 dengan karakter baru:
@@ -67,3 +73,10 @@ dan tambahkan file baru ke daftar `ASSETS` di `sw.js` (tes mengecek semua file `
 11. Arahkan Pencil di atas kotak tanpa menyentuh → titik biru kecil mengikuti ujung pena (opsional).
 12. Putar iPad di tengah menulis: kotak menyesuaikan ukuran dan goresan yang sudah benar tetap ada.
 13. Mode pesawat → latihan menulis tetap jalan.
+
+### Latihan nada (iterasi 3)
+14. Mandarin → 🎵 Tone practice → Start: karakter langsung diucapkan, "Listen again" mengulang.
+15. **Dengarkan baik-baik apakah suara iPad mengucapkan nada yang benar** untuk setiap karakter
+    (mis. 好 = hǎo, 中 = zhōng). Jika ada karakter yang dibaca dengan nada lain, catat — itu perlu dikeluarkan dari latihan.
+16. Pilih nada salah sekali → petunjuk + suara diputar lagi; salah lagi → jawaban benar ditandai hijau.
+17. Tanpa suara Mandarin terpasang: muncul penjelasan dan tombol Start nonaktif; tombol Back/Home tetap ada.

@@ -31,6 +31,58 @@ HANZI_RE = re.compile(r"^[一-鿿]+$")
 PINYIN_RE = re.compile(r"^[a-zA-ZüÜāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜĀÁǍÀĒÉĚÈŌÓǑÒ' ]+$")
 TONE_MARKS = set("āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜĀÁǍÀĒÉĚÈŌÓǑÒ")
 
+# Pemecah suku kata pinyin — setara dengan segmentPinyin() di docs/js/pinyin.js.
+# Latihan nada butuh satu suku kata per hanzi; kata yang tidak bisa dipecah ditolak di sini.
+_BASE = {}
+for _base, _marks in (("a", "āáǎà"), ("e", "ēéěè"), ("i", "īíǐì"), ("o", "ōóǒò"), ("u", "ūúǔù"), ("v", "ǖǘǚǜ"),
+                      ("a", "ĀÁǍÀ"), ("e", "ĒÉĚÈ"), ("o", "ŌÓǑÒ")):
+    for _m in _marks:
+        _BASE[_m] = _base
+INITIALS = ["zh", "ch", "sh", *"bpmfdtnlgkhjqxrzcsyw", ""]
+FINALS = sorted(
+    "iang iong uang ueng van ang eng ong iao ian ing uai uan ve vn ai ei ao ou an en er ia ie iu in ua uo ui un ue "
+    "a o e i u v".split(),
+    key=len,
+    reverse=True,
+)
+
+
+def plain(s):
+    return "".join(_BASE.get(c, c).lower().replace("ü", "v") for c in s)
+
+
+def segment_pinyin(pinyin, count):
+    p = plain(pinyin)
+
+    def dfs(pos, left):
+        start = pos
+        while pos < len(p) and p[pos] in "' ’":
+            pos += 1
+        # a/o/e tanpa konsonan awal hanya di awal kata atau sesudah apostrof (xi'an, nǚ'ér).
+        separated = pos == 0 or pos > start
+        if pos == len(p):
+            return [] if left == 0 else None
+        if left == 0:
+            return None
+        rest = p[pos:]
+        if left == 1 and rest == "r":
+            return [(pos, pos + 1)]
+        lens = {
+            len(i) + len(f)
+            for i in INITIALS
+            if rest.startswith(i) and (i or rest[0] not in "aoe" or separated)
+            for f in FINALS
+            if rest.startswith(f, len(i))
+        }
+        for n in sorted(lens, reverse=True):
+            tail = dfs(pos + n, left - 1)
+            if tail is not None:
+                return [(pos, pos + n), *tail]
+        return None
+
+    spans = dfs(0, count)
+    return None if spans is None else [pinyin[a:b] for a, b in spans]
+
 
 def validate(data):
     errors = []
@@ -69,6 +121,9 @@ def validate(data):
             errors.append(f"{where}: pinyin berisi karakter tidak valid: {py!r}")
         elif not TONE_MARKS & set(py):
             errors.append(f"{where}: pinyin tanpa tanda nada sama sekali: {py!r}")
+        elif segment_pinyin(py, len(w["hanzi"])) is None:
+            errors.append(f"{where}: pinyin {py!r} tidak bisa dipecah jadi {len(w['hanzi'])} suku kata "
+                          "(cek ejaan; pakai apostrof untuk xi'an)")
         if w["hsk"] not in (1, 2):
             errors.append(f"{where}: hsk harus 1 atau 2")
         for k in ("meaning_en", "meaning_id"):

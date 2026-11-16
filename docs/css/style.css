@@ -407,3 +407,73 @@ h2 { font-size: 28px; margin: 0 0 8px; }
   .word-info { width: 260px; }
   .pad { width: min(62dvh, 640px); }
 }
+
+/* ---------- Latihan nada (tone.html) ---------- */
+
+.contour { width: 40px; height: 40px; flex: none; }
+.contour polyline {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tone-1 { --tone: #2f6fde; }
+.tone-2 { --tone: #1f9d63; }
+.tone-3 { --tone: #b06a00; }
+.tone-4 { --tone: #c63d3d; }
+
+.tone-guide {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  width: min(100%, 760px);
+}
+.tone-guide li {
+  background: var(--surface);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 14px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 15px;
+  color: var(--muted);
+  border-top: 6px solid var(--tone);
+}
+.tone-guide li .contour { color: var(--tone); width: 48px; height: 48px; }
+.tone-guide li strong { color: var(--text); font-size: 18px; }
+
+.tone-card { min-height: 0; gap: 6px; padding: 24px; }
+.tone-card .hanzi { font-size: clamp(88px, 15vmin, 140px); }
+
+.tone-options {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  width: min(100%, 760px);
+}
+.tone-btn {
+  flex-direction: column;
+  min-height: 120px;
+  padding: 12px 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  border: 3px solid transparent;
+  gap: 4px;
+}
+.tone-btn .contour { color: var(--tone); width: 44px; height: 44px; }
+.tone-btn .tone-label { font-size: 30px; font-weight: 600; }
+.tone-btn .tone-num { font-size: 15px; color: var(--muted); }
+.tone-btn.right { border-color: var(--good); background: #e6f6ee; }
+.tone-btn.tried { opacity: 0.45; }
+.tone-btn:disabled { opacity: 1; }
+.tone-btn.tried:disabled { opacity: 0.45; }
+
+@media (max-width: 600px) {
+  .tone-guide, .tone-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
