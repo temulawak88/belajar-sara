@@ -40,7 +40,11 @@ const ASSETS = [
 
 self.addEventListener('install', (event) => {
   // Tidak skipWaiting otomatis: versi baru menunggu sampai anak mengetuk banner update.
-  event.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)));
+  // cache: 'reload' = selalu ambil dari server, jangan dari cache HTTP browser/CDN. GitHub Pages
+  // menyimpan file sampai 10 menit; tanpa ini versi baru bisa terpasang dengan file lama.
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS.map((u) => new Request(u, { cache: 'reload' })))),
+  );
 });
 
 self.addEventListener('activate', (event) => {

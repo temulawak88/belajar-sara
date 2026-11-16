@@ -152,3 +152,17 @@ test('corrupt storage does not freeze the app', async ({ page }) => {
   await expectBoxes(page, [0, 0, 0, 0, 0]);
   await expect(page.locator('#oops')).toBeHidden();
 });
+
+test('home and flashcard page agree on the number of reviews (capped at one short session)', async ({ page }) => {
+  await page.goto('index.html');
+  await page.evaluate((k) => {
+    const leitner = {};
+    const ids = ['ni', 'hao', 'xiexie', 'zaijian', 'baba', 'mama', 'pengyou', 'laoshi', 'xuesheng', 'mao', 'gou', 'shui', 'mifan', 'pingguo', 'chi', 'he', 'xihuan', 'da'];
+    for (const id of ids) leitner[`hsk1-${id}`] = { box: 1, due: '2000-01-01', right: 0, wrong: 1, first: '2000-01-01' };
+    localStorage.setItem(k, JSON.stringify({ schemaVersion: 1, nickname: '', leitner }));
+  }, KEY);
+  await page.reload();
+  await expect(page.locator('#mandarin-status')).toHaveText('12 cards to review today'); // bukan 18
+  await page.goto('hanzi.html');
+  await expect(page.locator('#start-note')).toContainText('Today: 12 to review');
+});
