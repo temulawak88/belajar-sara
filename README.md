@@ -24,6 +24,15 @@ npm run serve        # lalu buka http://localhost:4173/docs/
 Server sengaja dijalankan dari root repo agar app berada di sub-path `/docs/`, seperti di GitHub Pages.
 
 ## Konten
+### Matematika
+Sumber resmi: `docs/content/math/syllabus.json` (bab, pola soal, contoh, glosarium, kesalahan umum).
+Soal buatan sendiri, bukan salinan buku. Setelah mengubah:
+```bash
+python3 tools/validate_math.py
+python3 -m unittest tools/test_validate_math.py
+```
+
+### Mandarin
 Sumber kosakata: `content/hsk2/vocab.json`. Karena Pages hanya menayangkan `docs/`, app membaca
 salinannya di `docs/content/hsk2/vocab.json`. Setelah mengubah kosakata:
 ```bash

@@ -52,7 +52,8 @@ test('service worker install bypasses the HTTP cache (no stale files in a new ve
 test('docs/.nojekyll exists and is empty (GitHub Pages must not run Jekyll)', () => {
   const f = path.join(DOCS, '.nojekyll');
   expect(fs.existsSync(f), 'docs/.nojekyll hilang — lihat CLAUDE.md › Arsitektur').toBe(true);
-  expect(fs.statSync(f).size).toBe(0);
+  // "Kosong" = tanpa isi berarti; satu baris baru (mis. dibuat lewat web GitHub) tidak masalah.
+  expect(fs.readFileSync(f, 'utf8').trim()).toBe('');
 });
 
 test('cache version in sw.js matches APP_VERSION', () => {
