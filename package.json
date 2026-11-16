@@ -8,6 +8,8 @@
     "test:webkit": "playwright test --trace off --project=webkit-ipad --project=webkit-ipad-landscape"
   },
   "devDependencies": {
-    "@playwright/test": "1.63.0"
+    "@playwright/test": "1.63.0",
+    "hanzi-writer": "3.7.3",
+    "hanzi-writer-data": "2.0.1"
   }
 }

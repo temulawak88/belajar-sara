@@ -52,7 +52,7 @@ test('flashcard session: right/wrong answers move cards between Leitner boxes an
 
   // Progres langsung tersimpan setelah SATU jawaban.
   let p = await readProgress(page);
-  expect(p.schemaVersion).toBe(1);
+  expect(p.schemaVersion).toBe(2);
   expect(p.leitner['hsk1-ni'].box).toBe(2);
 
   // Kartu 2: "Not yet" -> tetap kotak 1 dan diulang di akhir sesi.

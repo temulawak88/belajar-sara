@@ -2,17 +2,19 @@
 // Semua akses dibungkus try/catch: Safari bisa melempar error (mode privat, kuota penuh).
 
 const KEY = 'belajar-sarah:progress';
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
 function emptyState() {
-  return { schemaVersion: SCHEMA_VERSION, nickname: '', leitner: {}, updatedAt: null };
+  return { schemaVersion: SCHEMA_VERSION, nickname: '', leitner: {}, writing: {}, updatedAt: null };
 }
 
 // Migrasi dari versi lama ke versi sekarang. Tambah langkah baru di sini setiap
 // kali struktur data berubah, lalu naikkan SCHEMA_VERSION.
 const MIGRATIONS = {
   // 0 = data tanpa schemaVersion (belum pernah ada, disiapkan untuk jaga-jaga).
-  0: (s) => ({ ...emptyState(), ...s, schemaVersion: 1 }),
+  0: (s) => ({ nickname: '', leitner: {}, updatedAt: null, ...s, schemaVersion: 1 }),
+  // v2 (iterasi 2): progres latihan menulis per karakter.
+  1: (s) => ({ ...s, writing: {}, schemaVersion: 2 }),
 };
 
 export function migrate(data) {
@@ -30,6 +32,7 @@ export function migrate(data) {
     v = s.schemaVersion;
   }
   if (!s.leitner || typeof s.leitner !== 'object') s.leitner = {};
+  if (!s.writing || typeof s.writing !== 'object') s.writing = {};
   return s;
 }
 

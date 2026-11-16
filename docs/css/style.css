@@ -301,3 +301,109 @@ h2 { font-size: 28px; margin: 0 0 8px; }
   .actions .btn { min-width: 0; flex: 1; }
   .boxes { gap: 6px; }
 }
+
+/* ---------- Latihan menulis (write.html) ---------- */
+
+.char-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.char-list li {
+  background: var(--surface);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 140px;
+}
+.char-list .char { font: 72px/1.15 var(--font-hanzi); }
+.char-list .char-word { font-size: 17px; color: var(--muted); }
+.char-list .all-done { font-size: 22px; min-width: 0; }
+
+.write-screen { justify-content: flex-start; gap: 16px; }
+
+.steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 8px;
+}
+.steps li {
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--soft);
+  color: var(--muted);
+  font-size: 17px;
+}
+.steps li.current { background: var(--primary); color: #fff; font-weight: 600; }
+.steps li.done { background: #dff3e8; color: var(--good); }
+
+.write-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+.word-info { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.word { font: 44px/1.2 var(--font-hanzi); }
+.word .hl { color: var(--primary); }
+.word-info .pinyin { font-size: 28px; }
+.word-info .meaning-en { font-size: 22px; }
+.word-info .meaning-id { font-size: 18px; }
+.step-msg { margin: 6px 0 0; font-size: 19px; min-height: 1.45em; }
+
+.pad {
+  --ink: #1d2433;
+  position: relative;
+  width: min(100%, 60dvh, 640px);
+  aspect-ratio: 1;
+  background-color: var(--surface);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  /* 田字格: garis bantu tengah dan diagonal putus-putus. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cg stroke='%23e3c9c9' stroke-width='0.4' stroke-dasharray='2 2' fill='none' vector-effect='non-scaling-stroke'%3E%3Cpath d='M50 0V100M0 50H100M0 0L100 100M100 0L0 100'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.hw-target, .pad .ink { position: absolute; inset: 0; }
+.hw-target svg { display: block; }
+.pad .ink {
+  touch-action: none; /* wajib untuk menggambar */
+  transition: opacity 200ms ease;
+}
+.pad .ink.fade { opacity: 0; }
+.pad .ink.disabled { cursor: default; }
+.hover-dot {
+  position: absolute;
+  left: -5px;
+  top: -5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.actions.tools { gap: 12px; }
+.actions.tools .btn { min-width: 64px; }
+.btn:disabled { opacity: 0.4; }
+
+/* Landscape: info kata di kiri, kotak menulis di kanan (kotak sebesar mungkin). */
+@media (orientation: landscape) and (min-width: 900px) {
+  .write-layout { flex-direction: row; justify-content: center; gap: 40px; }
+  .word-info { width: 260px; }
+  .pad { width: min(62dvh, 640px); }
+}

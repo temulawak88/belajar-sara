@@ -7,6 +7,9 @@ dengan sumbernya.
 
   python3 tools/validate_vocab.py          # validasi + cek salinan
   python3 tools/validate_vocab.py --sync   # validasi, lalu salin ke docs/
+
+Juga mengecek setiap karakter punya data goresan Hanzi Writer
+(docs/vendor/hanzi-writer-data/chars.json, dibuat oleh tools/sync_hanzi_data.py).
 """
 import json
 import re
@@ -18,6 +21,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "content" / "hsk2" / "vocab.json"
 DST = ROOT / "docs" / "content" / "hsk2" / "vocab.json"
+STROKES = ROOT / "docs" / "vendor" / "hanzi-writer-data" / "chars.json"
 
 SCHEMA_VERSION = 1
 REQUIRED = ("id", "hanzi", "pinyin", "hsk", "meaning_en", "meaning_id")
@@ -97,7 +101,23 @@ def main():
         print(f"GAGAL: {DST.relative_to(ROOT)} beda dengan sumber. Jalankan dengan --sync.")
         return 1
 
-    print(f"OK: {len(data['words'])} kata valid, salinan docs/ identik.")
+    try:
+        strokes = json.loads(STROKES.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as e:
+        print(f"GAGAL membaca {STROKES.relative_to(ROOT)}: {e}. Jalankan tools/sync_hanzi_data.py.")
+        return 1
+    chars = sorted({c for w in data["words"] for c in w["hanzi"]})
+    missing = [c for c in chars if c not in strokes]
+    if missing:
+        print(f"GAGAL: data goresan belum ada untuk {' '.join(missing)}. Jalankan tools/sync_hanzi_data.py.")
+        return 1
+    for c in chars:
+        d = strokes[c]
+        if not d.get("strokes") or len(d["strokes"]) != len(d.get("medians", [])):
+            print(f"GAGAL: data goresan {c} rusak (strokes/medians tidak cocok).")
+            return 1
+
+    print(f"OK: {len(data['words'])} kata valid, salinan docs/ identik, {len(chars)} karakter punya data goresan.")
     return 0
 
 
