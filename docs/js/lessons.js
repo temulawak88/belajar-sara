@@ -111,7 +111,10 @@ export function lessonProgress(lesson, state) {
   const started = lesson.vocab.filter((v) => state.leitner[v.id]).length;
   const done = (kind, list) => list.filter((e) => state.sentences?.[e.id]?.[kind]?.seen).length;
   const fill = lesson.exercises.filter((e) => e.type === 'fill');
+  const order = lesson.exercises.filter((e) => e.type === 'order');
   return {
+    order: order.length,
+    orderDone: done('order', order),
     words: lesson.vocab.length,
     wordsStarted: started,
     fill: fill.length,
@@ -119,4 +122,26 @@ export function lessonProgress(lesson, state) {
     listen: lesson.exercises.length,
     listenDone: done('listen', lesson.exercises),
   };
+}
+
+/* ---------- Susun kalimat ---------- */
+
+const CJK = /[\u4e00-\u9fff]/g;
+/** Hanya hanzi (tanda baca diabaikan) — untuk membandingkan susunan dengan jawaban. */
+export const hanziOnly = (text) => (text.match(CJK) || []).join('');
+
+/** Benar jika susunan potongan = jawaban atau salah satu `also_accept`. */
+export function isCorrectOrder(ex, arrangedChunks) {
+  const got = hanziOnly(arrangedChunks.join(''));
+  return [ex.answer, ...(ex.also_accept || [])].some((s) => hanziOnly(s) === got);
+}
+
+/** Urutan indeks potongan yang diacak; tidak pernah langsung membentuk jawaban yang benar. */
+export function shuffledChunkOrder(ex, rng = Math.random) {
+  const idx = ex.chunks.map((_, i) => i);
+  for (let attempt = 0; attempt < 20; attempt++) {
+    const order = shuffle(idx, rng);
+    if (!isCorrectOrder(ex, order.map((i) => ex.chunks[i]))) return order;
+  }
+  return [...idx.slice(1), idx[0]]; // putar satu langkah: pasti berbeda dari urutan asli
 }

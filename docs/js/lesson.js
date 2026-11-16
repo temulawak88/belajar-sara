@@ -20,6 +20,10 @@ async function load() {
   $('#ex-cards').href = `cards.html?n=${n}`;
   $('#ex-fill').href = `fill.html?n=${n}`;
   $('#ex-listen').href = `listen.html?n=${n}`;
+  $('#ex-order').href = `order.html?n=${n}`;
+  $('#ex-write').href = `write.html?n=${n}`;
+  $('#ex-tone').href = `tone.html?n=${n}`;
+  $('#ex-order-sub').textContent = `${p.orderDone} / ${p.order} done (Susun kalimat)`;
   $('#ex-cards-sub').textContent = `${p.wordsStarted} / ${p.words} words (Kartu kata)`;
   $('#ex-fill-sub').textContent = `${p.fillDone} / ${p.fill} done (Isi bagian kosong)`;
   $('#ex-listen-sub').textContent = `${p.listenDone} / ${p.listen} done (Dengar → pilih arti)`;

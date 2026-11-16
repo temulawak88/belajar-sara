@@ -60,26 +60,27 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test('Mandarin page links to writing; with no flashcards yet, the first 3 characters are picked', async ({ page }) => {
-  await page.goto('hanzi.html');
-  await page.locator('#go-write').tap();
-  await expect(page).toHaveURL(/\/docs\/write\.html$/);
-  await expect(page.locator('#char-list .char')).toHaveText(['你', '好', '谢']);
+test('lesson menu links to writing; with no word cards yet, the first 3 characters of the lesson are picked', async ({ page }) => {
+  await page.goto('lesson.html?n=1');
+  await page.locator('#ex-write').tap();
+  await expect(page).toHaveURL(/\/docs\/write\.html\?n=1$/);
+  await expect(page.locator('#page-title')).toHaveText('Writing · Lesson 1');
+  await expect(page.locator('#char-list .char')).toHaveText(['旅', '游', '觉']); // kata pertama pelajaran 1
   await page.locator('#back-btn').tap();
-  await expect(page).toHaveURL(/\/docs\/hanzi\.html$/);
+  await expect(page).toHaveURL(/\/docs\/lesson\.html\?n=1$/);
 });
 
-test('full flow for 大: watch, trace (with a mistake), write from memory, progress saved', async ({ page }) => {
-  await seedStarted(page, ['hsk1-da']);
-  await page.goto('write.html');
-  await expect(page.locator('#char-list .char')).toHaveText(['大']);
+test('full flow for 千: watch, trace (with a mistake), write from memory, progress saved', async ({ page }) => {
+  await seedStarted(page, ['hsk2-qian']);
+  await page.goto('write.html?n=3');
+  await expect(page.locator('#char-list .char')).toHaveText(['千']);
   await page.locator('#start-btn').tap();
 
   // 1 Watch
   await expect(page.locator('#steps li.current')).toHaveText('1 Watch');
   await expect(page.locator('#hw-target svg')).toBeVisible();
-  await expect(page.locator('#word')).toHaveText('大');
-  await expect(page.locator('#word-pinyin')).toHaveText('dà');
+  await expect(page.locator('#word')).toHaveText('千');
+  await expect(page.locator('#word-pinyin')).toHaveText('qiān');
   await expect(page.locator('#undo-btn')).toBeHidden();
   await page.locator('#next-btn').tap();
 
@@ -87,75 +88,75 @@ test('full flow for 大: watch, trace (with a mistake), write from memory, progr
   await expect(page.locator('#steps li.current')).toHaveText('2 Trace');
   await expect(page.locator('#next-btn')).toBeHidden(); // harus selesai dulu
   await expect(page.locator('#undo-btn')).toBeDisabled();
-  await drawStroke(page, '大', 0);
+  await drawStroke(page, '千', 0);
   await expect(page.locator('#undo-btn')).toBeEnabled();
   await drawWrong(page);
   await expect(page.locator('#step-msg')).toContainText('Almost');
-  await drawStroke(page, '大', 1);
-  await drawStroke(page, '大', 2);
+  await drawStroke(page, '千', 1);
+  await drawStroke(page, '千', 2);
   await expect(page.locator('#step-msg')).toContainText('Great');
   await expect(page.locator('#next-btn')).toBeVisible();
   let p = await readProgress(page);
-  expect(p.writing['大']).toMatchObject({ trace: 1, write: 0 });
+  expect(p.writing['千']).toMatchObject({ trace: 1, write: 0 });
   await page.locator('#next-btn').tap();
 
   // 3 Write (tanpa garis bantu)
   await expect(page.locator('#steps li.current')).toHaveText('3 Write');
   await expect(page.locator('#step-msg')).toContainText('from memory');
-  for (let i = 0; i < 3; i++) await drawStroke(page, '大', i);
+  for (let i = 0; i < 3; i++) await drawStroke(page, '千', i);
   await expect(page.locator('#step-msg')).toContainText('Perfect');
   p = await readProgress(page);
-  expect(p.writing['大']).toMatchObject({ trace: 1, write: 1, lastMistakes: 0, best: 0 });
+  expect(p.writing['千']).toMatchObject({ trace: 1, write: 1, lastMistakes: 0, best: 0 });
   await page.locator('#next-btn').tap();
 
   await expect(page.locator('#screen-done')).toBeVisible();
-  await expect(page.locator('#done-summary')).toContainText('You wrote 1 character: 大 (1 perfect!)');
+  await expect(page.locator('#done-summary')).toContainText('You wrote 1 character: 千 (1 perfect!)');
 
-  // Reload: progres tetap, dan 大 sudah selesai hari ini.
+  // Reload: progres tetap, dan 千 sudah selesai hari ini.
   await page.reload();
   await expect(page.locator('#char-list')).toContainText('All done for today');
   await expect(page.locator('#start-btn')).toBeHidden();
 });
 
 test('Undo removes the last correct stroke; Clear restarts the character', async ({ page }) => {
-  await seedStarted(page, ['hsk1-da']);
-  await page.goto('write.html');
+  await seedStarted(page, ['hsk2-qian']);
+  await page.goto('write.html?n=3');
   await page.locator('#start-btn').tap();
   await page.locator('#next-btn').tap();
 
   const completed = page.locator('#pad');
-  await drawStroke(page, '大', 0);
-  await drawStroke(page, '大', 1);
+  await drawStroke(page, '千', 0);
+  await drawStroke(page, '千', 1);
   await expect(completed).toHaveAttribute('data-completed', '2');
   await page.locator('#undo-btn').tap();
   await expect(completed).toHaveAttribute('data-completed', '1');
   // Setelah Undo, goresan ke-2 harus digambar lagi dan diterima.
-  await drawStroke(page, '大', 1);
+  await drawStroke(page, '千', 1);
   await expect(completed).toHaveAttribute('data-completed', '2');
   await expect(page.locator('#step-msg')).not.toContainText('Almost');
-  await drawStroke(page, '大', 2);
+  await drawStroke(page, '千', 2);
   await expect(page.locator('#next-btn')).toBeVisible();
 
   // Clear di langkah berikutnya
   await page.locator('#next-btn').tap();
-  await drawStroke(page, '大', 0);
+  await drawStroke(page, '千', 0);
   await expect(page.locator('#clear-btn')).toBeEnabled();
   await page.locator('#clear-btn').tap();
   await expect(page.locator('#clear-btn')).toBeDisabled();
   await expect(page.locator('#undo-btn')).toBeDisabled();
   await expect(completed).toHaveAttribute('data-completed', '0');
-  for (let i = 0; i < 3; i++) await drawStroke(page, '大', i);
+  for (let i = 0; i < 3; i++) await drawStroke(page, '千', i);
   await expect(page.locator('#next-btn')).toBeVisible();
 });
 
 test('palm rejection: finger touches are ignored while the Pencil is in use', async ({ page }) => {
-  await seedStarted(page, ['hsk1-da']);
-  await page.goto('write.html');
+  await seedStarted(page, ['hsk2-qian']);
+  await page.goto('write.html?n=3');
   await page.locator('#start-btn').tap();
   await page.locator('#next-btn').tap();
   await expect(page.locator('#pad')).toHaveAttribute('data-ready', '1');
 
-  const [first] = await toScreen(page, [CHARS['大'].medians[0][0]]);
+  const [first] = await toScreen(page, [CHARS['千'].medians[0][0]]);
   const result = await page.evaluate(({ x, y }) => {
     const canvas = document.querySelector('#pad canvas.ink');
     const svg = document.querySelector('#hw-target svg');
@@ -189,12 +190,12 @@ test('palm rejection: finger touches are ignored while the Pencil is in use', as
 });
 
 test('finger works normally when no Pencil is used', async ({ page }) => {
-  await seedStarted(page, ['hsk1-da']);
-  await page.goto('write.html');
+  await seedStarted(page, ['hsk2-qian']);
+  await page.goto('write.html?n=3');
   await page.locator('#start-btn').tap();
   await page.locator('#next-btn').tap();
   await expect(page.locator('#pad')).toHaveAttribute('data-ready', '1');
-  const pts = await toScreen(page, CHARS['大'].medians[0]);
+  const pts = await toScreen(page, CHARS['千'].medians[0]);
   await page.evaluate((pts) => {
     const canvas = document.querySelector('#pad canvas.ink');
     const fire = (type, p) =>
@@ -211,11 +212,11 @@ test('finger works normally when no Pencil is used', async ({ page }) => {
 });
 
 test('rotating the iPad keeps the progress inside the character', async ({ page }) => {
-  await seedStarted(page, ['hsk1-da']);
-  await page.goto('write.html');
+  await seedStarted(page, ['hsk2-qian']);
+  await page.goto('write.html?n=3');
   await page.locator('#start-btn').tap();
   await page.locator('#next-btn').tap();
-  await drawStroke(page, '大', 0);
+  await drawStroke(page, '千', 0);
   const before = (await page.locator('#pad').boundingBox()).width;
 
   const vp = page.viewportSize();
@@ -223,24 +224,24 @@ test('rotating the iPad keeps the progress inside the character', async ({ page 
   await expect.poll(async () => Math.round((await page.locator('#pad').boundingBox()).width)).not.toBe(Math.round(before));
   // Writer dibangun ulang dengan ukuran baru; goresan 1 tetap dihitung.
   await expect(page.locator('#pad')).toHaveAttribute('data-completed', '1');
-  await drawStroke(page, '大', 1);
-  await drawStroke(page, '大', 2);
+  await drawStroke(page, '千', 1);
+  await drawStroke(page, '千', 2);
   await expect(page.locator('#next-btn')).toBeVisible();
 });
 
 test('writing practice works offline (library and stroke data are cached)', async ({ page, context }) => {
-  await seedStarted(page, ['hsk1-da']);
+  await seedStarted(page, ['hsk2-qian']);
   await page.evaluate(async () => {
     await navigator.serviceWorker.ready;
   });
   await page.reload();
   await expect.poll(() => page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(true);
   await context.setOffline(true);
-  await page.goto('write.html');
+  await page.goto('write.html?n=3');
   await page.locator('#start-btn').tap();
   await expect(page.locator('#hw-target svg')).toBeVisible();
   await page.locator('#next-btn').tap();
-  await drawStroke(page, '大', 0);
+  await drawStroke(page, '千', 0);
   await expect(page.locator('#undo-btn')).toBeEnabled();
   await context.setOffline(false);
 });
@@ -248,17 +249,17 @@ test('writing practice works offline (library and stroke data are cached)', asyn
 test('schema v1 progress (iteration 1) is migrated to v2 without losing flashcards', async ({ page }) => {
   await page.goto('index.html');
   await page.evaluate((k) => {
-    localStorage.setItem(k, JSON.stringify({ schemaVersion: 1, nickname: '', leitner: { 'hsk1-da': { box: 3, due: '2099-01-01', right: 2, wrong: 0, first: '2026-01-01' } } }));
+    localStorage.setItem(k, JSON.stringify({ schemaVersion: 1, nickname: '', leitner: { 'hsk2-qian': { box: 3, due: '2099-01-01', right: 2, wrong: 0, first: '2026-01-01' } } }));
   }, KEY);
-  await page.goto('write.html');
-  await expect(page.locator('#char-list .char')).toHaveText(['大']);
+  await page.goto('write.html?n=3');
+  await expect(page.locator('#char-list .char')).toHaveText(['千']);
   await page.locator('#start-btn').tap();
   await page.locator('#next-btn').tap();
-  for (let i = 0; i < 3; i++) await drawStroke(page, '大', i);
+  for (let i = 0; i < 3; i++) await drawStroke(page, '千', i);
   const p = await readProgress(page);
   expect(p.schemaVersion).toBe(4); // selalu dimigrasi ke versi terbaru
-  expect(p.leitner['hsk1-da'].box).toBe(3);
-  expect(p.writing['大'].trace).toBe(1);
+  expect(p.leitner['hsk2-qian'].box).toBe(3);
+  expect(p.writing['千'].trace).toBe(1);
 });
 
 test.describe('writing.js logic', () => {
@@ -306,8 +307,8 @@ test.describe('writing.js logic', () => {
 
 test('on an iPhone-sized screen the header counter stays on one line', async ({ page }) => {
   await page.setViewportSize({ width: 393, height: 852 }); // iPhone 15
-  await seedStarted(page, ['hsk1-pengyou']);
-  await page.goto('write.html');
+  await seedStarted(page, ['hsk2-gaosu']); // 告诉: 2 karakter
+  await page.goto('write.html?n=8');
   await page.locator('#start-btn').tap();
   await expect(page.locator('#counter')).toHaveText('1 / 2');
   const h = (await page.locator('#counter').boundingBox()).height;

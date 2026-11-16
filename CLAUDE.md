@@ -39,8 +39,9 @@ docs/                 # = app yang ditayangkan GitHub Pages
   lesson.html         # menu satu pelajaran (?n=3): 4 latihan
   cards.html          # kartu kata        (?n=3)
   fill.html           # isi bagian kosong (?n=3)
+  order.html          # susun kalimat     (?n=3)
   listen.html         # dengar → pilih arti (?n=3)
-  write.html, tone.html   # latihan menulis dan nada
+  write.html, tone.html   # latihan menulis dan nada (?n=3)
   css/style.css
   js/                 # satu file per modul, ES modules
   manifest.json

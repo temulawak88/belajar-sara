@@ -18,7 +18,8 @@ App ada di `docs/` dan ditayangkan GitHub Pages (branch `main`, folder `/docs`).
   303 kartu, HSK 1 dulu lalu HSK 2, per tema. Karakter berbacaan ganda ditandai `no_tone`.
 
 - **Mandarin per pelajaran:** `hanzi.html` kini daftar Pelajaran 1–11; tiap pelajaran (`lesson.html?n=…`) punya
-  kartu kata, isi bagian kosong, dan dengar → pilih arti. Susun kalimat menyusul. Flashcard HSK 1 terpisah dihapus.
+  kartu kata, isi bagian kosong, susun kalimat (ketuk atau drag), dan dengar → pilih arti, plus latihan menulis
+  dan nada untuk kata pelajaran itu. Flashcard HSK 1 terpisah dihapus.
 
 ## Menjalankan di laptop
 ```bash
@@ -124,8 +125,13 @@ dan tambahkan file baru ke daftar `ASSETS` di `sw.js` (tes mengecek semua file `
   Bisa dipecah per karakter dan dimuat lewat `charDataLoader` (penting jika ditambah HSK 3).
 
 ### Pelajaran Mandarin
-21. Mandarin → daftar 11 pelajaran; ketuk satu → menu dengan 4 latihan ("Build the sentence" masih Coming soon).
+21. Mandarin → daftar 11 pelajaran; ketuk satu → menu dengan 4 latihan + Writing + Tones.
 22. Word cards: kata pelajaran itu saja; progres kata yang sudah pernah dipelajari tetap ada.
 23. Fill the blank: salah sekali → muncul arti sebagai petunjuk; benar → kalimat dibacakan, pinyin + arti muncul.
 24. Listen: kalimat dibacakan saat Start/Next; salah sekali → diputar lagi; dengarkan apakah suara iPad jelas untuk kalimat panjang.
 25. Daftar pelajaran bisa digulir dengan lancar di portrait dan landscape.
+26. Build the sentence: ketuk potongan berurutan; ketuk lagi potongan di kalimat untuk mengembalikannya.
+27. **Drag dengan jari dan dengan Apple Pencil**: potongan mengikuti jari, garis biru menunjukkan posisi sisip,
+    bisa disisipkan di tengah, dan ditarik keluar untuk mengembalikan. Halaman tidak ikut bergulir saat men-drag.
+28. Susunan salah → Check: arti muncul dan potongan yang sudah benar bertepi hijau; salah lagi → kalimat ditunjukkan.
+29. Writing dan Tones dari menu pelajaran memakai karakter pelajaran itu (mis. Pelajaran 6: 自行车, 公斤).

@@ -1,6 +1,6 @@
 // Service worker: app shell offline (cache-first).
 // WAJIB: naikkan CACHE_NAME setiap rilis, samakan dengan APP_VERSION di js/version.js.
-const CACHE_NAME = 'belajar-v7';
+const CACHE_NAME = 'belajar-v8';
 
 // Semua path RELATIF terhadap lokasi sw.js (= docs/), supaya jalan di sub-path GitHub Pages.
 const ASSETS = [
@@ -11,6 +11,7 @@ const ASSETS = [
   'cards.html',
   'fill.html',
   'listen.html',
+  'order.html',
   'write.html',
   'tone.html',
   'manifest.json',
@@ -27,6 +28,7 @@ const ASSETS = [
   'js/lessonpage.js',
   'js/lessons.js',
   'js/listen.js',
+  'js/order.js',
   'js/mathhints.js',
   'js/pinyin.js',
   'js/speech.js',

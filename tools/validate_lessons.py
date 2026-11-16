@@ -23,6 +23,7 @@ from validate_vocab import FINALS, INITIALS, plain  # noqa: E402  (pemecah pinyi
 ROOT = Path(__file__).resolve().parent.parent
 LESSONS = ROOT / "docs" / "content" / "hsk2" / "lessons.json"
 VOCAB = ROOT / "content" / "hsk2" / "vocab.json"
+STROKES = ROOT / "docs" / "vendor" / "hanzi-writer-data" / "chars.json"
 
 CJK = re.compile(r"[一-鿿]")
 STATUS = {"current", "review", "upcoming"}
@@ -112,6 +113,10 @@ def validate(data, hsk1_chars):
                 errors.append(f"{vw}: hanzi hanya boleh karakter CJK")
             if not count_syllables_ok(v.get("pinyin", ""), len(v["hanzi"])):
                 errors.append(f"{vw}: pinyin {v.get('pinyin')!r} tidak cocok dengan {len(v['hanzi'])} hanzi")
+            if "no_tone" in v and (
+                not isinstance(v["no_tone"], list) or any(len(c) != 1 or c not in v["hanzi"] for c in v["no_tone"])
+            ):
+                errors.append(f"{vw}: no_tone harus list karakter tunggal dari kata ini")
             for flag in ("supplementary", "proper_noun"):
                 if flag in v and not isinstance(v[flag], bool):
                     errors.append(f"{vw}: {flag} harus true/false")
@@ -195,6 +200,15 @@ def main():
         print(f"GAGAL membaca konten: {e}")
         return 1
     errors = validate(data, hsk1)
+    # Latihan menulis per pelajaran: setiap karakter kosakata pelajaran butuh data goresan.
+    try:
+        strokes = json.loads(STROKES.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as e:
+        strokes = {}
+        errors.append(f"tidak bisa membaca {STROKES.relative_to(ROOT)}: {e}")
+    missing = sorted({c for l in data["lessons"] for v in l.get("vocab", []) for c in v.get("hanzi", "") if c not in strokes})
+    if missing:
+        errors.append(f"data goresan belum ada untuk: {' '.join(missing)} (jalankan tools/sync_hanzi_data.py)")
     if errors:
         print(f"GAGAL: {len(errors)} masalah di {LESSONS.relative_to(ROOT)}")
         for e in errors:

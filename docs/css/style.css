@@ -582,3 +582,51 @@ h2 { font-size: 28px; margin: 0 0 8px; }
   .ex-grid { grid-template-columns: 1fr; }
   .sentence { font-size: 30px; }
 }
+
+/* ---------- Susun kalimat (order.html) ---------- */
+
+.chunk-line, .chunk-bank {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+.chunk-line {
+  min-height: 84px;
+  padding: 10px;
+  border-radius: 18px;
+  border: 3px dashed #cfd6e6;
+}
+.chunk-line.empty::before { content: '···'; color: #b7c0d4; font-size: 28px; }
+.chunk-line.drop-target { border-color: var(--primary); }
+.chunk-line.right { border: 3px solid var(--good); background: #e6f6ee; }
+.chunk-line.shown { border: 3px solid #cfd6e6; }
+.chunk-bank { width: min(100%, 760px); min-height: 72px; }
+.chunk {
+  min-height: 60px;
+  padding: 10px 20px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  border: 3px solid transparent;
+  font: 600 30px/1.2 var(--font-hanzi);
+  touch-action: none; /* supaya bisa di-drag; tap tetap ditangani lewat pointerup */
+}
+.chunk-line .chunk { background: var(--soft); box-shadow: none; }
+.chunk.in-place { border-color: var(--good); }
+.chunk.dragging {
+  position: relative;
+  z-index: 5;
+  opacity: 0.9;
+  transition: none;
+  box-shadow: 0 10px 24px rgba(29, 36, 51, 0.25);
+}
+.chunk:disabled { opacity: 1; }
+.drop-marker {
+  width: 6px;
+  height: 52px;
+  border-radius: 3px;
+  background: var(--primary);
+  pointer-events: none;
+}

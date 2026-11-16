@@ -36,7 +36,10 @@ test('home → lesson list → lesson menu; Math and Daily Mission are not click
   await expect(page.locator('#ex-cards')).toHaveAttribute('href', 'cards.html?n=3');
   await expect(page.locator('#ex-fill')).toHaveAttribute('href', 'fill.html?n=3');
   await expect(page.locator('#ex-listen')).toHaveAttribute('href', 'listen.html?n=3');
-  await expect(page.locator('#ex-order')).toHaveClass(/disabled/); // susun kalimat: PR berikutnya
+  await expect(page.locator('#ex-order')).toHaveAttribute('href', 'order.html?n=3');
+  await expect(page.locator('#ex-write')).toHaveAttribute('href', 'write.html?n=3');
+  await expect(page.locator('#ex-tone')).toHaveAttribute('href', 'tone.html?n=3');
+  await expect(page.locator('#screen-lesson .disabled')).toHaveCount(0);
   await page.locator('#grammar summary').tap();
   await expect(page.locator('#grammar-list li')).toHaveCount(3);
 
@@ -48,7 +51,7 @@ test('home → lesson list → lesson menu; Math and Daily Mission are not click
 });
 
 test('an invalid lesson number goes back to the lesson list (no dead end)', async ({ page }) => {
-  for (const url of ['lesson.html?n=99', 'cards.html', 'fill.html?n=abc', 'listen.html?n=0']) {
+  for (const url of ['lesson.html?n=99', 'cards.html', 'fill.html?n=abc', 'listen.html?n=0', 'order.html?n=12', 'write.html', 'tone.html']) {
     await page.goto(url);
     await expect(page).toHaveURL(/\/docs\/hanzi\.html$/);
     await expect(page.locator('.lesson-card')).toHaveCount(11);

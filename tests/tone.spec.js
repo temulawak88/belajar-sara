@@ -2,7 +2,7 @@
 const { test, expect } = require('@playwright/test');
 
 const KEY = 'belajar-sarah:progress';
-const TONE_OF = { 你: 3, 谢: 4, 大: 4 };
+const TONE_OF = { 千: 1, 送: 4, 真: 1 }; // pelajaran 3
 
 /** Web Speech tiruan: punya suara zh-CN (atau tidak), mencatat setiap ucapan ke window.__spoken. */
 async function mockSpeech(page, { withVoice = true } = {}) {
@@ -46,11 +46,12 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test('Mandarin page links to tone practice; start screen explains the 4 tones', async ({ page }) => {
+test('lesson menu links to tone practice; start screen explains the 4 tones', async ({ page }) => {
   await mockSpeech(page);
-  await page.goto('hanzi.html');
-  await page.locator('#go-tone').tap();
-  await expect(page).toHaveURL(/\/docs\/tone\.html$/);
+  await page.goto('lesson.html?n=3');
+  await page.locator('#ex-tone').tap();
+  await expect(page).toHaveURL(/\/docs\/tone\.html\?n=3$/);
+  await expect(page.locator('#page-title')).toHaveText('Tone · Lesson 3');
   await expect(page.locator('#tone-guide li')).toHaveCount(4);
   await expect(page.locator('#tone-guide')).toContainText('dips down, then up');
   await expect(page.locator('#start-btn')).toBeEnabled();
@@ -58,8 +59,8 @@ test('Mandarin page links to tone practice; start screen explains the 4 tones', 
 
 test('full session: right answer, wrong-then-reveal, saved after every answer', async ({ page }) => {
   await mockSpeech(page);
-  await seed(page, ['hsk1-ni', 'hsk1-xiexie', 'hsk1-da']);
-  await page.goto('tone.html');
+  await seed(page, ['hsk2-qian', 'hsk2-song', 'hsk2-zhen']);
+  await page.goto('tone.html?n=3');
   await expect(page.locator('#start-note')).toHaveText('Today: 3 sounds');
   await page.locator('#start-btn').tap();
 
@@ -109,25 +110,25 @@ test('full session: right answer, wrong-then-reveal, saved after every answer', 
   // Reload: progres tetap. Karakter yang salah didahulukan di sesi berikutnya (urutan diacak, jadi cek isinya saja).
   await page.reload();
   const p = await readProgress(page);
-  expect(Object.keys(p.tones).sort()).toEqual(['你', '大', '谢']);
+  expect(Object.keys(p.tones).sort()).toEqual(['千', '真', '送']);
   const wrongChar = Object.keys(results).find((c) => !results[c]);
   expect(p.tones[wrongChar].right).toBe(0);
 });
 
 test('answer options show the same syllable with the 4 tone marks', async ({ page }) => {
   await mockSpeech(page);
-  await seed(page, ['hsk1-shui']);
-  await page.goto('tone.html');
+  await seed(page, ['hsk2-song']);
+  await page.goto('tone.html?n=3');
   await page.locator('#start-btn').tap();
-  await expect(page.locator('#q-hanzi')).toHaveText('水');
-  await expect(page.locator('#options .tone-label')).toHaveText(['shuī', 'shuí', 'shuǐ', 'shuì']);
+  await expect(page.locator('#q-hanzi')).toHaveText('送');
+  await expect(page.locator('#options .tone-label')).toHaveText(['sōng', 'sóng', 'sǒng', 'sòng']);
 });
 
 test('one question says "1 sound"; header fits on an iPhone-sized screen', async ({ page }) => {
   await page.setViewportSize({ width: 393, height: 852 }); // iPhone 15
   await mockSpeech(page);
-  await seed(page, ['hsk1-da']);
-  await page.goto('tone.html');
+  await seed(page, ['hsk2-qian']);
+  await page.goto('tone.html?n=3');
   await expect(page.locator('#start-note')).toHaveText('Today: 1 sound');
   await page.locator('#start-btn').tap();
   await expect(page.locator('#counter')).toHaveText('1 / 1');
@@ -137,7 +138,7 @@ test('one question says "1 sound"; header fits on an iPhone-sized screen', async
 
 test('without a Chinese voice the practice explains why and Start is disabled (no dead end)', async ({ page }) => {
   await mockSpeech(page, { withVoice: false });
-  await page.goto('tone.html');
+  await page.goto('tone.html?n=3');
   await expect(page.locator('#voice-note')).toBeVisible();
   await expect(page.locator('#voice-note')).toContainText('needs a Chinese voice');
   await expect(page.locator('#start-btn')).toBeDisabled();
@@ -151,17 +152,17 @@ test('schema v2 progress (iteration 2) is migrated to v3', async ({ page }) => {
   await page.evaluate((k) => {
     localStorage.setItem(
       k,
-      JSON.stringify({ schemaVersion: 2, nickname: '', leitner: { 'hsk1-da': { box: 3, due: '2099-01-01', first: '2026-01-01' } }, writing: { 大: { trace: 1, write: 1, last: '2026-11-01' } } }),
+      JSON.stringify({ schemaVersion: 2, nickname: '', leitner: { 'hsk2-song': { box: 3, due: '2099-01-01', first: '2026-01-01' } }, writing: { 大: { trace: 1, write: 1, last: '2026-11-01' } } }),
     );
   }, KEY);
-  await page.goto('tone.html');
+  await page.goto('tone.html?n=3');
   await page.locator('#start-btn').tap();
   await page.locator('#options [data-tone="4"]').tap();
   const p = await readProgress(page);
   expect(p.schemaVersion).toBe(4);
-  expect(p.leitner['hsk1-da'].box).toBe(3);
+  expect(p.leitner['hsk2-song'].box).toBe(3);
   expect(p.writing['大'].write).toBe(1);
-  expect(p.tones['大']).toMatchObject({ seen: 1, right: 1 });
+  expect(p.tones['送']).toMatchObject({ seen: 1, right: 1 });
 });
 
 test.describe('pinyin.js and tones.js logic', () => {
