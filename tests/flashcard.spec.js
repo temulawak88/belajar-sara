@@ -166,3 +166,12 @@ test('home and flashcard page agree on the number of reviews (capped at one shor
   await page.goto('hanzi.html');
   await expect(page.locator('#start-note')).toContainText('Today: 12 to review');
 });
+
+test('the "1 / 5" counter stays on one line on a narrow (iPhone) screen', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 640 }) // iPhone SE (layar terkecil);
+  await page.goto('hanzi.html');
+  await page.locator('#start-btn').tap();
+  const box = await page.locator('#counter').boundingBox();
+  const lineHeight = await page.locator('#counter').evaluate((el) => parseFloat(getComputedStyle(el).lineHeight) || 30);
+  expect(box.height).toBeLessThan(lineHeight * 1.5);
+});

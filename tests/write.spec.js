@@ -303,3 +303,14 @@ test.describe('writing.js logic', () => {
     expect(r).toEqual({ trace: 1, write: 2, lastMistakes: 5, best: 2, last: '2026-11-17' });
   });
 });
+
+test('on an iPhone-sized screen the header counter stays on one line', async ({ page }) => {
+  await page.setViewportSize({ width: 393, height: 852 }); // iPhone 15
+  await seedStarted(page, ['hsk1-pengyou']);
+  await page.goto('write.html');
+  await page.locator('#start-btn').tap();
+  await expect(page.locator('#counter')).toHaveText('1 / 2');
+  const h = (await page.locator('#counter').boundingBox()).height;
+  expect(h).toBeLessThan(40);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0);
+});

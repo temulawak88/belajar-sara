@@ -123,6 +123,18 @@ test('answer options show the same syllable with the 4 tone marks', async ({ pag
   await expect(page.locator('#options .tone-label')).toHaveText(['shuī', 'shuí', 'shuǐ', 'shuì']);
 });
 
+test('one question says "1 sound"; header fits on an iPhone-sized screen', async ({ page }) => {
+  await page.setViewportSize({ width: 393, height: 852 }); // iPhone 15
+  await mockSpeech(page);
+  await seed(page, ['hsk1-da']);
+  await page.goto('tone.html');
+  await expect(page.locator('#start-note')).toHaveText('Today: 1 sound');
+  await page.locator('#start-btn').tap();
+  await expect(page.locator('#counter')).toHaveText('1 / 1');
+  expect((await page.locator('#counter').boundingBox()).height).toBeLessThan(40);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0);
+});
+
 test('without a Chinese voice the practice explains why and Start is disabled (no dead end)', async ({ page }) => {
   await mockSpeech(page, { withVoice: false });
   await page.goto('tone.html');
