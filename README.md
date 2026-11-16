@@ -95,3 +95,9 @@ dan tambahkan file baru ke daftar `ASSETS` di `sw.js` (tes mengecek semua file `
 18. Progres flashcard lama tetap ada setelah update (20 kata awal memakai id yang sama).
 19. Latihan menulis untuk karakter baru (mis. 爱, 飞机) tampil dan bisa dinilai; juga dalam mode pesawat.
 20. Review arti di `content/hsk2/vocab.json` (terutama kata partikel seperti 了, 着, 过, 得).
+
+## Catatan untuk nanti (dari review)
+- `no_tone` lebih rapi sebagai satu daftar karakter di atas `vocab.json`, bukan per kata
+  (sekarang 为 dan 什 ditulis dua kali). Mengubah format konten.
+- Latihan menulis membaca seluruh `chars.json` (~750 KB) padahal satu sesi memakai 3 karakter.
+  Bisa dipecah per karakter dan dimuat lewat `charDataLoader` (penting jika ditambah HSK 3).
