@@ -238,6 +238,19 @@ test.describe('pinyin.js and tones.js logic', () => {
     expect(r.fallback).toBe(10);
   });
 
+  test('pickToneQuestions falls back to the word list when started words give no questions', async ({ page }) => {
+    const r = await page.evaluate(async () => {
+      const T = await import('./js/tones.js');
+      const words = [
+        { id: 'a', hanzi: '谢谢', pinyin: 'xièxie' },
+        { id: 'p', hanzi: '吗', pinyin: 'ma' }, // hanya nada netral
+        { id: 'b', hanzi: '大', pinyin: 'dà' },
+      ];
+      return T.pickToneQuestions(words, { p: {} }, {}, 10, () => 0.999999).map((q) => q.char);
+    });
+    expect(r).toEqual(['谢', '大']);
+  });
+
   test('recordTone counts first answers only', async ({ page }) => {
     const r = await page.evaluate(async () => {
       const T = await import('./js/tones.js');

@@ -35,7 +35,10 @@ export function toneItems(words) {
  */
 export function pickToneQuestions(words, leitner, tones, n = QUESTIONS_PER_SESSION, rng = Math.random) {
   const started = words.filter((w) => leitner[w.id]);
-  const all = toneItems(started.length ? started : words);
+  // Jika kata yang sudah dipelajari tidak menghasilkan soal sama sekali (mis. hanya partikel
+  // bernada netral), pakai awal daftar supaya latihan tidak buntu.
+  let all = toneItems(started);
+  if (!all.length) all = toneItems(words);
   // Skor = proporsi benar. Yang belum pernah muncul diberi 0,5: sesudah yang sering salah,
   // sebelum yang sudah dikuasai.
   const score = (it) => {
