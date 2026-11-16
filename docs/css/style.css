@@ -630,3 +630,98 @@ h2 { font-size: 28px; margin: 0 0 8px; }
   background: var(--primary);
   pointer-events: none;
 }
+
+/* ---------- Soal cerita matematika (math.html, mathq.html) ---------- */
+
+.lesson-card.disabled { opacity: 0.5; }
+
+.math-screen { justify-content: flex-start; padding-top: 8px; }
+.math-layout { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; }
+.math-left { display: flex; flex-direction: column; gap: 14px; width: min(100%, 760px); }
+.math-right { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+
+.story-card { width: 100%; min-height: 0; align-items: flex-start; text-align: left; padding: 44px 24px 20px; }
+/* Tinggi baris 48px supaya kata glosarium di dalam teks tetap target sentuh yang cukup besar. */
+.story { margin: 0; font-size: 24px; line-height: 48px; }
+.term {
+  display: inline-block;
+  min-height: 48px;
+  min-width: 48px;
+  margin: 0 -2px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--soft);
+  color: var(--primary);
+  font: inherit;
+  line-height: 44px;
+  vertical-align: baseline;
+  touch-action: manipulation;
+  cursor: pointer;
+  transition: transform 80ms ease, opacity 80ms ease;
+}
+.term:active { transform: scale(0.96); }
+.term.active { background: var(--primary); color: #fff; }
+.glossary-note { margin: 4px 0 0; min-height: 1.5em; font-size: 18px; color: var(--muted); }
+.glossary-note.shown { color: var(--text); font-weight: 600; }
+
+.pie-box { align-self: center; width: min(100%, 300px); }
+.pie { display: block; width: 100%; height: auto; }
+.pie-sector { stroke: #fff; stroke-width: 2; }
+.pie-label { font: 600 15px var(--font); fill: var(--text); }
+.pie-value { font-weight: 700; font-size: 17px; }
+
+.hint-box {
+  background: #fdf1e1;
+  color: #5c3a00;
+  border-radius: 16px;
+  padding: 14px 18px;
+  text-align: left;
+  animation: fade-in 180ms ease both;
+}
+.hint-box[data-kind='right'] { background: #e6f6ee; color: #14573a; }
+.hint-title { margin: 0; font-weight: 600; font-size: 19px; }
+.hint-box ul { margin: 8px 0 0; padding-left: 22px; font-size: 18px; }
+.hint-box ul:empty { display: none; }
+.hint-box li { margin: 4px 0; }
+
+.answer-row { display: flex; align-items: baseline; justify-content: center; gap: 10px; font-size: 26px; }
+.answer-display {
+  display: inline-block;
+  min-width: 190px;
+  min-height: 64px;
+  padding: 8px 16px;
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  border-bottom: 4px solid var(--primary);
+  font: 600 38px/48px var(--font);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  white-space: pre;
+}
+.answer-display.empty::before { content: '?'; color: #b7c0d4; }
+.answer-unit, .answer-prefix { font-weight: 600; color: var(--muted); }
+
+.keypad { display: grid; grid-template-columns: repeat(4, 76px); gap: 10px; }
+.key {
+  min-height: 68px;
+  padding: 0;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  font-size: 30px;
+  font-variant-numeric: tabular-nums;
+}
+.key.wide { grid-column: span 2; }
+.key-fn { background: var(--soft); box-shadow: none; }
+
+/* Landscape: cerita di kiri, keypad di kanan. */
+@media (orientation: landscape) and (min-width: 900px) {
+  .math-layout { flex-direction: row; align-items: flex-start; justify-content: center; gap: 32px; }
+  .math-left { width: min(56%, 640px); }
+}
+@media (max-width: 600px) {
+  .story { font-size: 20px; }
+  .keypad { grid-template-columns: repeat(4, 64px); }
+  .key { min-height: 56px; }
+}

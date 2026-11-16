@@ -21,6 +21,10 @@ App ada di `docs/` dan ditayangkan GitHub Pages (branch `main`, folder `/docs`).
   kartu kata, isi bagian kosong, susun kalimat (ketuk atau drag), dan dengar → pilih arti, plus latihan menulis
   dan nada untuk kata pelajaran itu. Flashcard HSK 1 terpisah dihapus.
 
+- **Matematika, soal cerita (bagian 1):** `math.html` daftar bab dari `syllabus.json`; `mathq.html?c=…` menampilkan
+  cerita dengan kata glosarium yang bisa diketuk, pie chart dari `pie_data`, keypad angka sendiri, dan petunjuk dari
+  `common_mistakes`. Belum ada: ketuk yang diketahui/ditanya, pilih model.
+
 ## Menjalankan di laptop
 ```bash
 npm run serve        # lalu buka http://localhost:4173/docs/
@@ -135,3 +139,11 @@ dan tambahkan file baru ke daftar `ASSETS` di `sw.js` (tes mengecek semua file `
     bisa disisipkan di tengah, dan ditarik keluar untuk mengembalikan. Halaman tidak ikut bergulir saat men-drag.
 28. Susunan salah → Check: arti muncul dan potongan yang sudah benar bertepi hijau; salah lagi → kalimat ditunjukkan.
 29. Writing dan Tones dari menu pelajaran memakai karakter pelajaran itu (mis. Pelajaran 6: 自行车, 公斤).
+
+### Matematika
+30. Math → daftar bab; Solid Figures nonaktif. Ketuk Speed → soal pertama.
+31. Ketuk kata biru di cerita → arti Indonesia muncul di bawahnya.
+32. Jawab dengan keypad di layar (keyboard iPad tidak boleh muncul). Coba `2.5`, `5/2`, dan `2 1/2` untuk jawaban 2.5.
+33. Jawab salah → petunjuk "Cek lagi"; salah lagi → yang diketahui; salah ketiga → jawaban ditunjukkan.
+34. Bab Pie Charts: diagram lingkaran tampil jelas, sektor "sisanya" bertanda "?".
+35. Landscape: cerita di kiri, keypad di kanan; portrait: keypad di bawah cerita.

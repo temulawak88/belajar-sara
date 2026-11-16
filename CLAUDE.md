@@ -34,7 +34,8 @@
 ```
 docs/                 # = app yang ditayangkan GitHub Pages
   index.html          # menu utama: Math, Mandarin, Misi Harian
-  math.html
+  math.html           # daftar bab matematika
+  mathq.html          # soal cerita satu bab (?c=6B-07)
   hanzi.html          # daftar pelajaran Mandarin
   lesson.html         # menu satu pelajaran (?n=3): 4 latihan
   cards.html          # kartu kata        (?n=3)
@@ -77,6 +78,8 @@ tools/
 - Gaya soal mengikuti soal cerita Singapura P6 (multi-langkah), mulai dari yang 2 langkah.
 
 ## Alur soal cerita (UI)
+*(Status: langkah 1, 4, 6 sudah ada di `mathq.html`; pie chart digambar dari `pie_data`. Langkah 2, 3 dan
+pembedaan jenis kesalahan di langkah 5 belum — untuk sementara kesalahan dicatat sebagai `calculation`.)*
 1. Baca cerita (kata sulit bisa di-tap → arti).
 2. Tap: apa yang **diketahui**, apa yang **ditanya**.
 3. **Pilih model** yang cocok dari 3 pilihan (SVG), sesuai `model` soal: `bar`, `journey`, `tank`, `pie`

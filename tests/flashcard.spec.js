@@ -17,11 +17,11 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test('home → lesson list → lesson menu; Math and Daily Mission are not clickable yet', async ({ page }) => {
+test('home → lesson list → lesson menu; Daily Mission is not clickable yet', async ({ page }) => {
   await page.goto('index.html');
   await expect(page.locator('h1')).toContainText('What shall we learn');
   await expect(page.locator('#mandarin-status')).toHaveText('Lessons 1–11 · start here!');
-  await expect(page.locator('.menu-card.disabled')).toHaveCount(2);
+  await expect(page.locator('.menu-card.disabled')).toHaveCount(1);
   await page.locator('#go-mandarin').tap();
   await expect(page).toHaveURL(/\/docs\/hanzi\.html$/);
   await expect(page.locator('.lesson-card')).toHaveCount(11);
@@ -92,7 +92,7 @@ test('word cards: right/wrong answers move cards between Leitner boxes and survi
 
   // Progres langsung tersimpan setelah SATU jawaban.
   let p = await readProgress(page);
-  expect(p.schemaVersion).toBe(4);
+  expect(p.schemaVersion).toBe(5);
   expect(p.leitner['hsk2-lvyou'].box).toBe(2);
 
   // Kartu 2: "Not yet" -> tetap kotak 1 dan diulang di akhir sesi.

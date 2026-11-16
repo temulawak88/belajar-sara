@@ -257,7 +257,7 @@ test('schema v1 progress (iteration 1) is migrated to v2 without losing flashcar
   await page.locator('#next-btn').tap();
   for (let i = 0; i < 3; i++) await drawStroke(page, '千', i);
   const p = await readProgress(page);
-  expect(p.schemaVersion).toBe(4); // selalu dimigrasi ke versi terbaru
+  expect(p.schemaVersion).toBe(5); // selalu dimigrasi ke versi terbaru
   expect(p.leitner['hsk2-qian'].box).toBe(3);
   expect(p.writing['千'].trace).toBe(1);
 });

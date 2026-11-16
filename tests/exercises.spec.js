@@ -75,7 +75,7 @@ test('fill the blank: right answer, wrong-then-reveal, saved after every first a
   // Reload: progres tetap ada.
   await page.reload();
   const p = await readProgress(page);
-  expect(p.schemaVersion).toBe(4);
+  expect(p.schemaVersion).toBe(5);
   expect(p.sentences[wrongId].fill.right).toBe(0);
 });
 
@@ -202,7 +202,7 @@ test('progress from before lessons (schema v3) is migrated to v4 and kept', asyn
   const ex = await currentFill(page);
   await page.locator(`#options [data-option="${ex.answer}"]`).tap();
   const p = await readProgress(page);
-  expect(p.schemaVersion).toBe(4);
+  expect(p.schemaVersion).toBe(5);
   expect(p.leitner['hsk2-lvyou'].box).toBe(4);
   expect(p.leitner['hsk1-ni'].box).toBe(2);
   expect(p.writing['大'].write).toBe(1);
