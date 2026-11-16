@@ -43,6 +43,12 @@ test('every precached asset exists, and every docs/ file is precached', () => {
   expect(all.filter((f) => !assets.includes(f))).toEqual([]);
 });
 
+test('service worker install bypasses the HTTP cache (no stale files in a new version)', () => {
+  const sw = fs.readFileSync(path.join(DOCS, 'sw.js'), 'utf8');
+  expect(sw).toMatch(/new Request\(u, \{ cache: 'reload' \}\)/);
+  expect(sw).not.toMatch(/addAll\(ASSETS\)/);
+});
+
 test('cache version in sw.js matches APP_VERSION', () => {
   const sw = fs.readFileSync(path.join(DOCS, 'sw.js'), 'utf8');
   const ver = fs.readFileSync(path.join(DOCS, 'js', 'version.js'), 'utf8');
