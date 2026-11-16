@@ -47,8 +47,7 @@ export function segmentPinyin(pinyin, count) {
   function dfs(pos, left) {
     const start = pos;
     while (pos < pc.length && (pc[pos] === "'" || pc[pos] === ' ' || pc[pos] === '’')) pos++;
-    // Suku kata tanpa konsonan awal yang dimulai a/o/e hanya boleh di awal kata atau sesudah
-    // apostrof/spasi (aturan ejaan baku: xi'an, nǚ'ér). Ini mencegah "hǎo" terbaca "hǎ" + "o".
+    // Sesudah apostrof/spasi (atau di awal kata)?
     const separated = pos === 0 || pos > start;
     if (pos === pc.length) return left === 0 ? [] : null;
     if (left === 0) return null;
@@ -58,7 +57,10 @@ export function segmentPinyin(pinyin, count) {
     const lens = new Set();
     for (const ini of INITIALS) {
       if (!rest.startsWith(ini)) continue;
-      if (ini === '' && 'aoe'.includes(rest[0]) && !separated) continue;
+      // Tanpa konsonan awal hanya final yang dimulai a/o/e (an, ou, er, ...): suku kata i/u/ü
+      // ditulis dengan y/w (yan, wan), jadi "ian"/"uan" tidak pernah berdiri sendiri.
+      // Di tengah kata pun wajib didahului apostrof. Ini mencegah "hǎo" -> "hǎ"+"o" dan "qùnián" -> "qùn"+"ián".
+      if (ini === '' && (!'aoe'.includes(rest[0]) || !separated)) continue;
       for (const fin of FINALS) if (rest.startsWith(fin, ini.length)) lens.add(ini.length + fin.length);
     }
     for (const len of [...lens].sort((a, b) => b - a)) {

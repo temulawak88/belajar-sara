@@ -58,7 +58,6 @@ def segment_pinyin(pinyin, count):
         start = pos
         while pos < len(p) and p[pos] in "' ’":
             pos += 1
-        # a/o/e tanpa konsonan awal hanya di awal kata atau sesudah apostrof (xi'an, nǚ'ér).
         separated = pos == 0 or pos > start
         if pos == len(p):
             return [] if left == 0 else None
@@ -70,7 +69,8 @@ def segment_pinyin(pinyin, count):
         lens = {
             len(i) + len(f)
             for i in INITIALS
-            if rest.startswith(i) and (i or rest[0] not in "aoe" or separated)
+            # tanpa konsonan awal: hanya final a/o/e, dan di tengah kata wajib sesudah apostrof
+            if rest.startswith(i) and (i or (rest[0] in "aoe" and separated))
             for f in FINALS
             if rest.startswith(f, len(i))
         }

@@ -161,6 +161,7 @@ test.describe('pinyin.js and tones.js logic', () => {
       const cases = [
         ['péngyou', 2], ['Zhōngguó', 2], ['xièxie', 2], ["xi'an", 2], ['xian', 1], ['yìdiǎnr', 3],
         ["nǚ'ér", 2], ['lǜsè', 2], ['shénme', 2], ['zhǔnbèi', 2], ['tiānqì', 2], ['hǎo', 2], ['xian', 2],
+        ['qùnián', 2], ['bīnguǎn', 2], ["Tiān'ānmén", 3], ['yīfu', 2], ['wǎnshang', 2], ['ǎi', 1],
       ];
       return cases.map(([p, n]) => P.segmentPinyin(p, n));
     });
@@ -169,6 +170,8 @@ test.describe('pinyin.js and tones.js logic', () => {
       ['nǚ', 'ér'], ['lǜ', 'sè'], ['shén', 'me'], ['zhǔn', 'bèi'], ['tiān', 'qì'],
       null, // "hǎ" + "o" tidak sah: o di tengah kata wajib didahului apostrof
       null, // xi + an juga wajib pakai apostrof (xi'an)
+      ['qù', 'nián'], ['bīn', 'guǎn'], // bukan "qùn"+"ián" / "bīng"+"uǎn": i/u tidak berdiri sendiri
+      ['Tiān', 'ān', 'mén'], ['yī', 'fu'], ['wǎn', 'shang'], ['ǎi'],
     ]);
   });
 
